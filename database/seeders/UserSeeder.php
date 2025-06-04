@@ -25,6 +25,13 @@ class UserSeeder extends Seeder
                 'newsletter' => true,
             ],
             'membership' => 'premium',
+            'visitHistory' => [
+                [
+                    'date' => '2024-01-15',
+                    'attractions' => ['Dragon Coaster', 'Magic Castle'],
+                    'rating' => 5,
+                ],
+            ],
         ]);
 
         // Admin User
@@ -40,6 +47,7 @@ class UserSeeder extends Seeder
                 'newsletter' => true,
             ],
             'membership' => 'vip',
+            'visitHistory' => [],
             'is_admin' => true,
         ]);
     }
