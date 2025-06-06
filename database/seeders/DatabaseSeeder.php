@@ -31,13 +31,3 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
-
-class UserSeeder extends Seeder
-{
-    public function run(): void
-    {
-        $user = User::factory()
-            ->count(1)
-            ->create();
-    }
-}
