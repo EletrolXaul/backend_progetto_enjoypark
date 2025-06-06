@@ -45,25 +45,76 @@
                 @include('dashboard.partials._users')
             </div>
 
+            <!-- Orders Tab -->
+            <div class="tab-pane fade" id="orders" role="tabpanel">
+                @include('dashboard.partials._orders')
+            </div>
+
+            <!-- Tickets Tab -->
+            <div class="tab-pane fade" id="tickets" role="tabpanel">
+                @include('dashboard.partials._tickets')
+            </div>
+
             <!-- Attractions Tab -->
             <div class="tab-pane fade" id="attractions" role="tabpanel">
                 @include('dashboard.partials._attractions')
             </div>
 
-            <!-- Add other tabs here -->
-            <!-- Orders Tab -->
-            <div class="tab-pane fade" id="orders" role="tabpanel">
-                <!-- Include orders partial -->
+            <!-- Shows Tab -->
+            <div class="tab-pane fade" id="shows" role="tabpanel">
+                @include('dashboard.partials._shows')
             </div>
-            
-            <!-- Continue with other tabs -->
+
+            <!-- Restaurants Tab -->
+            <div class="tab-pane fade" id="restaurants" role="tabpanel">
+                @include('dashboard.partials._restaurants')
+            </div>
+
+            <!-- Shops Tab -->
+            <div class="tab-pane fade" id="shops" role="tabpanel">
+                @include('dashboard.partials._shops')
+            </div>
+
+            <!-- Services Tab -->
+            <div class="tab-pane fade" id="services" role="tabpanel">
+                @include('dashboard.partials._services')
+            </div>
+
+            <!-- Locations Tab -->
+            <div class="tab-pane fade" id="locations" role="tabpanel">
+                @include('dashboard.partials._locations')
+            </div>
+
+            <!-- Promo Codes Tab -->
+            <div class="tab-pane fade" id="promoCodes" role="tabpanel">
+                @include('dashboard.partials._promo_codes')
+            </div>
+
+            <!-- Visit Histories Tab -->
+            <div class="tab-pane fade" id="visitHistories" role="tabpanel">
+                @include('dashboard.partials._visit_histories')
+            </div>
+
+            <!-- Mock Credit Cards Tab -->
+            <div class="tab-pane fade" id="mockCreditCards" role="tabpanel">
+                @include('dashboard.partials._mock_credit_cards')
+            </div>
         </div>
     </div>
 
     <!-- Include modals -->
     @include('dashboard.modals._user_form')
+    @include('dashboard.modals._order_form')
+    @include('dashboard.modals._ticket_form')
     @include('dashboard.modals._attraction_form')
-    <!-- Include other modals -->
+    @include('dashboard.modals._show_form')
+    @include('dashboard.modals._restaurant_form')
+    @include('dashboard.modals._shop_form')
+    @include('dashboard.modals._service_form')
+    @include('dashboard.modals._location_form')
+    @include('dashboard.modals._promo_code_form')
+    @include('dashboard.modals._visit_history_form')
+    @include('dashboard.modals._mock_credit_card_form')
 @endsection
 
 @section('scripts')
