@@ -6,6 +6,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\User;
+use App\Models\VisitHistory;
 use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
@@ -13,7 +14,7 @@ class UserSeeder extends Seeder
     public function run()
     {
         // Demo User
-        User::create([
+        $demoUser = User::create([
             'name' => 'Mario Rossi',
             'email' => 'demo@enjoypark.it',
             'password' => Hash::make('demo123'),
@@ -25,13 +26,15 @@ class UserSeeder extends Seeder
                 'newsletter' => true,
             ],
             'membership' => 'premium',
-            'visitHistory' => [
-                [
-                    'date' => '2024-01-15',
-                    'attractions' => ['Dragon Coaster', 'Magic Castle'],
-                    'rating' => 5,
-                ],
-            ],
+        ]);
+
+        // Crea la cronologia delle visite per l'utente demo
+        VisitHistory::create([
+            'user_id' => $demoUser->id,
+            'visit_date' => '2024-01-15',
+            'attractions' => ['Dragon Coaster', 'Magic Castle'],
+            'rating' => 5,
+            'notes' => 'Bellissima giornata al parco!'
         ]);
 
         // Admin User
@@ -47,7 +50,6 @@ class UserSeeder extends Seeder
                 'newsletter' => true,
             ],
             'membership' => 'vip',
-            'visitHistory' => [],
             'is_admin' => true,
         ]);
     }

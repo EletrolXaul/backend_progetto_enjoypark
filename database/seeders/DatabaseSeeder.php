@@ -24,6 +24,20 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             VisitHistorySeeder::class,
             TicketSeeder::class,
+            // Aggiungiamo i seeder mancanti
+            OrderSeeder::class,
+            PromoCodeSeeder::class,
+            MockCreditCardSeeder::class,
         ]);
+    }
+}
+
+class UserSeeder extends Seeder
+{
+    public function run(): void
+    {
+        $user = User::factory()
+            ->count(1)
+            ->create();
     }
 }
