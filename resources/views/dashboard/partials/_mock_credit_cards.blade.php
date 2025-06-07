@@ -22,7 +22,7 @@
                 @foreach($mockCreditCards as $card)
                 <tr>
                     <td>{{ $card->id }}</td>
-                    <td>{{ $card->user->name }}</td>
+                    <td>{{ $card->user?->name ?? 'Utente sconosciuto' }}</td>
                     <td>{{ substr($card->card_number, 0, 4) }}...{{ substr($card->card_number, -4) }}</td>
                     <td>{{ $card->cardholder_name }}</td>
                     <td>{{ $card->expiry_date }}</td>

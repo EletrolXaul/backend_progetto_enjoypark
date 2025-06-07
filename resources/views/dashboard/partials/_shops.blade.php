@@ -26,7 +26,7 @@
                     <td>{{ Str::limit($shop->description, 30) }}</td>
                     <td>{{ $shop->type }}</td>
                     <td>{{ $shop->opening_hours }}</td>
-                    <td>{{ $shop->created_at->format('d/m/Y') }}</td>
+                    <td>{{ $shop->created_at ? $shop->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
                         <button class="btn btn-sm btn-primary edit-shop" data-id="{{ $shop->id }}">
                             <i class="fas fa-edit"></i>

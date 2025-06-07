@@ -20,24 +20,42 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($shows as $show)
-                <tr>
-                    <td>{{ $show->id }}</td>
-                    <td>{{ $show->name }}</td>
-                    <td>{{ Str::limit($show->description, 30) }}</td>
-                    <td>{{ $show->time }}</td>
-                    <td>{{ $show->duration }} min</td>
-                    <td>{{ $show->location }}</td>
-                    <td>{{ $show->created_at->format('d/m/Y') }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary edit-show" data-id="{{ $show->id }}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-show" data-id="{{ $show->id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
+                @foreach ($shows as $show)
+                    <tr>
+                        <td>{{ $show->id }}</td>
+                        <td>{{ $show->name }}</td>
+                        <td>{{ Str::limit($show->description, 30) }}</td>
+                        <td>
+                            @if (is_array($show->time))
+                                {{ json_encode($show->time) }}
+                            @else
+                                {{ $show->time }}
+                            @endif
+                        </td>
+                        <td>{{ $show->duration }} min</td>
+                        <td>
+                            @if (is_array($show->location))
+                                ({{ $show->location['x'] }}, {{ $show->location['y'] }})
+                            @else
+                                {{ $show->location }}
+                            @endif
+                        </td>
+                        <td>
+                            @if ($show->created_at)
+                                {{ $show->created_at->format('d/m/Y') }}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>
+                            <button class="btn btn-sm btn-primary edit-show" data-id="{{ $show->id }}">
+                                <i class="fas fa-edit"></i>
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-show" data-id="{{ $show->id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>

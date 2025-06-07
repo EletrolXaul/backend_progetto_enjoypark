@@ -177,3 +177,18 @@ class DashboardController extends Controller
     // Implementare metodi simili per gli altri modelli (Orders, Tickets, Shows, ecc.)
     // ...
 }
+
+// Nel metodo index() del DashboardController
+
+// Quando passi i dati alla vista, assicurati che gli array siano convertiti in stringhe
+// Per esempio, per il modello Show che ha un campo 'times' definito come array:
+$shows = Show::paginate(10);
+$shows->getCollection()->transform(function ($show) {
+    // Converti gli array in stringhe JSON per la visualizzazione
+    if (is_array($show->times)) {
+        $show->time_display = json_encode($show->times);
+    }
+    return $show;
+});
+
+// Poi nella vista, usa $show->times_display invece di $show->times

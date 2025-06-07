@@ -26,7 +26,7 @@
                     <td>{{ Str::limit($service->description, 30) }}</td>
                     <td>{{ $service->type }}</td>
                     <td>{{ $service->availability }}</td>
-                    <td>{{ $service->created_at->format('d/m/Y') }}</td>
+                    <td>{{ $service->created_at ? $service->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
                         <button class="btn btn-sm btn-primary edit-service" data-id="{{ $service->id }}">
                             <i class="fas fa-edit"></i>
