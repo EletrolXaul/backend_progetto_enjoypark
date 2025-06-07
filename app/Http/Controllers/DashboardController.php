@@ -23,14 +23,27 @@ class DashboardController extends Controller
     public function index()
     {
         // Recupera i dati da tutti i modelli con paginazione
+        $attractions = Attraction::paginate(10);
+        $shows = Show::paginate(10);
+        $restaurants = Restaurant::paginate(10);
+        $shops = Shop::paginate(10);
+        
+        // Trasforma i dati per la visualizzazione
+        $shows->getCollection()->transform(function ($show) {
+            if (isset($show->times) && is_array($show->times)) {
+                $show->time = implode(", ", $show->times);
+            }
+            return $show;
+        });
+        
         $data = [
             'users' => User::paginate(10),
             'orders' => Order::paginate(10),
             'tickets' => Ticket::paginate(10),
-            'attractions' => Attraction::paginate(10),
-            'shows' => Show::paginate(10),
-            'restaurants' => Restaurant::paginate(10),
-            'shops' => Shop::paginate(10),
+            'attractions' => $attractions,
+            'shows' => $shows,
+            'restaurants' => $restaurants,
+            'shops' => $shops,
             'services' => Service::paginate(10),
             'locations' => Location::paginate(10),
             'promoCodes' => PromoCode::paginate(10),
@@ -177,18 +190,3 @@ class DashboardController extends Controller
     // Implementare metodi simili per gli altri modelli (Orders, Tickets, Shows, ecc.)
     // ...
 }
-
-// Nel metodo index() del DashboardController
-
-// Quando passi i dati alla vista, assicurati che gli array siano convertiti in stringhe
-// Per esempio, per il modello Show che ha un campo 'times' definito come array:
-$shows = Show::paginate(10);
-$shows->getCollection()->transform(function ($show) {
-    // Converti gli array in stringhe JSON per la visualizzazione
-    if (is_array($show->times)) {
-        $show->time_display = json_encode($show->times);
-    }
-    return $show;
-});
-
-// Poi nella vista, usa $show->times_display invece di $show->times

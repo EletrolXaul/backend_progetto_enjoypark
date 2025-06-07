@@ -21,10 +21,10 @@
             <tbody>
                 @foreach($shops as $shop)
                 <tr>
-                    <td>{{ $shop->id }}</td>
+                    <td>{{ $shop->id ?? $loop->iteration }}</td>
                     <td>{{ $shop->name }}</td>
                     <td>{{ Str::limit($shop->description, 30) }}</td>
-                    <td>{{ $shop->type }}</td>
+                    <td>{{ $shop->type ?? $shop->category }}</td>
                     <td>{{ $shop->opening_hours }}</td>
                     <td>{{ $shop->created_at ? $shop->created_at->format('d/m/Y') : '-' }}</td>
                     <td>

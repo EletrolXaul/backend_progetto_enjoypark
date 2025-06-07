@@ -18,6 +18,9 @@ $(document).ready(function() {
         // Hide all tab panes and show the target one
         $('.tab-pane').removeClass('show active');
         $(tabId).addClass('show active');
+        
+        // Update URL hash without page jump
+        history.pushState(null, null, tabId);
     });
     
     // Handle direct URL with hash
@@ -25,4 +28,15 @@ $(document).ready(function() {
         const tabId = window.location.hash;
         $('.sidebar-menu a[href="' + tabId + '"]').click();
     }
+    
+    // Handle pagination links to maintain tab state
+    $(document).on('click', '.pagination a', function(e) {
+        // Get the current hash/tab
+        const currentTab = window.location.hash || '#dashboard';
+        
+        // If the link doesn't already have a hash, add the current tab
+        if (!$(this).attr('href').includes('#')) {
+            $(this).attr('href', $(this).attr('href') + currentTab);
+        }
+    });
 });

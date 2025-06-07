@@ -26,9 +26,9 @@
                     <td>{{ $attraction->name }}</td>
                     <td>{{ Str::limit($attraction->description, 30) }}</td>
                     <td>{{ $attraction->capacity }}</td>
-                    <td>{{ $attraction->duration }} min</td>
+                    <td>{{ $attraction->duration }}</td>
                     <td>{{ $attraction->min_height }} cm</td>
-                    <td>{{ $attraction->created_at->format('d/m/Y') }}</td>
+                    <td>{{ $attraction->created_at ? $attraction->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
                         <button class="btn btn-sm btn-primary edit-attraction" data-id="{{ $attraction->id }}" data-name="{{ $attraction->name }}" data-description="{{ $attraction->description }}" data-capacity="{{ $attraction->capacity }}" data-duration="{{ $attraction->duration }}" data-min-height="{{ $attraction->min_height }}">
                             <i class="fas fa-edit"></i>

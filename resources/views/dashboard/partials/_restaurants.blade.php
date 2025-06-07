@@ -22,11 +22,11 @@
             <tbody>
                 @foreach ($restaurants as $restaurant)
                     <tr>
-                        <td>{{ $restaurant->id }}</td>
+                        <td>{{ $restaurant->id ?? $loop->iteration }}</td>
                         <td>{{ $restaurant->name }}</td>
                         <td>{{ Str::limit($restaurant->description, 30) }}</td>
-                        <td>{{ $restaurant->cuisine_type }}</td>
-                        <td>{{ $restaurant->capacity }}</td>
+                        <td>{{ $restaurant->cuisine ?? $restaurant->cuisine_type }}</td>
+                        <td>{{ $restaurant->capacity ?? '-' }}</td>
                         <td>{{ $restaurant->opening_hours }}</td>
                         <td>{{ $restaurant->created_at ? $restaurant->created_at->format('d/m/Y') : '-' }}</td>
                         <td>

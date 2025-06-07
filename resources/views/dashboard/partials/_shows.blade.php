@@ -26,18 +26,22 @@
                         <td>{{ $show->name }}</td>
                         <td>{{ Str::limit($show->description, 30) }}</td>
                         <td>
-                            @if (is_array($show->time))
-                                {{ json_encode($show->time) }}
-                            @else
+                            @if (isset($show->times) && is_array($show->times))
+                                {{ implode(", ", $show->times) }}
+                            @elseif (isset($show->time))
                                 {{ $show->time }}
+                            @else
+                                -
                             @endif
                         </td>
-                        <td>{{ $show->duration }} min</td>
+                        <td>{{ $show->duration }}</td>
                         <td>
-                            @if (is_array($show->location))
+                            @if (isset($show->location) && is_array($show->location))
                                 ({{ $show->location['x'] }}, {{ $show->location['y'] }})
-                            @else
+                            @elseif (isset($show->location))
                                 {{ $show->location }}
+                            @else
+                                -
                             @endif
                         </td>
                         <td>
