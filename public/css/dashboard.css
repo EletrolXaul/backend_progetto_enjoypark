@@ -289,6 +289,17 @@ body {
     border-color: #dee2e6;
 }
 
+/* Stile personalizzato per le frecce di paginazione */
+.pagination svg {
+    width: 20px; /* Riduci la dimensione delle icone SVG */
+    height: 20px;
+    vertical-align: middle;
+}
+
+.pagination .page-item {
+    margin: 0 2px; /* Aggiungi un po' di spazio tra gli elementi */
+}
+
 /* Modal Styles */
 .modal-header {
     background-color: var(--primary-color);

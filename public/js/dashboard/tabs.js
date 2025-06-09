@@ -31,12 +31,19 @@ $(document).ready(function() {
     
     // Handle pagination links to maintain tab state
     $(document).on('click', '.pagination a', function(e) {
+        e.preventDefault(); // Previeni il comportamento predefinito
+        
         // Get the current hash/tab
         const currentTab = window.location.hash || '#dashboard';
         
-        // If the link doesn't already have a hash, add the current tab
-        if (!$(this).attr('href').includes('#')) {
-            $(this).attr('href', $(this).attr('href') + currentTab);
+        let href = $(this).attr('href');
+        
+        // Se l'URL non contiene già un hash, aggiungi il tab corrente
+        if (href.indexOf('#') === -1) {
+            href = href + currentTab;
         }
+        
+        // Naviga all'URL modificato
+        window.location.href = href;
     });
 });
