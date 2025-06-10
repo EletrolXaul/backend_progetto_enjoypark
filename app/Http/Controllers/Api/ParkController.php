@@ -40,6 +40,14 @@ class ParkController extends Controller
     public function shows(): JsonResponse
     {
         $shows = Show::all()->map(function ($show) {
+            // Ottieni la data di oggi
+            $today = now()->format('Y-m-d');
+            
+            // Prendi il primo orario disponibile o un orario di default
+            $firstTime = is_array($show->times) && count($show->times) > 0 
+                ? $show->times[0] 
+                : '15:00';
+            
             return [
                 'id' => (string) $show->id,
                 'name' => $show->name,
@@ -47,7 +55,9 @@ class ParkController extends Controller
                 'venue' => $show->venue,
                 'duration' => $show->duration,
                 'category' => $show->category,
-                'times' => $show->times,
+                'time' => $firstTime,  // Singolo orario
+                'date' => $today,      // Data di oggi
+                'times' => $show->times, // Mantieni anche l'array originale
                 'capacity' => $show->capacity,
                 'availableSeats' => $show->available_seats,
                 'rating' => (float) $show->rating,
