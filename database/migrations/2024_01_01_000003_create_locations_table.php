@@ -11,7 +11,8 @@ return new class extends Migration
     {
         Schema::create('locations', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name'); // Aggiungi questa linea PRIMA del constraint unique
+            $table->unique('name');
             $table->text('description')->nullable();
             $table->enum('category', ['attractions', 'restaurants', 'shops', 'services']);
             $table->decimal('latitude', 10, 8);

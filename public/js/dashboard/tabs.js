@@ -10,6 +10,7 @@ $(document).ready(function() {
         
         // Get the target tab ID
         const tabId = $(this).attr('href');
+        const currentTab = window.location.hash || '#dashboard';
         
         // Remove active class from all sidebar links and add to clicked one
         $('.sidebar-menu a').removeClass('active');
@@ -19,7 +20,17 @@ $(document).ready(function() {
         $('.tab-pane').removeClass('show active');
         $(tabId).addClass('show active');
         
-        // Update URL hash without page jump
+        // AGGIUNTO: Reset della paginazione SOLO quando si cambia tab (non quando si rimane sulla stessa)
+        if (currentTab !== tabId) {
+            // Stiamo cambiando tab, quindi resettiamo alla pagina 1
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.delete('page'); // Rimuovi il parametro page
+            const newUrl = window.location.pathname + (urlParams.toString() ? '?' + urlParams.toString() : '') + tabId;
+            window.location.href = newUrl;
+            return;
+        }
+        
+        // Se siamo sulla stessa tab, aggiorna solo l'hash senza ricaricare
         history.pushState(null, null, tabId);
     });
     

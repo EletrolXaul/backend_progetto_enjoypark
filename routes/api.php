@@ -49,3 +49,10 @@ Route::prefix('park')->group(function () {
 
 // Rotta alias per compatibilità TS
 Route::get('/park-data', [ParkController::class, 'allData']);
+
+// Rotte per le location sincronizzate
+Route::prefix('locations')->group(function () {
+    Route::get('/', [LocationController::class, 'index']);
+    Route::get('/{id}', [LocationController::class, 'show']);
+    Route::post('/sync', [LocationController::class, 'syncLocations']);
+});
