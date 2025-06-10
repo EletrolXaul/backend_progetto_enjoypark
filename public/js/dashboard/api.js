@@ -809,4 +809,73 @@ $(document).ready(function () {
             });
         },
     };
+
+    // Attraction API calls
+    window.attractionApi = {
+        addAttraction: function (formData, successCallback, errorCallback) {
+            $.ajax({
+                url: "/attractions",
+                type: "POST",
+                data: formData,
+                success: function (response) {
+                    if (successCallback) successCallback(response);
+                },
+                error: function (xhr) {
+                    if (errorCallback) {
+                        const errors = xhr.responseJSON.errors;
+                        let errorMessage =
+                            "Si sono verificati i seguenti errori:<ul>";
+                        for (const key in errors) {
+                            errorMessage += `<li>${errors[key]}</li>`;
+                        }
+                        errorMessage += "</ul>";
+                        errorCallback(errorMessage);
+                    }
+                },
+            });
+        },
+        updateAttraction: function (
+            attractionId,
+            formData,
+            successCallback,
+            errorCallback
+        ) {
+            $.ajax({
+                url: `/attractions/${attractionId}`,
+                type: "PUT",
+                data: formData,
+                success: function (response) {
+                    if (successCallback) successCallback(response);
+                },
+                error: function (xhr) {
+                    if (errorCallback) {
+                        const errors = xhr.responseJSON.errors;
+                        let errorMessage =
+                            "Si sono verificati i seguenti errori:<ul>";
+                        for (const key in errors) {
+                            errorMessage += `<li>${errors[key]}</li>`;
+                        }
+                        errorMessage += "</ul>";
+                        errorCallback(errorMessage);
+                    }
+                },
+            });
+        },
+        deleteAttraction: function (
+            attractionId,
+            successCallback,
+            errorCallback
+        ) {
+            $.ajax({
+                url: `/attractions/${attractionId}`,
+                type: "DELETE",
+                success: function (response) {
+                    if (successCallback) successCallback(response);
+                },
+                error: function (xhr) {
+                    if (errorCallback) errorCallback("Errore durante l'eliminazione dell'attrazione");
+                },
+            });
+        },
+    };
 });

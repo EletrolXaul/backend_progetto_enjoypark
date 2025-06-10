@@ -330,396 +330,119 @@ $(document).ready(function () {
         );
     });
 
+    // Edit Restaurant - Load Data (CORRETTA)
     $(".edit-restaurant").click(function () {
         const restaurantId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_restaurant_id").val(restaurantId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_name").val(row.find("td:eq(1)").text());
+        $("#edit_description").val(row.find("td:eq(2)").text());
+        $("#edit_capacity").val(row.find("td:eq(3)").text());
+        $("#edit_opening_hours").val(row.find("td:eq(4)").text());
         $("#editRestaurantModal").modal("show");
     });
 
-    $("#updateRestaurantBtn").click(function () {
-        const restaurantId = $("#edit_restaurant_id").val();
-        const formData = $("#editRestaurantForm").serialize();
-        restaurantApi.updateRestaurant(
-            restaurantId,
-            formData,
-            function (response) {
-                $("#editRestaurantModal").modal("hide");
-                showAlert("Ristorante aggiornato con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
-    $(".delete-restaurant").click(function () {
-        const restaurantId = $(this).data("id");
-        if (confirm("Sei sicuro di voler eliminare questo ristorante?")) {
-            restaurantApi.deleteRestaurant(
-                restaurantId,
-                function (response) {
-                    showAlert("Ristorante eliminato con successo!");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-                function (errorMessage) {
-                    showAlert(errorMessage, "danger");
-                }
-            );
-        }
-    });
-
-    // Shop Modals
-    $("#saveShopBtn").click(function () {
-        const formData = $("#addShopForm").serialize();
-        shopApi.addShop(
-            formData,
-            function (response) {
-                $("#addShopModal").modal("hide");
-                showAlert("Negozio aggiunto con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
+    // Edit Shop - Load Data (CORRETTA)
     $(".edit-shop").click(function () {
         const shopId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_shop_id").val(shopId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_name").val(row.find("td:eq(1)").text());
+        $("#edit_description").val(row.find("td:eq(2)").text());
+        $("#edit_type").val(row.find("td:eq(3)").text());
         $("#editShopModal").modal("show");
     });
 
-    $("#updateShopBtn").click(function () {
-        const shopId = $("#edit_shop_id").val();
-        const formData = $("#editShopForm").serialize();
-        shopApi.updateShop(
-            shopId,
-            formData,
-            function (response) {
-                $("#editShopModal").modal("hide");
-                showAlert("Negozio aggiornato con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
-    $(".delete-shop").click(function () {
-        const shopId = $(this).data("id");
-        if (confirm("Sei sicuro di voler eliminare questo negozio?")) {
-            shopApi.deleteShop(
-                shopId,
-                function (response) {
-                    showAlert("Negozio eliminato con successo!");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-                function (errorMessage) {
-                    showAlert(errorMessage, "danger");
-                }
-            );
-        }
-    });
-
-    // Service Modals
-    $("#saveServiceBtn").click(function () {
-        const formData = $("#addServiceForm").serialize();
-        serviceApi.addService(
-            formData,
-            function (response) {
-                $("#addServiceModal").modal("hide");
-                showAlert("Servizio aggiunto con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
+    // Edit Service - Load Data (CORRETTA)
     $(".edit-service").click(function () {
         const serviceId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_service_id").val(serviceId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_name").val(row.find("td:eq(1)").text());
+        $("#edit_description").val(row.find("td:eq(2)").text());
+        $("#edit_type").val(row.find("td:eq(3)").text());
+        $("#edit_price").val(row.find("td:eq(4)").text().replace("€", ""));
+        $("#edit_features").val(row.find("td:eq(5)").text());
         $("#editServiceModal").modal("show");
     });
 
-    $("#updateServiceBtn").click(function () {
-        const serviceId = $("#edit_service_id").val();
-        const formData = $("#editServiceForm").serialize();
-        serviceApi.updateService(
-            serviceId,
-            formData,
-            function (response) {
-                $("#editServiceModal").modal("hide");
-                showAlert("Servizio aggiornato con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
-    $(".delete-service").click(function () {
-        const serviceId = $(this).data("id");
-        if (confirm("Sei sicuro di voler eliminare questo servizio?")) {
-            serviceApi.deleteService(
-                serviceId,
-                function (response) {
-                    showAlert("Servizio eliminato con successo!");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-                function (errorMessage) {
-                    showAlert(errorMessage, "danger");
-                }
-            );
-        }
-    });
-
-    // Location Modals
-    $("#saveLocationBtn").click(function () {
-        const formData = $("#addLocationForm").serialize();
-        locationApi.addLocation(
-            formData,
-            function (response) {
-                $("#addLocationModal").modal("hide");
-                showAlert("Posizione aggiunta con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
+    // Edit Location - Load Data (CORRETTA)
     $(".edit-location").click(function () {
         const locationId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_location_id").val(locationId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_name").val(row.find("td:eq(1)").text());
+        $("#edit_description").val(row.find("td:eq(2)").text());
+        $("#edit_type").val(row.find("td:eq(3)").text());
+        $("#edit_latitude").val(row.find("td:eq(4)").text());
+        $("#edit_longitude").val(row.find("td:eq(5)").text());
+        $("#edit_metadata").val(row.find("td:eq(6)").text());
+        $("#edit_is_visible").prop("checked", row.find("td:eq(7)").text() === "Sì");
         $("#editLocationModal").modal("show");
     });
 
-    $("#updateLocationBtn").click(function () {
-        const locationId = $("#edit_location_id").val();
-        const formData = $("#editLocationForm").serialize();
-        locationApi.updateLocation(
-            locationId,
-            formData,
-            function (response) {
-                $("#editLocationModal").modal("hide");
-                showAlert("Posizione aggiornata con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
-    $(".delete-location").click(function () {
-        const locationId = $(this).data("id");
-        if (confirm("Sei sicuro di voler eliminare questa posizione?")) {
-            locationApi.deleteLocation(
-                locationId,
-                function (response) {
-                    showAlert("Posizione eliminata con successo!");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-                function (errorMessage) {
-                    showAlert(errorMessage, "danger");
-                }
-            );
-        }
-    });
-
-    // PromoCode Modals
-    $("#savePromoCodeBtn").click(function () {
-        const formData = $("#addPromoCodeForm").serialize();
-        promoCodeApi.addPromoCode(
-            formData,
-            function (response) {
-                $("#addPromoCodeModal").modal("hide");
-                showAlert("Codice promozionale aggiunto con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
+    // Edit PromoCode - Load Data (CORRETTA)
     $(".edit-promo-code").click(function () {
         const promoCodeId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_promo_code_id").val(promoCodeId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_code").val(row.find("td:eq(1)").text());
+        $("#edit_description").val(row.find("td:eq(2)").text());
+        $("#edit_discount_type").val(row.find("td:eq(3)").text());
+        $("#edit_discount_value").val(row.find("td:eq(4)").text().replace("%", "").replace("€", ""));
+        $("#edit_min_order_amount").val(row.find("td:eq(5)").text().replace("€", ""));
+        $("#edit_max_discount").val(row.find("td:eq(6)").text().replace("€", ""));
+        $("#edit_valid_until").val(row.find("td:eq(7)").text());
+        $("#edit_usage_limit").val(row.find("td:eq(8)").text());
+        $("#edit_used_count").val(row.find("td:eq(9)").text());
+        $("#edit_is_active").prop("checked", row.find("td:eq(10)").text() === "Attivo");
         $("#editPromoCodeModal").modal("show");
     });
 
-    $("#updatePromoCodeBtn").click(function () {
-        const promoCodeId = $("#edit_promo_code_id").val();
-        const formData = $("#editPromoCodeForm").serialize();
-        promoCodeApi.updatePromoCode(
-            promoCodeId,
-            formData,
-            function (response) {
-                $("#editPromoCodeModal").modal("hide");
-                showAlert("Codice promozionale aggiornato con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
-    $(".delete-promo-code").click(function () {
-        const promoCodeId = $(this).data("id");
-        if (
-            confirm("Sei sicuro di voler eliminare questo codice promozionale?")
-        ) {
-            promoCodeApi.deletePromoCode(
-                promoCodeId,
-                function (response) {
-                    showAlert("Codice promozionale eliminato con successo!");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-                function (errorMessage) {
-                    showAlert(errorMessage, "danger");
-                }
-            );
-        }
-    });
-
-    // VisitHistory Modals
-    $("#saveVisitHistoryBtn").click(function () {
-        const formData = $("#addVisitHistoryForm").serialize();
-        visitHistoryApi.addVisitHistory(
-            formData,
-            function (response) {
-                $("#addVisitHistoryModal").modal("hide");
-                showAlert("Cronologia visite aggiunta con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
+    // Edit VisitHistory - Load Data (CORRETTA)
     $(".edit-visit-history").click(function () {
         const visitHistoryId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_visit_history_id").val(visitHistoryId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_user_id").val(row.find("td:eq(1)").data("user-id"));
+        $("#edit_visit_date").val(row.find("td:eq(2)").text());
+        $("#edit_attractions_visited").val(row.find("td:eq(3)").text());
+        $("#edit_rating").val(row.find("td:eq(4)").text());
+        $("#edit_notes").val(row.find("td:eq(5)").text());
         $("#editVisitHistoryModal").modal("show");
     });
 
-    $("#updateVisitHistoryBtn").click(function () {
-        const visitHistoryId = $("#edit_visit_history_id").val();
-        const formData = $("#editVisitHistoryForm").serialize();
-        visitHistoryApi.updateVisitHistory(
-            visitHistoryId,
-            formData,
-            function (response) {
-                $("#editVisitHistoryModal").modal("hide");
-                showAlert("Cronologia visite aggiornata con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
-    $(".delete-visit-history").click(function () {
-        const visitHistoryId = $(this).data("id");
-        if (
-            confirm("Sei sicuro di voler eliminare questa cronologia visite?")
-        ) {
-            visitHistoryApi.deleteVisitHistory(
-                visitHistoryId,
-                function (response) {
-                    showAlert("Cronologia visite eliminata con successo!");
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                },
-                function (errorMessage) {
-                    showAlert(errorMessage, "danger");
-                }
-            );
-        }
-    });
-
-    // MockCreditCard Modals
-    $("#saveMockCreditCardBtn").click(function () {
-        const formData = $("#addMockCreditCardForm").serialize();
-        mockCreditCardApi.addMockCreditCard(
-            formData,
-            function (response) {
-                $("#addMockCreditCardModal").modal("hide");
-                showAlert("Carta di credito aggiunta con successo!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            },
-            function (errorMessage) {
-                showAlert(errorMessage, "danger");
-            }
-        );
-    });
-
+    // Edit MockCreditCard - Load Data (CORRETTA)
     $(".edit-mock-credit-card").click(function () {
         const mockCreditCardId = $(this).data("id");
         const row = $(this).closest("tr");
         $("#edit_mock_credit_card_id").val(mockCreditCardId);
-        // Popola i campi del form con i dati dalla riga della tabella
+        $("#edit_card_number").val(row.find("td:eq(1)").text());
+        $("#edit_cardholder_name").val(row.find("td:eq(2)").text());
+        $("#edit_expiry_month").val(row.find("td:eq(3)").text().split("/")[0]);
+        $("#edit_expiry_year").val(row.find("td:eq(3)").text().split("/")[1]);
+        $("#edit_cvv").val(row.find("td:eq(4)").text());
+        $("#edit_balance").val(row.find("td:eq(5)").text().replace("€", ""));
+        $("#edit_card_type").val(row.find("td:eq(6)").text());
+        $("#edit_message").val(row.find("td:eq(7)").text());
         $("#editMockCreditCardModal").modal("show");
     });
 
+    // Edit Attraction - Load Data (AGGIUNTA)
+    $(".edit-attraction").click(function () {
+        const attractionId = $(this).data("id");
+        const row = $(this).closest("tr");
+        $("#edit_attraction_id").val(attractionId);
+        $("#edit_name").val(row.find("td:eq(1)").text());
+        $("#edit_description").val(row.find("td:eq(2)").text());
+        $("#edit_type").val(row.find("td:eq(3)").text());
+        $("#edit_duration").val(row.find("td:eq(4)").text().replace(" min", ""));
+        $("#edit_capacity").val(row.find("td:eq(5)").text());
+        $("#edit_min_age").val(row.find("td:eq(6)").text());
+        $("#editAttractionModal").modal("show");
+    });
+
+    // Update MockCreditCard
     $("#updateMockCreditCardBtn").click(function () {
         const mockCreditCardId = $("#edit_mock_credit_card_id").val();
         const formData = $("#editMockCreditCardForm").serialize();
@@ -746,6 +469,63 @@ $(document).ready(function () {
                 mockCreditCardId,
                 function (response) {
                     showAlert("Carta di credito eliminata con successo!");
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                },
+                function (errorMessage) {
+                    showAlert(errorMessage, "danger");
+                }
+            );
+        }
+    });
+
+    // Aggiungere alla fine del file, prima della chiusura di $(document).ready
+    
+    // Attraction Modals - FUNZIONI MANCANTI
+    $("#saveAttractionBtn").click(function () {
+        const formData = $("#addAttractionForm").serialize();
+        attractionApi.addAttraction(
+            formData,
+            function (response) {
+                $("#addAttractionModal").modal("hide");
+                showAlert("Attrazione aggiunta con successo!");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            },
+            function (errorMessage) {
+                showAlert(errorMessage, "danger");
+            }
+        );
+    });
+
+    $("#updateAttractionBtn").click(function () {
+        const attractionId = $("#edit_attraction_id").val();
+        const formData = $("#editAttractionForm").serialize();
+        attractionApi.updateAttraction(
+            attractionId,
+            formData,
+            function (response) {
+                $("#editAttractionModal").modal("hide");
+                showAlert("Attrazione aggiornata con successo!");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            },
+            function (errorMessage) {
+                showAlert(errorMessage, "danger");
+            }
+        );
+    });
+
+    $(".delete-attraction").click(function () {
+        const attractionId = $(this).data("id");
+        if (confirm("Sei sicuro di voler eliminare questa attrazione?")) {
+            attractionApi.deleteAttraction(
+                attractionId,
+                function (response) {
+                    showAlert("Attrazione eliminata con successo!");
                     setTimeout(function () {
                         location.reload();
                     }, 1000);
