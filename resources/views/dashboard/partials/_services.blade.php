@@ -50,6 +50,7 @@
                         <button class="btn btn-sm btn-primary edit-service" 
                         data-id="{{ $service->id }}" 
                         data-name="{{ $service->name }}" 
+                        data-slug="{{ $service->slug }}" 
                         data-category="{{ $service->category }}"  
                         data-description="{{ $service->description }}" 
                         data-icon="{{ $service->icon }}" 

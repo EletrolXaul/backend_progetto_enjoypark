@@ -35,10 +35,24 @@ $(document).ready(function () {
             successCallback,
             errorCallback
         ) {
+            // Convert formData string to object to handle checkbox properly
+            const data = {};
+            const pairs = formData.split('&');
+            
+            pairs.forEach(pair => {
+                const [key, value] = pair.split('=');
+                if (key && value !== undefined) {
+                    data[decodeURIComponent(key)] = decodeURIComponent(value.replace(/\+/g, ' '));
+                }
+            });
+            
+            // Ensure is_admin is always present as boolean
+            data.is_admin = $('#edit_is_admin').is(':checked') ? 1 : 0;
+            
             $.ajax({
                 url: `/users/${userId}`,
                 type: "PUT",
-                data: formData,
+                data: data,
                 success: function (response) {
                     if (successCallback) successCallback(response);
                 },

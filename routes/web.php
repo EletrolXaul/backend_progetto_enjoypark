@@ -2,69 +2,86 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\Api\LocationController;
+use App\Http\Controllers\Api\PromoCodeController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\Api\OrderController;
+use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\AttractionController;
+use App\Http\Controllers\ShowController;
+use App\Http\Controllers\VisitHistoryController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\MockCreditCardController;
 
 // Dashboard principale
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
 // Rotte CRUD per Users
-Route::post('/users', [DashboardController::class, 'storeUser'])->name('users.store');
-Route::put('/users/{id}', [DashboardController::class, 'updateUser'])->name('users.update');
-Route::delete('/users/{id}', [DashboardController::class, 'deleteUser'])->name('users.delete');
+Route::post('/users', [UserController::class, 'store'])->name('users.store');
+Route::put('/users/{id}', [UserController::class, 'update'])->name('users.update');
+Route::delete('/users/{id}', [UserController::class, 'destroy'])->name('users.delete');
 
 // Rotte CRUD per Orders
-Route::post('/orders', [DashboardController::class, 'storeOrder'])->name('orders.store');
-Route::put('/orders/{id}', [DashboardController::class, 'updateOrder'])->name('orders.update');
-Route::delete('/orders/{id}', [DashboardController::class, 'deleteOrder'])->name('orders.delete');
+Route::post('/orders', [OrderController::class, 'store'])->name('orders.store');
+Route::put('/orders/{id}', [OrderController::class, 'update'])->name('orders.update');
+Route::delete('/orders/{id}', [OrderController::class, 'destroy'])->name('orders.delete');
 
 // Rotte CRUD per Tickets
-Route::post('/tickets', [DashboardController::class, 'storeTicket'])->name('tickets.store');
-Route::put('/tickets/{id}', [DashboardController::class, 'updateTicket'])->name('tickets.update');
-Route::delete('/tickets/{id}', [DashboardController::class, 'deleteTicket'])->name('tickets.delete');
+Route::post('/tickets', [TicketController::class, 'store'])->name('tickets.store');
+Route::put('/tickets/{id}', [TicketController::class, 'update'])->name('tickets.update');
+Route::delete('/tickets/{id}', [TicketController::class, 'destroy'])->name('tickets.delete');
 
 // Rotte CRUD per Attractions
-Route::post('/attractions', [DashboardController::class, 'storeAttraction'])->name('attractions.store');
-Route::put('/attractions/{id}', [DashboardController::class, 'updateAttraction'])->name('attractions.update');
-Route::delete('/attractions/{id}', [DashboardController::class, 'deleteAttraction'])->name('attractions.delete');
+Route::post('/attractions', [AttractionController::class, 'store'])->name('attractions.store');
+Route::put('/attractions/{id}', [AttractionController::class, 'update'])->name('attractions.update');
+Route::delete('/attractions/{id}', [AttractionController::class, 'destroy'])->name('attractions.delete');
 
 // Rotte CRUD per Shows
-Route::post('/shows', [DashboardController::class, 'storeShow'])->name('shows.store');
-Route::put('/shows/{id}', [DashboardController::class, 'updateShow'])->name('shows.update');
-Route::delete('/shows/{id}', [DashboardController::class, 'deleteShow'])->name('shows.delete');
+Route::get('/shows/{id}', [ShowController::class, 'show'])->name('shows.show');
+Route::post('/shows', [ShowController::class, 'store'])->name('shows.store');
+Route::put('/shows/{id}', [ShowController::class, 'update'])->name('shows.update');
+Route::delete('/shows/{id}', [ShowController::class, 'destroy'])->name('shows.delete');
 
 // Rotte CRUD per Restaurants
-Route::post('/restaurants', [DashboardController::class, 'storeRestaurant'])->name('restaurants.store');
-Route::put('/restaurants/{id}', [DashboardController::class, 'updateRestaurant'])->name('restaurants.update');
-Route::delete('/restaurants/{id}', [DashboardController::class, 'deleteRestaurant'])->name('restaurants.delete');
+Route::get('/restaurants/{id}', [RestaurantController::class, 'show'])->name('restaurants.show');
+Route::post('/restaurants', [RestaurantController::class, 'store'])->name('restaurants.store');
+Route::put('/restaurants/{id}', [RestaurantController::class, 'update'])->name('restaurants.update');
+Route::delete('/restaurants/{id}', [RestaurantController::class, 'destroy'])->name('restaurants.delete');
 
 // Rotte CRUD per Shops
-Route::post('/shops', [DashboardController::class, 'storeShop'])->name('shops.store');
-Route::put('/shops/{id}', [DashboardController::class, 'updateShop'])->name('shops.update');
-Route::delete('/shops/{id}', [DashboardController::class, 'deleteShop'])->name('shops.delete');
+Route::get('/shops/{id}', [ShopController::class, 'show'])->name('shops.show');
+Route::post('/shops', [ShopController::class, 'store'])->name('shops.store');
+Route::put('/shops/{id}', [ShopController::class, 'update'])->name('shops.update');
+Route::delete('/shops/{id}', [ShopController::class, 'destroy'])->name('shops.delete');
 
 // Rotte CRUD per Services
-Route::post('/services', [DashboardController::class, 'storeService'])->name('services.store');
-Route::put('/services/{id}', [DashboardController::class, 'updateService'])->name('services.update');
-Route::delete('/services/{id}', [DashboardController::class, 'deleteService'])->name('services.delete');
+Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services.show');
+Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
+Route::put('/services/{id}', [ServiceController::class, 'update'])->name('services.update');
+Route::delete('/services/{id}', [ServiceController::class, 'destroy'])->name('services.delete');
 
 // Rotte CRUD per Locations
-Route::post('/locations', [DashboardController::class, 'storeLocation'])->name('locations.store');
-Route::put('/locations/{id}', [DashboardController::class, 'updateLocation'])->name('locations.update');
-Route::delete('/locations/{id}', [DashboardController::class, 'deleteLocation'])->name('locations.delete');
+Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locations.show');
+Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
+Route::put('/locations/{id}', [LocationController::class, 'update'])->name('locations.update');
+Route::delete('/locations/{id}', [LocationController::class, 'destroy'])->name('locations.delete');
 
 // Rotte CRUD per PromoCode
-Route::post('/promo-codes', [DashboardController::class, 'storePromoCode'])->name('promo-codes.store');
-Route::put('/promo-codes/{id}', [DashboardController::class, 'updatePromoCode'])->name('promo-codes.update');
-Route::delete('/promo-codes/{id}', [DashboardController::class, 'deletePromoCode'])->name('promo-codes.delete');
+Route::post('/promo-codes', [PromoCodeController::class, 'store'])->name('promo-codes.store');
+Route::put('/promo-codes/{id}', [PromoCodeController::class, 'update'])->name('promo-codes.update');
+Route::delete('/promo-codes/{id}', [PromoCodeController::class, 'destroy'])->name('promo-codes.delete');
 
 // Rotte CRUD per VisitHistory
-Route::post('/visit-histories', [DashboardController::class, 'storeVisitHistory'])->name('visit-histories.store');
-Route::put('/visit-histories/{id}', [DashboardController::class, 'updateVisitHistory'])->name('visit-histories.update');
-Route::delete('/visit-histories/{id}', [DashboardController::class, 'deleteVisitHistory'])->name('visit-histories.delete');
+Route::post('/visit-histories', [VisitHistoryController::class, 'store'])->name('visit-histories.store');
+Route::put('/visit-histories/{id}', [VisitHistoryController::class, 'update'])->name('visit-histories.update');
+Route::delete('/visit-histories/{id}', [VisitHistoryController::class, 'destroy'])->name('visit-histories.delete');
 
 // Rotte CRUD per MockCreditCard
-Route::post('/mock-credit-cards', [DashboardController::class, 'storeMockCreditCard'])->name('mock-credit-cards.store');
-Route::put('/mock-credit-cards/{id}', [DashboardController::class, 'updateMockCreditCard'])->name('mock-credit-cards.update');
-Route::delete('/mock-credit-cards/{id}', [DashboardController::class, 'deleteMockCreditCard'])->name('mock-credit-cards.delete');
+Route::post('/mock-credit-cards', [MockCreditCardController::class, 'store'])->name('mock-credit-cards.store');
+Route::put('/mock-credit-cards/{id}', [MockCreditCardController::class, 'update'])->name('mock-credit-cards.update');
+Route::delete('/mock-credit-cards/{id}', [MockCreditCardController::class, 'destroy'])->name('mock-credit-cards.delete');
 
 // Aggiungere rotte simili per gli altri modelli
 // ...

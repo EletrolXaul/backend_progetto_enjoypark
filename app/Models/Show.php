@@ -13,6 +13,7 @@ class Show extends Model
 
     protected $fillable = [
         'name',
+        'slug',
         'description',
         'venue',
         'duration',
