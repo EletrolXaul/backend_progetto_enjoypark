@@ -34,4 +34,25 @@ class PromoCodeController extends Controller
             'description' => $promoCode->description,
         ]);
     }
+
+    public function index(Request $request)
+    {
+        // Return all promo codes for admin
+        $promoCodes = PromoCode::all(); // Assuming you have a PromoCode model
+        return response()->json($promoCodes);
+    }
+
+    public function updateStatus(Request $request, $codeId)
+    {
+        $request->validate([
+            'is_active' => 'required|boolean',
+        ]);
+        
+        $promoCode = PromoCode::findOrFail($codeId);
+        $promoCode->update([
+            'is_active' => $request->is_active
+        ]);
+        
+        return response()->json($promoCode);
+    }
 }

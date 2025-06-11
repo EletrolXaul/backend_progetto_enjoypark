@@ -7,6 +7,8 @@ use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\ParkController;
+use App\Http\Controllers\Api\PromoCodeController;
+use App\Http\Controllers\Api\PlannerController;
 
 // Rotte per autenticazione pubblica
 Route::post('/auth/login', [AuthController::class, 'login']);
@@ -20,8 +22,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/profile', [AuthController::class, 'updateProfile']);
 
     // Risorse protette per utenti autenticati
-    Route::apiResource('orders', OrderController::class);
-    Route::apiResource('tickets', TicketController::class);
+    //Route::apiResource('orders', OrderController::class);
+    //Route::apiResource('tickets', TicketController::class);
     
     // Endpoint specifico per ordini con ticket
     Route::get('tickets/orders', [OrderController::class, 'getOrdersWithTickets']);
@@ -32,6 +34,17 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
         Route::get('tickets', [TicketController::class, 'adminIndex']);
         Route::patch('tickets/{ticket}/status', [TicketController::class, 'updateStatus']);
+        
+        // Add these new routes:
+        Route::get('users', [AuthController::class, 'getAllUsers']);
+        Route::put('users/{user}/role', [AuthController::class, 'updateUserRole']);
+        Route::get('promo-codes', [PromoCodeController::class, 'index']);
+        Route::patch('promo-codes/{code}/status', [PromoCodeController::class, 'updateStatus']);
+        
+        // Aggiungi queste rotte per la gestione delle attrazioni
+        Route::post('attractions', [AttractionController::class, 'store']);
+        Route::put('attractions/{id}', [AttractionController::class, 'update']);
+        Route::delete('attractions/{id}', [AttractionController::class, 'destroy']);
     });
 });
 

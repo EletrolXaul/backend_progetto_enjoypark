@@ -35,6 +35,20 @@
                         <td>{{ $restaurant->created_at ? $restaurant->created_at->format('d/m/Y') : '-' }}</td>
                         <td>
                             <!-- Pulsanti azioni -->
+                            <button class="btn btn-sm btn-primary edit-restaurant" 
+                            data-id="{{ $restaurant->id }}" 
+                            data-name="{{ $restaurant->name }}" 
+                            data-category="{{ $restaurant->category }}"  
+                            data-cuisine="{{ $restaurant->cuisine }}" 
+                            data-price-range="{{ $restaurant->price_range }}" 
+                            data-rating="{{ $restaurant->rating }}" 
+                            data-description="{{ $restaurant->description }}"  
+                            data-opening-hours="{{ $restaurant->opening_hours }}">  
+                                <i class="fas fa-edit"></i>  
+                            </button>
+                            <button class="btn btn-sm btn-danger delete-restaurant" data-id="{{ $restaurant->id }}">
+                                <i class="fas fa-trash"></i>
+                            </button>
                         </td>
                     </tr>
                 @endforeach

@@ -465,7 +465,6 @@ $(".edit-order").click(function () {
     });
 
     // Edit Attraction - Load Data (CORRETTA)
-    // Nel click handler di .edit-attraction (riga ~461)
     $(".edit-attraction").click(function () {
         const attractionId = $(this).data("id");
         $("#edit_attraction_id").val(attractionId);
@@ -483,7 +482,15 @@ $(".edit-order").click(function () {
     
         $("#edit_min_height").val($(this).data("min-height"));
         $("#edit_wait_time").val($(this).data("wait-time"));
-        $("#edit_status").val($(this).data("status"));
+        const status = $(this).data("status");
+        console.log("Status:", status);
+        $("#edit_status").val(status);
+        
+        // Verifica che il valore sia stato impostato correttamente
+        setTimeout(() => {
+            console.log("Selected status:", $("#edit_status").val());
+        }, 100);
+    
         $("#edit_thrill_level").val($(this).data("thrill-level"));
         
         // Gestione dei campi location_x e location_y con log per debug
@@ -637,12 +644,17 @@ $("#saveAttractionBtn").click(function () {
         $("#location_y").val((Math.random() * 100).toFixed(6)); // Genera valore casuale
     }
     
+    // Imposta l'immagine placeholder se il campo è vuoto
+    if ($("#image").val() === "") {
+        $("#image").val("/placeholder.svg?height=200&width=300");
+    }
+    
     // Gestione del campo features prima dell'invio
     const featuresText = $("#features").val();
     try {
         // Se vuoto, imposta un array vuoto
         if (featuresText.trim() === "") {
-            $("#features").val(JSON.stringify(["Caratteristica generica"])); 
+            $("#features").val(JSON.stringify(["Caratteristica generica"]));
         } else {
             // Tenta di analizzare il JSON
             const featuresArray = JSON.parse(featuresText);
@@ -681,6 +693,11 @@ $("#updateAttractionBtn").click(function () {
         $("#edit_location_y").val((Math.random() * 100).toFixed(6)); // Genera valore casuale
     }
     
+    // Imposta l'immagine placeholder se il campo è vuoto
+    if ($("#edit_image").val() === "") {
+        $("#edit_image").val("/placeholder.svg?height=200&width=300");
+    }
+    
     // Gestione del campo features prima dell'invio
     const featuresText = $("#edit_features").val();
     try {
@@ -716,3 +733,5 @@ $("#updateAttractionBtn").click(function () {
         }
     );
 }); // End of document ready function
+
+

@@ -90,4 +90,34 @@ class AuthController extends Controller
 
         return response()->json($user);
     }
+
+    // Add these new methods:
+    public function getAllUsers(Request $request)
+    {
+        // Only allow admin users
+        if (!$request->user()->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
+        $users = User::all();
+        return response()->json($users);
+    }
+
+    public function updateUserRole(Request $request, User $user)
+    {
+        // Only allow admin users
+        if (!$request->user()->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'is_admin' => 'required|boolean',
+        ]);
+        
+        $user->update([
+            'is_admin' => $request->is_admin
+        ]);
+        
+        return response()->json($user);
+    }
 }

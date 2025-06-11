@@ -47,6 +47,21 @@
                     <td>{{ $service->created_at ? $service->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
                         <!-- Pulsanti azioni -->
+                        <button class="btn btn-sm btn-primary edit-service" 
+                        data-id="{{ $service->id }}" 
+                        data-name="{{ $service->name }}" 
+                        data-category="{{ $service->category }}"  
+                        data-description="{{ $service->description }}" 
+                        data-icon="{{ $service->icon }}" 
+                        data-available-24h="{{ $service->available_24h }}" 
+                        data-location-x="{{ $service->location_x }}"  
+                        data-location-y="{{ $service->location_y }}"  
+                        data-features='{{ is_array($service->features) ? json_encode($service->features) : $service->features }}'>  
+                            <i class="fas fa-edit"></i>  
+                        </button>
+                        <button class="btn btn-sm btn-danger delete-service" data-id="{{ $service->id }}">
+                            <i class="fas fa-trash"></i>
+                        </button>
                     </td>
                 </tr>
                 @endforeach

@@ -64,7 +64,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Immagine (URL)</label>
-                        <input type="text" class="form-control" id="image" name="image" placeholder="/placeholder.svg?height=200&width=300" required>
+                        <input type="text" class="form-control" id="image" name="image" placeholder="/placeholder.svg?height=200&width=300">
                         <small class="form-text text-muted">Lascia vuoto per usare l'immagine predefinita</small>
                     </div>
                     <div class="mb-3">
@@ -148,7 +148,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="edit_image" class="form-label">Immagine (URL)</label>
-                        <input type="text" class="form-control" id="edit_image" name="image" placeholder="/placeholder.svg?height=200&width=300" required>
+                        <input type="text" class="form-control" id="edit_image" name="image" placeholder="/placeholder.svg?height=200&width=300">
                         <small class="form-text text-muted">Lascia vuoto per usare l'immagine predefinita</small>
                     </div>
                     <div class="mb-3">
