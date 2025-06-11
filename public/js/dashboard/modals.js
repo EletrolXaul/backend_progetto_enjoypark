@@ -99,21 +99,34 @@ $(document).ready(function () {
     });
 
     // Edit Order - Load Data
-    $(".edit-order").click(function () {
-        const orderId = $(this).data("id");
-        $("#edit_order_id").val(orderId);
+    // Nel click handler di .edit-order (riga ~102)
+$(".edit-order").click(function () {
+    const orderId = $(this).data("id");
+    const row = $(this).closest("tr");
+    $("#edit_order_id").val(orderId);
 
-        // Qui dovresti caricare i dati dell'ordine dal server o dalla riga della tabella
-        // Per semplicità, assumiamo che i dati siano disponibili nella riga della tabella
-        const row = $(this).closest("tr");
-        $("#edit_user_id").val(row.find("td:eq(2)").data("user-id"));
-        $("#edit_total_price").val(
-            row.find("td:eq(3)").text().replace("€", "")
-        );
-        $("#edit_status").val(row.find("td:eq(4)").text().toLowerCase());
+    // Correzione: Utente è nella colonna 2, non 1
+    const userCell = row.find("td:eq(2)");
+    const userId = userCell.data("user-id"); // Usa il data-user-id invece del testo
+    $("#edit_user_id").val(userId);
 
-        $("#editOrderModal").modal("show");
-    });
+    // Correzione: Prezzo totale è nella colonna 3, rimuovi il simbolo €
+    const priceText = row.find("td:eq(3)").text().replace("€", "").trim();
+    $("#edit_total_price").val(priceText);
+
+    // Correzione: Stato è nella colonna 4, usa il data-status attribute della cella
+    const statusCell = row.find("td:eq(4)");
+    const statusValue = statusCell.data("status");
+    console.log("Status value from cell:", statusValue);
+    $("#edit_status").val(statusValue);
+
+    // Verifica che il valore sia stato impostato correttamente
+    setTimeout(() => {
+        console.log("Selected status:", $("#edit_status").val());
+    }, 100);
+
+    $("#editOrderModal").modal("show");
+});
 
     // Update Order
     $("#updateOrderBtn").click(function () {
@@ -253,7 +266,7 @@ $(document).ready(function () {
         );
     });
 
-    // Edit Show - Load Data
+    // Edit Show - Load Data (CORRETTA)
     $(".edit-show").click(function () {
         const showId = $(this).data("id");
         const row = $(this).closest("tr");
@@ -337,8 +350,9 @@ $(document).ready(function () {
         $("#edit_restaurant_id").val(restaurantId);
         $("#edit_name").val(row.find("td:eq(1)").text());
         $("#edit_description").val(row.find("td:eq(2)").text());
-        $("#edit_capacity").val(row.find("td:eq(3)").text());
-        $("#edit_opening_hours").val(row.find("td:eq(4)").text());
+        $("#edit_cuisine_type").val(row.find("td:eq(3)").text()); // Campo corretto
+        $("#edit_capacity").val(row.find("td:eq(4)").text());
+        $("#edit_opening_hours").val(row.find("td:eq(5)").text());
         $("#editRestaurantModal").modal("show");
     });
 
@@ -350,20 +364,30 @@ $(document).ready(function () {
         $("#edit_name").val(row.find("td:eq(1)").text());
         $("#edit_description").val(row.find("td:eq(2)").text());
         $("#edit_type").val(row.find("td:eq(3)").text());
+        $("#edit_opening_hours").val(row.find("td:eq(4)").text()); // Campo aggiunto
         $("#editShopModal").modal("show");
     });
 
-    // Edit Service - Load Data (CORRETTA)
+    // Edit Service - Load Data con AJAX (SOLUZIONE MIGLIORE)
     $(".edit-service").click(function () {
         const serviceId = $(this).data("id");
-        const row = $(this).closest("tr");
-        $("#edit_service_id").val(serviceId);
-        $("#edit_name").val(row.find("td:eq(1)").text());
-        $("#edit_description").val(row.find("td:eq(2)").text());
-        $("#edit_type").val(row.find("td:eq(3)").text());
-        $("#edit_price").val(row.find("td:eq(4)").text().replace("€", ""));
-        $("#edit_features").val(row.find("td:eq(5)").text());
-        $("#editServiceModal").modal("show");
+
+        // Chiamata AJAX per recuperare tutti i dati del servizio
+        $.get(`/api/services/${serviceId}`, function (service) {
+            $("#edit_service_id").val(service.id);
+            $("#edit_name").val(service.name);
+            $("#edit_description").val(service.description);
+            $("#edit_category").val(service.category);
+            $("#edit_location_x").val(service.location_x);
+            $("#edit_location_y").val(service.location_y);
+            $("#edit_icon").val(service.icon);
+            $("#edit_available_24h").prop("checked", service.available_24h);
+            $("#edit_features").val(JSON.stringify(service.features));
+
+            $("#editServiceModal").modal("show");
+        }).fail(function () {
+            showAlert("Errore nel caricamento dei dati del servizio", "danger");
+        });
     });
 
     // Edit Location - Load Data (CORRETTA)
@@ -377,7 +401,10 @@ $(document).ready(function () {
         $("#edit_latitude").val(row.find("td:eq(4)").text());
         $("#edit_longitude").val(row.find("td:eq(5)").text());
         $("#edit_metadata").val(row.find("td:eq(6)").text());
-        $("#edit_is_visible").prop("checked", row.find("td:eq(7)").text() === "Sì");
+        $("#edit_is_visible").prop(
+            "checked",
+            row.find("td:eq(7)").text() === "Sì"
+        );
         $("#editLocationModal").modal("show");
     });
 
@@ -389,13 +416,22 @@ $(document).ready(function () {
         $("#edit_code").val(row.find("td:eq(1)").text());
         $("#edit_description").val(row.find("td:eq(2)").text());
         $("#edit_discount_type").val(row.find("td:eq(3)").text());
-        $("#edit_discount_value").val(row.find("td:eq(4)").text().replace("%", "").replace("€", ""));
-        $("#edit_min_order_amount").val(row.find("td:eq(5)").text().replace("€", ""));
-        $("#edit_max_discount").val(row.find("td:eq(6)").text().replace("€", ""));
+        $("#edit_discount_value").val(
+            row.find("td:eq(4)").text().replace("%", "").replace("€", "")
+        );
+        $("#edit_min_order_amount").val(
+            row.find("td:eq(5)").text().replace("€", "")
+        );
+        $("#edit_max_discount").val(
+            row.find("td:eq(6)").text().replace("€", "")
+        );
         $("#edit_valid_until").val(row.find("td:eq(7)").text());
         $("#edit_usage_limit").val(row.find("td:eq(8)").text());
         $("#edit_used_count").val(row.find("td:eq(9)").text());
-        $("#edit_is_active").prop("checked", row.find("td:eq(10)").text() === "Attivo");
+        $("#edit_is_active").prop(
+            "checked",
+            row.find("td:eq(10)").text() === "Attivo"
+        );
         $("#editPromoCodeModal").modal("show");
     });
 
@@ -428,17 +464,48 @@ $(document).ready(function () {
         $("#editMockCreditCardModal").modal("show");
     });
 
-    // Edit Attraction - Load Data (AGGIUNTA)
+    // Edit Attraction - Load Data (CORRETTA)
+    // Nel click handler di .edit-attraction (riga ~461)
     $(".edit-attraction").click(function () {
         const attractionId = $(this).data("id");
-        const row = $(this).closest("tr");
         $("#edit_attraction_id").val(attractionId);
-        $("#edit_name").val(row.find("td:eq(1)").text());
-        $("#edit_description").val(row.find("td:eq(2)").text());
-        $("#edit_type").val(row.find("td:eq(3)").text());
-        $("#edit_duration").val(row.find("td:eq(4)").text().replace(" min", ""));
-        $("#edit_capacity").val(row.find("td:eq(5)").text());
-        $("#edit_min_age").val(row.find("td:eq(6)").text());
+        $("#edit_attraction_name").val($(this).data("name"));
+        $("#edit_category").val($(this).data("category"));
+        $("#edit_description").val($(this).data("description"));
+        $("#edit_capacity").val($(this).data("capacity"));
+    
+        // Gestione speciale per la durata
+        let duration = $(this).data("duration");
+        if (duration) {
+            duration = duration.toString().replace(/[^0-9]/g, ""); // Rimuove tutto tranne i numeri
+        }
+        $("#edit_duration").val(duration);
+    
+        $("#edit_min_height").val($(this).data("min-height"));
+        $("#edit_wait_time").val($(this).data("wait-time"));
+        $("#edit_status").val($(this).data("status"));
+        $("#edit_thrill_level").val($(this).data("thrill-level"));
+        
+        // Gestione dei campi location_x e location_y con log per debug
+        const locationX = $(this).data("location-x");
+        const locationY = $(this).data("location-y");
+        console.log("Location X:", locationX, "Location Y:", locationY);
+        $("#edit_location_x").val(locationX !== undefined ? locationX : "");
+        $("#edit_location_y").val(locationY !== undefined ? locationY : "");
+        
+        // Gestione del campo image con log per debug
+        const image = $(this).data("image");
+        console.log("Image:", image);
+        $("#edit_image").val(image !== undefined ? image : "");
+        
+        // Gestione speciale per features (JSON) con log per debug
+        let features = $(this).data("features");
+        console.log("Features:", features);
+        if (typeof features === 'object') {
+            features = JSON.stringify(features);
+        }
+        $("#edit_features").val(features !== undefined ? features : JSON.stringify([]));
+        
         $("#editAttractionModal").modal("show");
     });
 
@@ -481,15 +548,17 @@ $(document).ready(function () {
     });
 
     // Aggiungere alla fine del file, prima della chiusura di $(document).ready
-    
-    // Attraction Modals - FUNZIONI MANCANTI
-    $("#saveAttractionBtn").click(function () {
-        const formData = $("#addAttractionForm").serialize();
-        attractionApi.addAttraction(
+
+    // Update Restaurant
+    $("#updateRestaurantBtn").click(function () {
+        const restaurantId = $("#edit_restaurant_id").val();
+        const formData = $("#editRestaurantForm").serialize();
+        restaurantApi.updateRestaurant(
+            restaurantId,
             formData,
             function (response) {
-                $("#addAttractionModal").modal("hide");
-                showAlert("Attrazione aggiunta con successo!");
+                $("#editRestaurantModal").modal("hide");
+                showAlert("Ristorante aggiornato con successo!");
                 setTimeout(function () {
                     location.reload();
                 }, 1000);
@@ -500,15 +569,16 @@ $(document).ready(function () {
         );
     });
 
-    $("#updateAttractionBtn").click(function () {
-        const attractionId = $("#edit_attraction_id").val();
-        const formData = $("#editAttractionForm").serialize();
-        attractionApi.updateAttraction(
-            attractionId,
+    // Update Shop
+    $("#updateShopBtn").click(function () {
+        const shopId = $("#edit_shop_id").val();
+        const formData = $("#editShopForm").serialize();
+        shopApi.updateShop(
+            shopId,
             formData,
             function (response) {
-                $("#editAttractionModal").modal("hide");
-                showAlert("Attrazione aggiornata con successo!");
+                $("#editShopModal").modal("hide");
+                showAlert("Negozio aggiornato con successo!");
                 setTimeout(function () {
                     location.reload();
                 }, 1000);
@@ -519,6 +589,25 @@ $(document).ready(function () {
         );
     });
 
+    // Update Service
+    $("#updateServiceBtn").click(function () {
+        const serviceId = $("#edit_service_id").val();
+        const formData = $("#editServiceForm").serialize();
+        serviceApi.updateService(
+            serviceId,
+            formData,
+            function (response) {
+                $("#editServiceModal").modal("hide");
+                showAlert("Servizio aggiornato con successo!");
+                setTimeout(function () {
+                    location.reload();
+                }, 1000);
+            },
+            function (errorMessage) {
+                showAlert(errorMessage, "danger");
+            }
+        );
+    });
     $(".delete-attraction").click(function () {
         const attractionId = $(this).data("id");
         if (confirm("Sei sicuro di voler eliminare questa attrazione?")) {
@@ -537,3 +626,93 @@ $(document).ready(function () {
         }
     });
 });
+
+// Add Attraction
+$("#saveAttractionBtn").click(function () {
+    // Gestione automatica dei campi location_x e location_y se vuoti
+    if ($("#location_x").val() === "") {
+        $("#location_x").val((Math.random() * 100).toFixed(6)); // Genera valore casuale
+    }
+    if ($("#location_y").val() === "") {
+        $("#location_y").val((Math.random() * 100).toFixed(6)); // Genera valore casuale
+    }
+    
+    // Gestione del campo features prima dell'invio
+    const featuresText = $("#features").val();
+    try {
+        // Se vuoto, imposta un array vuoto
+        if (featuresText.trim() === "") {
+            $("#features").val(JSON.stringify(["Caratteristica generica"])); 
+        } else {
+            // Tenta di analizzare il JSON
+            const featuresArray = JSON.parse(featuresText);
+            // Sostituisce il valore nel campo con l'array
+            $("#features").val(JSON.stringify(featuresArray));
+        }
+    } catch (e) {
+        // Se non è un JSON valido, mostra un errore
+        showAlert("Il campo Caratteristiche deve essere un JSON valido", "danger");
+        return;
+    }
+    
+    const formData = $("#addAttractionForm").serialize();
+    attractionApi.addAttraction(
+        formData,
+        function (response) {
+            $("#addAttractionModal").modal("hide");
+            showAlert("Attrazione aggiunta con successo!");
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        },
+        function (errorMessage) {
+            showAlert(errorMessage, "danger");
+        }
+    );
+});
+
+// Update Attraction
+$("#updateAttractionBtn").click(function () {
+    // Gestione automatica dei campi location_x e location_y se vuoti
+    if ($("#edit_location_x").val() === "") {
+        $("#edit_location_x").val((Math.random() * 100).toFixed(6)); // Genera valore casuale
+    }
+    if ($("#edit_location_y").val() === "") {
+        $("#edit_location_y").val((Math.random() * 100).toFixed(6)); // Genera valore casuale
+    }
+    
+    // Gestione del campo features prima dell'invio
+    const featuresText = $("#edit_features").val();
+    try {
+        // Se vuoto, imposta un array vuoto
+        if (featuresText.trim() === "") {
+            $("#edit_features").val(JSON.stringify(["Caratteristica generica"]));
+        } else {
+            // Tenta di analizzare il JSON
+            const featuresArray = JSON.parse(featuresText);
+            // Sostituisce il valore nel campo con l'array
+            $("#edit_features").val(JSON.stringify(featuresArray));
+        }
+    } catch (e) {
+        // Se non è un JSON valido, mostra un errore
+        showAlert("Il campo Caratteristiche deve essere un JSON valido", "danger");
+        return;
+    }
+    
+    const attractionId = $("#edit_attraction_id").val();
+    const formData = $("#editAttractionForm").serialize();
+    attractionApi.updateAttraction(
+        attractionId,
+        formData,
+        function (response) {
+            $("#editAttractionModal").modal("hide");
+            showAlert("Attrazione aggiornata con successo!");
+            setTimeout(function () {
+                location.reload();
+            }, 1000);
+        },
+        function (errorMessage) {
+            showAlert(errorMessage, "danger");
+        }
+    );
+}); // End of document ready function

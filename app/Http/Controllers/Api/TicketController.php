@@ -10,12 +10,40 @@ use Illuminate\Validation\Rule;
 
 class TicketController extends Controller
 {
-    // Lista di tutti i ticket per l'utente autenticato
+    // Lista ticket per utente normale (solo i propri)
     public function index(Request $request)
     {
         $user = $request->user();
         $tickets = Ticket::where('user_id', $user->id)->get();
         return response()->json($tickets);
+    }
+
+    // Lista ticket per admin (tutti i ticket)
+    public function adminIndex(Request $request)
+    {
+        $tickets = Ticket::with(['user'])
+                         ->orderBy('created_at', 'desc')
+                         ->get();
+        
+        return response()->json($tickets);
+    }
+
+    // Aggiorna status ticket (solo admin)
+    public function updateStatus(Request $request, Ticket $ticket)
+    {
+        $request->validate([
+            'status' => 'required|in:valid,used,expired,cancelled'
+        ]);
+        
+        $updateData = ['status' => $request->status];
+        
+        if ($request->status === 'used') {
+            $updateData['used_at'] = now();
+        }
+        
+        $ticket->update($updateData);
+        
+        return response()->json($ticket);
     }
 
     // Crea un nuovo ticket

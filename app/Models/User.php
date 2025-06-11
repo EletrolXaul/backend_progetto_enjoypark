@@ -16,10 +16,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'avatar',
-        'preferences',
-        'membership',
-        'is_admin',
+        'isAdmin',
+        'is_admin', // Aggiungi anche is_admin ai fillable
     ];
 
     protected $hidden = [
@@ -29,14 +27,15 @@ class User extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
-        'preferences' => 'array',
-        'is_admin' => 'boolean',
+        'password' => 'hashed',
+        'isAdmin' => 'boolean',
+        'is_admin' => 'boolean', // Aggiungi anche is_admin ai casts
     ];
 
-    // Relationships
-    public function visitHistories()
+    // Relazioni
+    public function orders()
     {
-        return $this->hasMany(VisitHistory::class);
+        return $this->hasMany(Order::class);
     }
 
     public function tickets()
@@ -44,16 +43,35 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class);
     }
 
-    // Accessors
-    public function getPreferenceAttribute($key, $default = null)
+    // Accessor per isAdmin - converte is_admin in isAdmin
+    public function getIsAdminAttribute($value)
     {
-        return $this->preferences[$key] ?? $default;
+        // Se isAdmin è già impostato, usa quel valore
+        if (isset($this->attributes['isAdmin'])) {
+            return (bool) $this->attributes['isAdmin'];
+        }
+        
+        // Altrimenti usa is_admin dal database
+        return (bool) ($this->attributes['is_admin'] ?? false);
     }
-
-    public function setPreferenceAttribute($key, $value)
+    
+    // Mutator per isAdmin - imposta anche is_admin
+    public function setIsAdminAttribute($value)
     {
-        $preferences = $this->preferences ?? [];
-        $preferences[$key] = $value;
-        $this->preferences = $preferences;
+        $this->attributes['isAdmin'] = (bool) $value;
+        $this->attributes['is_admin'] = (bool) $value;
+    }
+    
+    // Accessor per is_admin - usa isAdmin se disponibile
+    public function getIsAdminColumnAttribute()
+    {
+        return (bool) ($this->attributes['is_admin'] ?? $this->attributes['isAdmin'] ?? false);
+    }
+    
+    // Mutator per is_admin - imposta anche isAdmin
+    public function setIsAdminColumnAttribute($value)
+    {
+        $this->attributes['is_admin'] = (bool) $value;
+        $this->attributes['isAdmin'] = (bool) $value;
     }
 }

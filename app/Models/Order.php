@@ -65,20 +65,11 @@ class Order extends Model
     {
         return array_sum($this->tickets);
     }
-
-    // Methods
-    public function generateQRCodes()
+    
+    // Aggiungi una relazione per i biglietti
+    public function tickets()
     {
-        $codes = [];
-        $totalTickets = $this->getTotalTicketsAttribute();
-        
-        for ($i = 0; $i < $totalTickets; $i++) {
-            $codes[] = $this->generateQRCode();
-        }
-        
-        $this->qr_codes = $codes;
-        $this->save();
-        return $codes;
+        return $this->hasMany(Ticket::class, 'order_number', 'order_number');
     }
 
     private function generateQRCode()

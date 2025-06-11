@@ -1,9 +1,9 @@
 <?php
-// routes/api.php
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\AttractionController;
+use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\ParkController;
@@ -19,12 +19,20 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/profile', [AuthController::class, 'updateProfile']);
 
-    // Risorse protette
-    Route::apiResource('attractions', AttractionController::class)->except(['index', 'show']);
-    Route::apiResource('locations', LocationController::class)->except(['index', 'show']);
-    Route::apiResource('tickets', TicketController::class)->except(['index', 'show']);
-
-    // Se vuoi rendere anche index e show protetti, elimina "except"
+    // Risorse protette per utenti autenticati
+    Route::apiResource('orders', OrderController::class);
+    Route::apiResource('tickets', TicketController::class);
+    
+    // Endpoint specifico per ordini con ticket
+    Route::get('tickets/orders', [OrderController::class, 'getOrdersWithTickets']);
+    
+    // Rotte admin protette
+    Route::middleware('admin')->prefix('admin')->group(function () {
+        Route::get('orders', [OrderController::class, 'adminIndex']);
+        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
+        Route::get('tickets', [TicketController::class, 'adminIndex']);
+        Route::patch('tickets/{ticket}/status', [TicketController::class, 'updateStatus']);
+    });
 });
 
 // Rotte pubbliche (senza autenticazione)

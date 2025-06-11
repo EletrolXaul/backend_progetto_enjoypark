@@ -11,9 +11,11 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
+                    <th>Cucina</th>
+                    <th>Fascia Prezzo</th>
+                    <th>Rating</th>
                     <th>Descrizione</th>
-                    <th>Tipo Cucina</th>
-                    <th>Capacità</th>
                     <th>Orario Apertura</th>
                     <th>Creato il</th>
                     <th>Azioni</th>
@@ -22,20 +24,17 @@
             <tbody>
                 @foreach ($restaurants as $restaurant)
                     <tr>
-                        <td>{{ $restaurant->id ?? $loop->iteration }}</td>
+                        <td>{{ $restaurant->id }}</td>
                         <td>{{ $restaurant->name }}</td>
+                        <td>{{ $restaurant->category }}</td>
+                        <td>{{ $restaurant->cuisine }}</td>
+                        <td>{{ $restaurant->price_range }}</td>
+                        <td>{{ number_format($restaurant->rating, 1) }}/5</td>
                         <td>{{ Str::limit($restaurant->description, 30) }}</td>
-                        <td>{{ $restaurant->cuisine ?? $restaurant->cuisine_type }}</td>
-                        <td>{{ $restaurant->capacity ?? '-' }}</td>
                         <td>{{ $restaurant->opening_hours }}</td>
                         <td>{{ $restaurant->created_at ? $restaurant->created_at->format('d/m/Y') : '-' }}</td>
                         <td>
-                            <button class="btn btn-sm btn-primary edit-restaurant" data-id="{{ $restaurant->id }}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-restaurant" data-id="{{ $restaurant->id }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <!-- Pulsanti azioni -->
                         </td>
                     </tr>
                 @endforeach

@@ -113,9 +113,13 @@ $(document).ready(function () {
             errorCallback
         ) {
             $.ajax({
-                url: `/orders/${orderId}`,
+                url: `/orders/${orderId}`, // Rimuovi /api/ prefix per usare route web
                 type: "PUT",
                 data: formData,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                    'Accept': 'application/json'
+                },
                 success: function (response) {
                     if (successCallback) successCallback(response);
                 },

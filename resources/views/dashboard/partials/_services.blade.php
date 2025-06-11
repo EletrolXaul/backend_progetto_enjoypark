@@ -11,9 +11,12 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
                     <th>Descrizione</th>
-                    <th>Tipo</th>
-                    <th>Disponibilità</th>
+                    <th>Icona</th>
+                    <th>24h</th>
+                    <th>Posizione</th>
+                    <th>Features</th>
                     <th>Creato il</th>
                     <th>Azioni</th>
                 </tr>
@@ -23,17 +26,27 @@
                 <tr>
                     <td>{{ $service->id }}</td>
                     <td>{{ $service->name }}</td>
+                    <td>{{ $service->category }}</td>
                     <td>{{ Str::limit($service->description, 30) }}</td>
-                    <td>{{ $service->type }}</td>
-                    <td>{{ $service->availability }}</td>
+                    <td><i class="{{ $service->icon }}"></i></td>
+                    <td>
+                        @if($service->available_24h)
+                            <span class="badge bg-success">24h</span>
+                        @else
+                            <span class="badge bg-secondary">No</span>
+                        @endif
+                    </td>
+                    <td>({{ $service->location_x }}, {{ $service->location_y }})</td>
+                    <td>
+                        @if(is_array($service->features))
+                            {{ implode(', ', $service->features) }}
+                        @else
+                            {{ $service->features }}
+                        @endif
+                    </td>
                     <td>{{ $service->created_at ? $service->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary edit-service" data-id="{{ $service->id }}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-service" data-id="{{ $service->id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <!-- Pulsanti azioni -->
                     </td>
                 </tr>
                 @endforeach

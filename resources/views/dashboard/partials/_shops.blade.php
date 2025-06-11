@@ -11,9 +11,11 @@
                 <tr>
                     <th>ID</th>
                     <th>Nome</th>
+                    <th>Categoria</th>
                     <th>Descrizione</th>
-                    <th>Tipo</th>
+                    <th>Specialità</th>
                     <th>Orario Apertura</th>
+                    <th>Posizione</th>
                     <th>Creato il</th>
                     <th>Azioni</th>
                 </tr>
@@ -21,19 +23,22 @@
             <tbody>
                 @foreach($shops as $shop)
                 <tr>
-                    <td>{{ $shop->id ?? $loop->iteration }}</td>
+                    <td>{{ $shop->id }}</td>
                     <td>{{ $shop->name }}</td>
+                    <td>{{ $shop->category }}</td>
                     <td>{{ Str::limit($shop->description, 30) }}</td>
-                    <td>{{ $shop->type ?? $shop->category }}</td>
+                    <td>
+                        @if(is_array($shop->specialties))
+                            {{ implode(', ', $shop->specialties) }}
+                        @else
+                            {{ $shop->specialties }}
+                        @endif
+                    </td>
                     <td>{{ $shop->opening_hours }}</td>
+                    <td>({{ $shop->location_x }}, {{ $shop->location_y }})</td>
                     <td>{{ $shop->created_at ? $shop->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary edit-shop" data-id="{{ $shop->id }}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-shop" data-id="{{ $shop->id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
+                        <!-- Pulsanti azioni -->
                     </td>
                 </tr>
                 @endforeach

@@ -23,16 +23,27 @@
                 <tr>
                     <td>{{ $order->id }}</td>
                     <td>{{ $order->order_number }}</td>
-                    <td>{{ $order->user->name }}</td>
+                    <td data-user-id="{{ $order->user_id }}">{{ $order->user->name }}</td>
                     <td>€{{ $order->total_price }}</td>
-                    <td>{{ $order->status }}</td>
+                    <td data-status="{{ $order->status }}">
+                        @switch($order->status)
+                            @case('pending')
+                                In attesa
+                                @break
+                            @case('completed')
+                                Completato
+                                @break
+                            @case('cancelled')
+                                Annullato
+                                @break
+                            @default
+                                {{ $order->status }}
+                        @endswitch
+                    </td>
                     <td>{{ $order->created_at->format('d/m/Y H:i') }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary edit-order" data-id="{{ $order->id }}">
+                        <button class="btn btn-sm btn-primary edit-order" data-id="{{ $order->id }}" data-status="{{ $order->status }}">
                             <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-order" data-id="{{ $order->id }}">
-                            <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
