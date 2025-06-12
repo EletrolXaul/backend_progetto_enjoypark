@@ -84,7 +84,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="edit_status" class="form-label">Stato</label>
-                        <select class="form-select" id="edit_status" name="status" required>
+                        <select class="form-select" id="order_edit_status" name="status" required>
                             <option value="pending">In attesa</option>
                             <option value="completed">Completato</option>
                             <option value="cancelled">Annullato</option>

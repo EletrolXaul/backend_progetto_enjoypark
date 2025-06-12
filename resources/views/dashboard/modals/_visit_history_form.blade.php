@@ -26,8 +26,8 @@
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="duration" class="form-label">Durata (ore)</label>
-                            <input type="number" step="0.5" min="0" max="24" class="form-control" id="duration" name="duration" placeholder="es. 3.5">
+                            <label for="visit_duration" class="form-label">Durata (ore)</label>
+                            <input type="number" step="0.5" min="0" max="24" class="form-control" id="visit_duration" name="duration" placeholder="es. 3.5">
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="rating" class="form-label">Valutazione</label>

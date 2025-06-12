@@ -32,7 +32,7 @@ class ShopController extends Controller
             'location_x' => 'required|numeric',
             'location_y' => 'required|numeric',
             'image' => 'required|string',
-            'specialties' => 'required|array',
+            'specialties' => 'nullable|array',
             'opening_hours' => 'required|string',
         ]);
 

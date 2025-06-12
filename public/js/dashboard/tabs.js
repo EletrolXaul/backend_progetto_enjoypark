@@ -1,15 +1,27 @@
 // This file handles the tab functionality
 $(document).ready(function() {
+    // Applica i fix jQuery prima di qualsiasi altra operazione
+    if (typeof ModalUtils !== 'undefined' && ModalUtils.initializeJQueryFixes) {
+        ModalUtils.initializeJQueryFixes();
+    }
+    
     // Fix for the "Illegal invocation" error in Bootstrap tabs
     // The error occurs because of context issues with 'this' in the selector-engine.js
+    
+    // Previeni l'inizializzazione automatica dei tab di Bootstrap
+    // che potrebbe causare conflitti con la nostra implementazione manuale
+    if (typeof bootstrap !== 'undefined' && bootstrap.Tab) {
+        // Disabilita l'inizializzazione automatica dei tab
+        $(document).off('click.bs.tab.data-api', '[data-bs-toggle="tab"]');
+    }
     
     // Instead of relying on Bootstrap's automatic tab activation via data attributes,
     // we'll manually handle the tab switching
     $('.sidebar-menu a').on('click', function(e) {
         e.preventDefault();
         
-        // Get the target tab ID
-        const tabId = $(this).attr('href');
+        // Get the target tab ID in modo sicuro
+        const tabId = $(this).attr('href') || '#dashboard';
         const currentTab = window.location.hash || '#dashboard';
         
         // Remove active class from all sidebar links and add to clicked one

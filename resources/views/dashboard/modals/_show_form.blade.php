@@ -20,8 +20,8 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descrizione</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        <label for="show_description" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="show_description" name="description" rows="3" required></textarea>
                     </div>
                     
                     <div class="row">
@@ -30,8 +30,8 @@
                             <input type="text" class="form-control" id="venue" name="venue" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="category" class="form-label">Categoria</label>
-                            <input type="text" class="form-control" id="category" name="category" required>
+                            <label for="show_category" class="form-label">Categoria</label>
+                            <input type="text" class="form-control" id="show_category" name="category" required>
                         </div>
                     </div>
                     
@@ -42,8 +42,8 @@
                             <small class="text-muted">Verrà salvato come array</small>
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="duration" class="form-label">Durata (minuti)</label>
-                            <input type="number" class="form-control" id="duration" name="duration" required>
+                            <label for="show_duration" class="form-label">Durata (minuti)</label>
+                            <input type="number" class="form-control" id="show_duration" name="duration" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="price" class="form-label">Prezzo</label>
@@ -53,8 +53,8 @@
                     
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="capacity" class="form-label">Capacità</label>
-                            <input type="number" class="form-control" id="capacity" name="capacity" required>
+                            <label for="show_capacity" class="form-label">Capacità</label>
+                            <input type="number" class="form-control" id="show_capacity" name="capacity" required>
                         </div>
                         <div class="col-md-4 mb-3">
                             <label for="available_seats" class="form-label">Posti disponibili</label>
@@ -67,8 +67,8 @@
                     </div>
                     
                     <!-- Campi nascosti per coordinate casuali e immagine placeholder -->
-                    <input type="hidden" id="location_x" name="location_x" value="">
-                    <input type="hidden" id="location_y" name="location_y" value="">
+                    <input type="hidden" id="show_location_x" name="location_x" value="">
+                    <input type="hidden" id="show_location_y" name="location_y" value="">
                     <input type="hidden" id="image" name="image" value="/placeholder.jpg">
                 </form>
             </div>

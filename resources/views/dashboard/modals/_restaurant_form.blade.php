@@ -14,14 +14,14 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="category" class="form-label">Categoria</label>
-                            <input type="text" class="form-control" id="category" name="category" required>
+                            <label for="restaurant_category" class="form-label">Categoria</label>
+                            <input type="text" class="form-control" id="restaurant_category" name="category" required>
                         </div>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descrizione</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        <label for="restaurant_description" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="restaurant_description" name="description" rows="3" required></textarea>
                     </div>
                     
                     <div class="row">
@@ -85,42 +85,42 @@
                         <div class="features-container">
                             <div class="feature-tags mb-2">
                                 <div class="btn-group flex-wrap" role="group">
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-wifi" value="WiFi" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-wifi">WiFi</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-wifi" value="WiFi" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-wifi">WiFi</label>
                                     
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-terrazza" value="Terrazza" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-terrazza">Terrazza</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-terrazza" value="Terrazza" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-terrazza">Terrazza</label>
                                     
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-menu-bambini" value="Menu bambini" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-menu-bambini">Menu bambini</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-menu-bambini" value="Menu bambini" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-menu-bambini">Menu bambini</label>
                                     
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-accessibile" value="Accessibile" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-accessibile">Accessibile</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-accessibile" value="Accessibile" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-accessibile">Accessibile</label>
                                     
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-parcheggio" value="Parcheggio" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-parcheggio">Parcheggio</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-parcheggio" value="Parcheggio" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-parcheggio">Parcheggio</label>
                                     
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-vegetariano" value="Opzioni vegetariane" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-vegetariano">Opzioni vegetariane</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-vegetariano" value="Opzioni vegetariane" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-vegetariano">Opzioni vegetariane</label>
                                     
-                                    <input type="checkbox" class="btn-check edit-feature-checkbox" id="edit-feature-vegano" value="Opzioni vegane" autocomplete="off">
-                                    <label class="btn btn-outline-secondary btn-sm m-1" for="edit-feature-vegano">Opzioni vegane</label>
+                                    <input type="checkbox" class="btn-check feature-checkbox" id="feature-vegano" value="Opzioni vegane" autocomplete="off">
+                                    <label class="btn btn-outline-secondary btn-sm m-1" for="feature-vegano">Opzioni vegane</label>
                                 </div>
                             </div>
                             <div class="custom-feature-input">
                                 <div class="input-group">
-                                    <input type="text" class="form-control form-control-sm" id="edit-new-feature" placeholder="Aggiungi caratteristica...">
-                                    <button class="btn btn-sm btn-outline-primary" type="button" id="edit-add-feature-btn">Aggiungi</button>
+                                    <input type="text" class="form-control form-control-sm" id="new-feature" placeholder="Aggiungi caratteristica...">
+                                    <button class="btn btn-sm btn-outline-primary" type="button" id="add-feature-btn">Aggiungi</button>
                                 </div>
                             </div>
                         </div>
-                        <input type="hidden" id="edit_features" name="features">
+                        <!-- <input type="hidden" id="restaurant_features" name="features"> -->
                     </div>
                     
                     <!-- Campi nascosti per slug, coordinate casuali e immagine placeholder -->
                     <input type="hidden" id="slug" name="slug" value="">
-                    <input type="hidden" id="location_x" name="location_x" value="">
-                    <input type="hidden" id="location_y" name="location_y" value="">
+                    <input type="hidden" id="restaurant_location_x" name="location_x" value="">
+                    <input type="hidden" id="restaurant_location_y" name="location_y" value="">
                     <input type="hidden" id="image" name="image" value="/placeholder.jpg">
                 </form>
             </div>
@@ -169,10 +169,9 @@
                         <div class="col-md-6 mb-3">
                             <label for="edit_restaurant_price_range" class="form-label">Fascia Prezzo</label>
                             <select class="form-control" id="edit_restaurant_price_range" name="price_range" required>
-                                <option value="€">€ - Economico</option>
-                                <option value="€€">€€ - Medio</option>
-                                <option value="€€€">€€€ - Costoso</option>
-                                <option value="€€€€">€€€€ - Molto Costoso</option>
+                                <option value="$">$ - Economico</option>
+                                <option value="$$">$$ - Medio</option>
+                                <option value="$$$">$$$ - Costoso</option>
                             </select>
                         </div>
                     </div>

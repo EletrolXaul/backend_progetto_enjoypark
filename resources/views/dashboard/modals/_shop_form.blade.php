@@ -14,14 +14,14 @@
                             <input type="text" class="form-control" id="name" name="name" required>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="category" class="form-label">Categoria</label>
-                            <input type="text" class="form-control" id="category" name="category" required>
+                            <label for="shop_category" class="form-label">Categoria</label>
+                            <input type="text" class="form-control" id="shop_category" name="category" required>
                         </div>
                     </div>
                     
                     <div class="mb-3">
-                        <label for="description" class="form-label">Descrizione</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
+                        <label for="shop_description" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="shop_description" name="description" rows="3" required></textarea>
                     </div>
                     
                     <div class="row">
@@ -37,8 +37,8 @@
                     
                     <!-- Campi nascosti per slug, coordinate casuali e immagine placeholder -->
                     <input type="hidden" id="slug" name="slug" value="">
-                    <input type="hidden" id="location_x" name="location_x" value="">
-                    <input type="hidden" id="location_y" name="location_y" value="">
+                    <input type="hidden" id="shop_location_x" name="location_x" value="">
+                    <input type="hidden" id="shop_location_y" name="location_y" value="">
                     <input type="hidden" id="image" name="image" value="/placeholder.jpg">
                 </form>
             </div>

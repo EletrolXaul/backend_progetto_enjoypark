@@ -13,13 +13,14 @@ class Shop extends Model
 
     protected $fillable = [
         'name',
-        'category',
+        'category', 
         'description',
         'location_x',
         'location_y',
         'image',
         'specialties',
-        'opening_hours'
+        'opening_hours',
+        'slug' 
     ];
 
     protected $casts = [
