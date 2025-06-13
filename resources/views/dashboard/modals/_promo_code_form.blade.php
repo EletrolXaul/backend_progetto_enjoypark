@@ -1,6 +1,6 @@
 <!-- Add Promo Code Modal -->
 <div class="modal fade" id="addPromoCodeModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Aggiungi Nuovo Codice Promo</h5>
@@ -8,11 +8,10 @@
             </div>
             <div class="modal-body">
                 <form id="addPromoCodeForm">
-<<<<<<< HEAD
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="promo_code" class="form-label">Codice *</label>
-                            <input type="text" class="form-control" id="promo_code" name="code" required>
+                            <label for="code" class="form-label">Codice *</label>
+                            <input type="text" class="form-control" id="code" name="code" required>
                             <small class="form-text text-muted">Codice univoco per il promo</small>
                         </div>
                         <div class="col-md-6 mb-3">
@@ -22,78 +21,43 @@
                     </div>
                     
                     <div class="mb-3">
-                        <label for="promo_code_description" class="form-label">Descrizione *</label>
-                        <textarea class="form-control" id="promo_code_description" name="description" rows="3" required></textarea>
+                        <label for="description" class="form-label">Descrizione *</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="promo_type" class="form-label">Tipo *</label>
-                            <select class="form-control" id="promo_type" name="type" required>
+                            <label for="type" class="form-label">Tipo *</label>
+                            <select class="form-control" id="type" name="type" required>
                                 <option value="percentage">Percentuale</option>
                                 <option value="fixed">Importo Fisso</option>
                             </select>
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="promo_valid_until" class="form-label">Valido Fino A *</label>
-                            <input type="date" class="form-control" id="promo_valid_until" name="valid_until" required>
+                            <label for="valid_until" class="form-label">Valido Fino A *</label>
+                            <input type="date" class="form-control" id="valid_until" name="valid_until" required>
                         </div>
                     </div>
                     
                     <div class="row">
                         <div class="col-md-4 mb-3">
-                            <label for="promo_min_amount" class="form-label">Importo Minimo (€)</label>
-                            <input type="number" step="0.01" min="0" class="form-control" id="promo_min_amount" name="min_amount" placeholder="0.00">
+                            <label for="min_amount" class="form-label">Importo Minimo (€)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="min_amount" name="min_amount" placeholder="0.00">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="promo_max_discount" class="form-label">Sconto Massimo (€)</label>
-                            <input type="number" step="0.01" min="0" class="form-control" id="promo_max_discount" name="max_discount" placeholder="0.00">
+                            <label for="max_discount" class="form-label">Sconto Massimo (€)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="max_discount" name="max_discount" placeholder="0.00">
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="promo_usage_limit" class="form-label">Limite Utilizzo</label>
-                            <input type="number" min="0" class="form-control" id="promo_usage_limit" name="usage_limit" value="0">
+                            <label for="usage_limit" class="form-label">Limite Utilizzo</label>
+                            <input type="number" min="0" class="form-control" id="usage_limit" name="usage_limit" value="0">
                             <small class="form-text text-muted">0 = illimitato</small>
                         </div>
-=======
-                    <div class="mb-3">
-                        <label for="code" class="form-label">Codice</label>
-                        <input type="text" class="form-control" id="code" name="code" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="description" class="form-label">Descrizione</label>
-                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="discount" class="form-label">Sconto (%)</label>
-                        <input type="number" step="0.01" min="0" max="100" class="form-control" id="discount" name="discount" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="type" class="form-label">Tipo</label>
-                        <select class="form-control" id="type" name="type" required>
-                            <option value="percentage">Percentuale</option>
-                            <option value="fixed">Importo Fisso</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="min_amount" class="form-label">Importo Minimo</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="min_amount" name="min_amount">
-                    </div>
-                    <div class="mb-3">
-                        <label for="max_discount" class="form-label">Sconto Massimo</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="max_discount" name="max_discount">
-                    </div>
-                    <div class="mb-3">
-                        <label for="valid_until" class="form-label">Valido Fino A</label>
-                        <input type="date" class="form-control" id="valid_until" name="valid_until" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="usage_limit" class="form-label">Limite Utilizzo (0 = illimitato)</label>
-                        <input type="number" min="0" class="form-control" id="usage_limit" name="usage_limit" value="0">
->>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
-                    </div>
+                    
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="promo_is_active" name="is_active" checked>
-                        <label class="form-check-label" for="promo_is_active">Attivo</label>
+                        <input type="checkbox" class="form-check-input" id="is_active" name="is_active" checked>
+                        <label class="form-check-label" for="is_active">Attivo</label>
                     </div>
                 </form>
             </div>
@@ -107,7 +71,7 @@
 
 <!-- Edit Promo Code Modal -->
 <div class="modal fade" id="editPromoCodeModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Modifica Codice Promo</h5>
@@ -116,11 +80,10 @@
             <div class="modal-body">
                 <form id="editPromoCodeForm">
                     <input type="hidden" id="edit_promo_code_id" name="id">
-<<<<<<< HEAD
                     <div class="row">
                         <div class="col-md-6 mb-3">
-                            <label for="edit_promo_code" class="form-label">Codice *</label>
-                            <input type="text" class="form-control" id="edit_promo_code" name="code" required>
+                            <label for="edit_code" class="form-label">Codice *</label>
+                            <input type="text" class="form-control" id="edit_code" name="code" required>
                         </div>
                         <div class="col-md-6 mb-3">
                             <label for="edit_discount" class="form-label">Sconto (%) *</label>
@@ -128,47 +91,44 @@
                         </div>
                     </div>
                     
-=======
->>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
                     <div class="mb-3">
-                        <label for="edit_code" class="form-label">Codice</label>
-                        <input type="text" class="form-control" id="edit_code" name="code" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_description" class="form-label">Descrizione</label>
+                        <label for="edit_description" class="form-label">Descrizione *</label>
                         <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
                     </div>
-                    <div class="mb-3">
-                        <label for="edit_discount" class="form-label">Sconto (%)</label>
-                        <input type="number" step="0.01" min="0" max="100" class="form-control" id="edit_discount" name="discount" required>
+                    
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_type" class="form-label">Tipo *</label>
+                            <select class="form-control" id="edit_type" name="type" required>
+                                <option value="percentage">Percentuale</option>
+                                <option value="fixed">Importo Fisso</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="edit_valid_until" class="form-label">Valido Fino A *</label>
+                            <input type="date" class="form-control" id="edit_valid_until" name="valid_until" required>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="edit_type" class="form-label">Tipo</label>
-                        <select class="form-control" id="edit_type" name="type" required>
-                            <option value="percentage">Percentuale</option>
-                            <option value="fixed">Importo Fisso</option>
-                        </select>
+                    
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_min_amount" class="form-label">Importo Minimo (€)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="edit_min_amount" name="min_amount">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_max_discount" class="form-label">Sconto Massimo (€)</label>
+                            <input type="number" step="0.01" min="0" class="form-control" id="edit_max_discount" name="max_discount">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_usage_limit" class="form-label">Limite Utilizzo</label>
+                            <input type="number" min="0" class="form-control" id="edit_usage_limit" name="usage_limit">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label for="edit_used_count" class="form-label">Utilizzato</label>
+                            <input type="number" min="0" class="form-control" id="edit_used_count" name="used_count" readonly>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="edit_min_amount" class="form-label">Importo Minimo</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="edit_min_amount" name="min_amount">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_max_discount" class="form-label">Sconto Massimo</label>
-                        <input type="number" step="0.01" min="0" class="form-control" id="edit_max_discount" name="max_discount">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_valid_until" class="form-label">Valido Fino A</label>
-                        <input type="date" class="form-control" id="edit_valid_until" name="valid_until" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_usage_limit" class="form-label">Limite Utilizzo (0 = illimitato)</label>
-                        <input type="number" min="0" class="form-control" id="edit_usage_limit" name="usage_limit">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_used_count" class="form-label">Utilizzato</label>
-                        <input type="number" min="0" class="form-control" id="edit_used_count" name="used_count" readonly>
-                    </div>
+                    
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="edit_is_active" name="is_active">
                         <label class="form-check-label" for="edit_is_active">Attivo</label>

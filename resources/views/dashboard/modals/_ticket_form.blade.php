@@ -9,8 +9,8 @@
             <div class="modal-body">
                 <form id="addTicketForm">
                     <div class="mb-3">
-                        <label for="ticket_code" class="form-label">Codice</label>
-                        <input type="text" class="form-control" id="ticket_code" name="code" required>
+                        <label for="code" class="form-label">Codice</label>
+                        <input type="text" class="form-control" id="code" name="code" required>
                     </div>
                     <div class="mb-3">
                         <label for="type" class="form-label">Tipo</label>

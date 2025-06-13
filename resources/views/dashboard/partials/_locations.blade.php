@@ -28,17 +28,7 @@
                     <td>{{ $location->coordinates }}</td>
                     <td>{{ $location->created_at->format('d/m/Y') }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary edit-location" 
-                        data-id="{{ $location->id }}"
-                        data-name="{{ $location->name }}"
-                        data-description="{{ $location->description }}"
-                        data-type="{{ $location->type }}"
-                        data-latitude="{{ $location->latitude }}"
-                        data-longitude="{{ $location->longitude }}"
-                        data-icon="{{ $location->icon }}"
-                        data-color="{{ $location->color }}"
-                        data-metadata="{{ $location->metadata }}"
-                        data-is-visible="{{ $location->is_visible }}">
+                        <button class="btn btn-sm btn-primary edit-location" data-id="{{ $location->id }}">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-sm btn-danger delete-location" data-id="{{ $location->id }}">

@@ -13,27 +13,27 @@
             <!-- Dashboard Overview -->
             <div class="tab-pane fade show active" id="dashboard" role="tabpanel">
                 @include('dashboard.partials._stats')
-
+                
                 <div class="row">
                     <div class="col-md-6">
                         <div class="recent-activity">
                             <h3>Ordini Recenti</h3>
-                            @foreach ($stats['recentOrders'] as $order)
-                                <div class="activity-item">
-                                    <p><strong>Ordine #{{ $order->order_number }}</strong> - €{{ $order->total_price }}</p>
-                                    <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
-                                </div>
+                            @foreach($stats['recentOrders'] as $order)
+                            <div class="activity-item">
+                                <p><strong>Ordine #{{ $order->order_number }}</strong> - €{{ $order->total_price }}</p>
+                                <small>{{ $order->created_at->format('d/m/Y H:i') }}</small>
+                            </div>
                             @endforeach
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="recent-activity">
                             <h3>Nuovi Utenti</h3>
-                            @foreach ($stats['recentUsers'] as $user)
-                                <div class="activity-item">
-                                    <p><strong>{{ $user->name }}</strong> - {{ $user->email }}</p>
-                                    <small>{{ $user->created_at->format('d/m/Y H:i') }}</small>
-                                </div>
+                            @foreach($stats['recentUsers'] as $user)
+                            <div class="activity-item">
+                                <p><strong>{{ $user->name }}</strong> - {{ $user->email }}</p>
+                                <small>{{ $user->created_at->format('d/m/Y H:i') }}</small>
+                            </div>
                             @endforeach
                         </div>
                     </div>
@@ -119,40 +119,6 @@
 
 @section('scripts')
     <script src="{{ asset('js/dashboard/tabs.js') }}"></script>
-    
-    <!-- File di utilità per le API -->
-    <script src="{{ asset('js/dashboard/api/api-utils.js') }}"></script>
-    
-    <!-- File specifici per ogni tipo di API -->
-    <script src="{{ asset('js/dashboard/api/user-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/order-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/ticket-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/attraction-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/show-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/restaurant-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/shop-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/service-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/location-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/promo-code-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/visit-history-api.js') }}"></script>
-    <script src="{{ asset('js/dashboard/api/mock-credit-card-api.js') }}"></script>
-    
-    
-    <!-- File di utilità per i modali -->
-    <script src="{{ asset('js/dashboard/modals/modal-utils.js') }}"></script>
-
-    <!-- File specifici per ogni tipo di modale -->
-    <script src="{{ asset('js/dashboard/modals/user-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/order-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/ticket-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/attraction-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/show-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/restaurant-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/shop-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/service-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/location-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/promo-code-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/visit-history-modals.js') }}"></script>
-    <script src="{{ asset('js/dashboard/modals/mock-credit-card-modals.js') }}"></script>
-
+    <script src="{{ asset('js/dashboard/api.js') }}"></script>
+    <script src="{{ asset('js/dashboard/modals.js') }}"></script>
 @endsection

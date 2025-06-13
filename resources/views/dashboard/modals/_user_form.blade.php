@@ -28,7 +28,7 @@
                         </select>
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" value="1">
+                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
                         <label class="form-check-label" for="is_admin">Admin</label>
                     </div>
                 </form>
@@ -52,6 +52,8 @@
             <div class="modal-body">
                 <form id="editUserForm">
                     <input type="hidden" id="edit_user_id" name="user_id">
+                    <!-- Hidden field to ensure is_admin is always sent -->
+                    <input type="hidden" name="is_admin" value="0">
                     <div class="mb-3">
                         <label for="edit_name" class="form-label">Nome</label>
                         <input type="text" class="form-control" id="edit_name" name="name" required>
@@ -72,7 +74,7 @@
                         </select>
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="edit_is_admin" name="is_admin">
+                        <input type="checkbox" class="form-check-input" id="edit_is_admin" name="is_admin" value="1">
                         <label class="form-check-label" for="edit_is_admin">Admin</label>
                     </div>
                 </form>

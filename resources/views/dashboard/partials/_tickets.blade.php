@@ -28,14 +28,9 @@
                     <td>{{ $ticket->validity_date }}</td>
                     <td>{{ $ticket->created_at->format('d/m/Y') }}</td>
                     <td>
-                        <button class="btn btn-sm btn-primary edit-ticket" 
-                        data-id="{{ $ticket->id }}"
-                        data-code="{{ $ticket->code }}"
-                        data-type="{{ $ticket->type }}"
-                        data-price="{{ $ticket->price }}"
-                        data-validity-date="{{ $ticket->validity_date }}">
-                    <i class="fas fa-edit"></i>
-                </button>
+                        <button class="btn btn-sm btn-primary edit-ticket" data-id="{{ $ticket->id }}">
+                            <i class="fas fa-edit"></i>
+                        </button>
                         <button class="btn btn-sm btn-danger delete-ticket" data-id="{{ $ticket->id }}">
                             <i class="fas fa-trash"></i>
                         </button>

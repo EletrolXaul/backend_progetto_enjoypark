@@ -14,12 +14,9 @@ class User extends Authenticatable
 
     protected $fillable = [
         'name',
-        'email',
+        'email', 
         'password',
-        'avatar',
-        'preferences',
-        'membership',
-        'is_admin',
+        'role', // Solo 'user' o 'admin'
     ];
 
     protected $casts = [

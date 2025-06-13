@@ -19,8 +19,7 @@ class Service extends Model
         'location_y',
         'icon',
         'available_24h',
-        'features',
-        'slug' 
+        'features'
     ];
 
     protected $casts = [

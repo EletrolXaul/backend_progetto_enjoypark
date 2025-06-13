@@ -31,6 +31,7 @@ Route::middleware('auth:sanctum')->group(function () {
     // Rotte admin protette
     Route::middleware('admin')->prefix('admin')->group(function () {
         Route::get('orders', [OrderController::class, 'adminIndex']);
+        Route::get('orders', [OrderController::class, 'index']);
         Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
         Route::get('tickets', [TicketController::class, 'adminIndex']);
         Route::patch('tickets/{ticket}/status', [TicketController::class, 'updateStatus']);
@@ -76,4 +77,20 @@ Route::prefix('locations')->group(function () {
     Route::get('/', [LocationController::class, 'index']);
     Route::get('/{id}', [LocationController::class, 'show']);
     Route::post('/sync', [LocationController::class, 'syncLocations']);
+});
+
+// Rotte per utenti autenticati
+Route::middleware('auth:sanctum')->group(function () {
+    // Ordini accessibili a tutti gli utenti autenticati
+    Route::get('orders', [OrderController::class, 'index']);
+    Route::post('orders', [OrderController::class, 'store']);
+    Route::get('orders/{id}', [OrderController::class, 'show']);
+    Route::get('tickets', [TicketController::class, 'index']);
+    
+    // Solo admin per gestione avanzata
+    Route::middleware('admin')->prefix('admin')->group(function () {
+        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
+        Route::get('users', [AuthController::class, 'getAllUsers']);
+        // ... altre route admin
+    });
 });

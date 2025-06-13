@@ -10,7 +10,7 @@
 }
 
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
     color: var(--dark-color);
 }
@@ -325,6 +325,26 @@ body {
     animation: slideIn 0.3s ease-out forwards;
 }
 
+.feature-tags .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.feature-tags .btn {
+    margin: 2px;
+}
+
+.opening-hours-container .btn-group {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.opening-hours-container .btn {
+    flex: 1;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
 @keyframes slideIn {
     from {
         transform: translateX(100%);
@@ -360,4 +380,51 @@ body {
     .stats-cards {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
+}
+
+/* Miglioramenti per la tabella codici promo */
+.table tbody tr:hover {
+    background-color: #f8f9fa !important;
+}
+
+.table tbody td {
+    vertical-align: middle;
+    padding: 12px 8px;
+}
+
+.table .badge {
+    font-size: 0.85rem;
+    padding: 0.4em 0.6em;
+}
+
+.table code {
+    background-color: #e3f2fd;
+    color: #1976d2;
+    padding: 0.2em 0.4em;
+    border-radius: 3px;
+    font-weight: 600;
+}
+
+.table .text-wrap {
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+/* Migliorare la leggibilità delle date */
+.table .text-dark {
+    color: #212529 !important;
+    font-weight: 500;
+}
+
+/* Stili per i badge di stato */
+.badge.bg-success {
+    background-color: #28a745 !important;
+}
+
+.badge.bg-danger {
+    background-color: #dc3545 !important;
+}
+
+.badge.bg-secondary {
+    background-color: #6c757d !important;
 }

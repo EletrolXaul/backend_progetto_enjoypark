@@ -1,103 +1,102 @@
 <?php
-// app/Http/Controllers/Api/TicketController.php
 
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class TicketController extends Controller
 {
-    // Lista ticket per utente normale (solo i propri)
-    public function index(Request $request)
+    public function index()
     {
-        $user = $request->user();
-        $tickets = Ticket::where('user_id', $user->id)->get();
-        return response()->json($tickets);
+        return response()->json(Ticket::all(), 200);
     }
 
-    // Lista ticket per admin (tutti i ticket)
-    public function adminIndex(Request $request)
+    public function show($id)
     {
-        $tickets = Ticket::with(['user'])
-                         ->orderBy('created_at', 'desc')
-                         ->get();
-        
-        return response()->json($tickets);
-    }
-
-    // Aggiorna status ticket (solo admin)
-    public function updateStatus(Request $request, Ticket $ticket)
-    {
-        $request->validate([
-            'status' => 'required|in:valid,used,expired,cancelled'
-        ]);
-        
-        $updateData = ['status' => $request->status];
-        
-        if ($request->status === 'used') {
-            $updateData['used_at'] = now();
+        $ticket = Ticket::find($id);
+        if (!$ticket) {
+            return response()->json(['message' => 'Biglietto non trovato'], 404);
         }
-        
-        $ticket->update($updateData);
-        
         return response()->json($ticket);
     }
 
-    // Crea un nuovo ticket
     public function store(Request $request)
     {
-        $data = $request->validate([
-            'visit_date' => 'required|date|after_or_equal:today',
-            'ticket_type' => ['required', Rule::in(['adult', 'child', 'senior', 'family'])],
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'required|exists:users,id',
+            'order_number' => 'required|string|max:255',
+            'visit_date' => 'required|date',
+            'ticket_type' => 'required|string|in:standard,adult,child,senior,family',
             'price' => 'required|numeric|min:0',
-            'status' => ['sometimes', Rule::in(['valid', 'used', 'expired', 'cancelled'])],
+            'status' => 'required|string|in:valid,used,expired,cancelled',
+            'qr_code' => 'required|string|unique:tickets',
             'metadata' => 'nullable|array',
         ]);
 
-        $data['user_id'] = $request->user()->id;
-        $data['order_number'] = uniqid('ORD-');
-        $data['qr_code'] = uniqid('QR-');
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-        $ticket = Ticket::create($data);
+        $ticketData = $request->all();
+        $ticketData['metadata'] = $request->metadata ?? [];
+        
+        $ticket = Ticket::create($ticketData);
 
-        return response()->json($ticket, 201);
+        return response()->json(['success' => true, 'ticket' => $ticket]);
     }
 
-    // Mostra un singolo ticket (solo se appartiene all'utente)
-    public function show(Request $request, $id)
-    {
-        $ticket = Ticket::where('user_id', $request->user()->id)->findOrFail($id);
-        return response()->json($ticket);
-    }
-
-    // Aggiorna un ticket (es. status o metadata)
     public function update(Request $request, $id)
     {
-        $ticket = Ticket::where('user_id', $request->user()->id)->findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
 
-        $data = $request->validate([
-            'visit_date' => 'sometimes|date|after_or_equal:today',
-            'ticket_type' => [Rule::in(['adult', 'child', 'senior', 'family'])],
+        $validator = Validator::make($request->all(), [
+            'user_id' => 'sometimes|exists:users,id',
+            'order_number' => 'sometimes|string|max:255',
+            'visit_date' => 'sometimes|date',
+            'ticket_type' => 'sometimes|string|in:standard,adult,child,senior,family,premium,season',
             'price' => 'sometimes|numeric|min:0',
-            'status' => [Rule::in(['valid', 'used', 'expired', 'cancelled'])],
+            'status' => 'sometimes|string|in:valid,used,expired,cancelled',
+            'qr_code' => 'sometimes|string|unique:tickets,qr_code,' . $id,
             'used_at' => 'nullable|date',
             'metadata' => 'nullable|array',
         ]);
 
-        $ticket->update($data);
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
 
-        return response()->json($ticket);
+        $updateData = $request->all();
+        
+        // Se lo status viene cambiato in 'used', imposta used_at
+        if (isset($updateData['status']) && $updateData['status'] === 'used' && !$ticket->used_at) {
+            $updateData['used_at'] = now();
+        }
+        
+        $ticket->update($updateData);
+
+        return response()->json(['success' => true, 'ticket' => $ticket]);
     }
 
-    // Elimina un ticket
-    public function destroy(Request $request, $id)
+    public function destroy($id)
     {
-        $ticket = Ticket::where('user_id', $request->user()->id)->findOrFail($id);
+        $ticket = Ticket::findOrFail($id);
         $ticket->delete();
 
-        return response()->json(null, 204);
+        return response()->json(['success' => true]);
+    }
+
+    public function adminIndex()
+    {
+        $tickets = Ticket::with('user')
+            ->orderBy('created_at', 'desc')
+            ->get();
+            
+        return response()->json([
+            'success' => true,
+            'data' => $tickets
+        ], 200);
     }
 }

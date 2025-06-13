@@ -13,12 +13,12 @@
                         <input type="text" class="form-control" id="name" name="name" required>
                     </div>
                     <div class="mb-3">
-                        <label for="location_description" class="form-label">Descrizione</label>
-                        <textarea class="form-control" id="location_description" name="description" rows="3" required></textarea>
+                        <label for="description" class="form-label">Descrizione</label>
+                        <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                     </div>
                     <div class="mb-3">
-                        <label for="location_category" class="form-label">Categoria</label>
-                        <input type="text" class="form-control" id="location_category" name="category" required>
+                        <label for="category" class="form-label">Categoria</label>
+                        <input type="text" class="form-control" id="category" name="category" required>
                     </div>
                     <div class="mb-3">
                         <label for="latitude" class="form-label">Latitudine</label>

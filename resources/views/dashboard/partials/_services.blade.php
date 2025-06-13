@@ -22,54 +22,6 @@
                 </tr>
             </thead>
             <tbody>
-<<<<<<< HEAD
-                @foreach ($services as $service)
-                    <tr>
-                        <td>{{ $service->id }}</td>
-                        <td>{{ $service->name }}</td>
-                        <td>{{ $service->category }}</td>
-                        <td>{{ Str::limit($service->description, 30) }}</td>
-                        <td>
-                            @if (str_starts_with($service->icon, 'fa'))
-                                <i class="{{ $service->icon }}"></i>
-                            @else
-                                {{ $service->icon }}
-                            @endif
-                        </td>
-                        <td>
-                            @if ($service->available_24h)
-                                <span class="badge bg-success">24h</span>
-                            @else
-                                <span class="badge bg-secondary">No</span>
-                            @endif
-                        </td>
-                        <td>({{ $service->location_x }}, {{ $service->location_y }})</td>
-                        <td>
-                            @if (is_array($service->features))
-                                {{ implode(', ', $service->features) }}
-                            @else
-                                {{ $service->features }}
-                            @endif
-                        </td>
-                        <td>{{ $service->created_at ? $service->created_at->format('d/m/Y') : '-' }}</td>
-                        <td>
-                            <!-- Pulsanti azioni -->
-                            <button class="btn btn-sm btn-warning edit-service" data-id="{{ $service->id }}"
-                                data-slug="{{ $service->slug }}" data-name="{{ $service->name }}"
-                                data-category="{{ $service->category }}"
-                                data-description="{{ $service->description }}" data-icon="{{ $service->icon }}"
-                                data-available-24h="{{ $service->available_24h }}"
-                                data-location-x="{{ $service->location_x }}"
-                                data-location-y="{{ $service->location_y }}"
-                                data-features="{{ is_array($service->features) ? json_encode($service->features) : $service->features }}">
-                                <i class="fas fa-edit"></i>
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-service" data-id="{{ $service->id }}">
-                                <i class="fas fa-trash"></i>
-                            </button>
-                        </td>
-                    </tr>
-=======
                 @foreach($services as $service)
                 <tr>
                     <td>{{ $service->id }}</td>
@@ -95,24 +47,24 @@
                     <td>{{ $service->created_at ? $service->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
                         <!-- Pulsanti azioni -->
-                        <button class="btn btn-sm btn-primary edit-service" 
-                        data-id="{{ $service->id }}" 
-                        data-name="{{ $service->name }}" 
-                        data-category="{{ $service->category }}"  
-                        data-description="{{ $service->description }}" 
-                        data-icon="{{ $service->icon }}" 
-                        data-available-24h="{{ $service->available_24h }}" 
-                        data-location-x="{{ $service->location_x }}"  
-                        data-location-y="{{ $service->location_y }}"  
-                        data-features='{{ is_array($service->features) ? json_encode($service->features) : $service->features }}'>  
-                            <i class="fas fa-edit"></i>  
+                        <button class="btn btn-sm btn-primary edit-service"
+                            data-id="{{ $service->id }}"
+                            data-name="{{ htmlspecialchars($service->name, ENT_QUOTES) }}"
+                            data-slug="{{ htmlspecialchars($service->slug, ENT_QUOTES) }}"
+                            data-category="{{ htmlspecialchars($service->category, ENT_QUOTES) }}"
+                            data-description="{{ htmlspecialchars($service->description, ENT_QUOTES) }}"
+                            data-icon="{{ htmlspecialchars($service->icon, ENT_QUOTES) }}"
+                            data-available-24h="{{ $service->available_24h }}"
+                            data-location-x="{{ $service->location_x }}"
+                            data-location-y="{{ $service->location_y }}"
+                            data-features="{{ htmlspecialchars(is_array($service->features) ? json_encode($service->features) : $service->features, ENT_QUOTES) }}">
+                            <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-sm btn-danger delete-service" data-id="{{ $service->id }}">
                             <i class="fas fa-trash"></i>
                         </button>
                     </td>
                 </tr>
->>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
                 @endforeach
             </tbody>
         </table>
