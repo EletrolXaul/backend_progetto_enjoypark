@@ -18,14 +18,12 @@ class UserSeeder extends Seeder
             'name' => 'Mario Rossi',
             'email' => 'demo@enjoypark.it',
             'password' => Hash::make('demo123'),
-            'avatar' => '/placeholder.svg?height=40&width=40',
             'preferences' => [
                 'language' => 'it',
                 'theme' => 'light',
                 'notifications' => true,
                 'newsletter' => true,
             ],
-            'membership' => 'premium',
         ]);
 
         // Crea la cronologia delle visite per l'utente demo
@@ -42,14 +40,12 @@ class UserSeeder extends Seeder
             'name' => 'Amministratore',
             'email' => 'admin@enjoypark.it',
             'password' => Hash::make('admin'),
-            'avatar' => '/placeholder.svg?height=40&width=40',
             'preferences' => [
                 'language' => 'it',
                 'theme' => 'light',
                 'notifications' => true,
                 'newsletter' => true,
             ],
-            'membership' => 'vip',
             'is_admin' => true,
         ]);
     }

@@ -5,7 +5,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Carbon\Carbon;
+use Illuminate\Support\Carbon;
 
 class Order extends Model
 {
@@ -43,6 +43,11 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function ticketItems()
+    {
+        return $this->hasMany(Ticket::class, 'order_number', 'order_number');
+    }
+
     // Scopes
     public function scopeActive($query)
     {
@@ -58,29 +63,16 @@ class Order extends Model
     public function getIsValidAttribute()
     {
         return in_array($this->status, ['confirmed', 'pending']) && 
-               $this->visit_date >= now()->toDateString();
+               $this->visit_date >= Carbon::now()->toDateString();
     }
 
     public function getTotalTicketsAttribute()
     {
-        return array_sum($this->tickets);
-    }
-    
-    // Aggiungi una relazione per i biglietti
-    public function tickets()
-    {
-        return $this->hasMany(Ticket::class, 'order_number', 'order_number');
-    }
-
-    private function generateQRCode()
-    {
-        $timestamp = now()->timestamp;
-        $random = strtoupper(substr(md5(uniqid()), 0, 6));
-        return "EP-{$timestamp}-{$random}";
+        return is_array($this->tickets) ? array_sum($this->tickets) : 0;
     }
 
     public static function generateOrderNumber()
     {
-        return 'ORDER-' . now()->timestamp . rand(100, 999);
+        return 'ORDER-' . time() . rand(100, 999);
     }
 }

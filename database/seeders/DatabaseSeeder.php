@@ -23,8 +23,8 @@ class DatabaseSeeder extends Seeder
             ServiceTableSeeder::class,
             UserSeeder::class,
             VisitHistorySeeder::class,
-            TicketSeeder::class,
-            // Aggiungiamo i seeder mancanti
+            TicketTypeSeeder::class,
+            TicketSeeder::class,        
             OrderSeeder::class,
             PromoCodeSeeder::class,
             MockCreditCardSeeder::class,

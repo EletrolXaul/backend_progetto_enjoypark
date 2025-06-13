@@ -13,6 +13,9 @@
         <a href="#orders" class="nav-link" data-bs-toggle="tab" role="tab">
             <i class="fas fa-shopping-cart"></i> <span>Ordini</span>
         </a>
+        <a href="#ticketTypes" class="nav-link" data-bs-toggle="tab" role="tab">
+            <i class="fas fa-list-alt"></i> <span>Tipi di Biglietti</span>
+        </a>
         <a href="#tickets" class="nav-link" data-bs-toggle="tab" role="tab">
             <i class="fas fa-ticket-alt"></i> <span>Biglietti</span>
         </a>

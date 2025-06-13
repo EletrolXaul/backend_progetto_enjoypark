@@ -99,4 +99,33 @@ class TicketController extends Controller
             'data' => $tickets
         ], 200);
     }
+
+    public function getTicketTypes()
+    {
+        try {
+            $ticketTypes = Ticket::where('is_active', true)
+                ->select('id', 'name', 'type', 'price', 'description', 'features')
+                ->get()
+                ->map(function ($ticket) {
+                    return [
+                        'id' => $ticket->id,
+                        'name' => $ticket->name,
+                        'type' => $ticket->type,
+                        'price' => $ticket->price,
+                        'description' => $ticket->description,
+                        'features' => json_decode($ticket->features, true)
+                    ];
+                });
+    
+            return response()->json([
+                'success' => true,
+                'data' => $ticketTypes
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel recupero dei tipi di biglietti'
+            ], 500);
+        }
+    }
 }

@@ -50,6 +50,11 @@
                 @include('dashboard.partials._orders')
             </div>
 
+            <!-- Ticket Types Tab -->
+            <div class="tab-pane fade" id="ticketTypes" role="tabpanel">
+                @include('dashboard.partials._ticket_types')
+            </div>
+
             <!-- Tickets Tab -->
             <div class="tab-pane fade" id="tickets" role="tabpanel">
                 @include('dashboard.partials._tickets')
@@ -103,9 +108,11 @@
     </div>
 
     <!-- Include modals -->
+    <!-- Modals -->
     @include('dashboard.modals._user_form')
     @include('dashboard.modals._order_form')
     @include('dashboard.modals._ticket_form')
+    @include('dashboard.modals._ticket_type_form')
     @include('dashboard.modals._attraction_form')
     @include('dashboard.modals._show_form')
     @include('dashboard.modals._restaurant_form')

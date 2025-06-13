@@ -12,12 +12,12 @@ return new class extends Migration
         Schema::create('tickets', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('order_number'); // Rimuovi ->unique()
+            $table->string('order_number');
             $table->date('visit_date');
-            $table->enum('ticket_type', ['adult', 'child', 'senior', 'family', 'standard', 'premium']);
+            $table->foreignId('ticket_type_id')->constrained('ticket_types')->onDelete('cascade');
             $table->decimal('price', 8, 2);
             $table->enum('status', ['valid', 'used', 'expired', 'cancelled'])->default('valid');
-            $table->string('qr_code')->unique(); // Solo il QR code deve essere unico
+            $table->string('qr_code')->unique();
             $table->timestamp('used_at')->nullable();
             $table->json('metadata')->nullable();
             $table->timestamps();
@@ -32,3 +32,20 @@ return new class extends Migration
         Schema::dropIfExists('tickets');
     }
 };
+
+Schema::create('tickets', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('user_id')->constrained()->onDelete('cascade');
+    $table->string('order_number'); // Rimuovi ->unique()
+    $table->date('visit_date');
+    $table->enum('ticket_type', ['adult', 'child', 'senior', 'family', 'standard', 'premium']);
+    $table->decimal('price', 8, 2);
+    $table->enum('status', ['valid', 'used', 'expired', 'cancelled'])->default('valid');
+    $table->string('qr_code')->unique(); // Solo il QR code deve essere unico
+    $table->timestamp('used_at')->nullable();
+    $table->json('metadata')->nullable();
+    $table->timestamps();
+    
+    // Aggiungi un indice per migliorare le performance
+    $table->index('order_number');
+});

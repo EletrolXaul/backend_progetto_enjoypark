@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Order;
 use App\Models\Ticket;
+use App\Models\TicketType;
 use App\Models\Attraction;
 use App\Models\Show;
 use App\Models\Restaurant;
@@ -37,6 +38,7 @@ class DashboardController extends Controller
         $data = [
             'users' => User::paginate(10),
             'orders' => Order::paginate(10),
+            'ticketTypes' => TicketType::paginate(10),
             'tickets' => Ticket::paginate(10),
             'attractions' => $attractions,
             'shows' => $shows,
@@ -53,6 +55,7 @@ class DashboardController extends Controller
         $stats = [
             'totalUsers' => User::count(),
             'totalOrders' => Order::count(),
+            'totalTicketTypes' => TicketType::count(),
             'totalTickets' => Ticket::count(),
             'totalAttractions' => Attraction::count(),
             'recentOrders' => Order::orderBy('created_at', 'desc')->take(5)->get(),

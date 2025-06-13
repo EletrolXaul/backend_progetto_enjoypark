@@ -6,24 +6,30 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use Laravel\Sanctum\HasApiTokens;
+//use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasFactory, Notifiable;
 
     protected $fillable = [
         'name',
         'email', 
         'password',
-        'role', // Solo 'user' o 'admin'
+        'is_admin',
+        'preferences',
     ];
 
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
-        'preferences' => 'array',
         'is_admin' => 'boolean',
+        'preferences' => 'array',
+    ];
+
+    protected $hidden = [
+        'password',
+        'remember_token',
     ];
 
     // Relazioni
@@ -37,13 +43,13 @@ class User extends Authenticatable
         return $this->hasMany(Ticket::class);
     }
 
-    // Accessor per isAdmin - usa is_admin dal database
+    // Accessor per isAdmin
     public function getIsAdminAttribute()
     {
         return (bool) ($this->attributes['is_admin'] ?? false);
     }
     
-    // Mutator per isAdmin - imposta is_admin
+    // Mutator per isAdmin
     public function setIsAdminAttribute($value)
     {
         $this->attributes['is_admin'] = (bool) $value;
