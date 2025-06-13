@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class ServiceController extends Controller
 {
@@ -25,61 +24,50 @@ class ServiceController extends Controller
 
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'description' => 'required|string',
+            'category' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'location_x' => 'required|numeric',
             'location_y' => 'required|numeric',
-            'icon' => 'required|string',
-            'available_24h' => 'boolean',
-            'features' => 'required|array',
+            'icon' => 'nullable|string|max:255',
+            'available_24h' => 'nullable|boolean',
+            'features' => 'nullable|array',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $serviceData = $request->all();
-        $serviceData['available_24h'] = $request->has('available_24h') ? true : false;
-        
-        $service = Service::create($serviceData);
-
-        return response()->json(['success' => true, 'service' => $service]);
+        $service = Service::create($validated);
+        return response()->json($service, 201);
     }
 
     public function update(Request $request, $id)
     {
-        $service = Service::findOrFail($id);
+        $service = Service::find($id);
+        if (!$service) {
+            return response()->json(['message' => 'Servizio non trovato'], 404);
+        }
 
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'sometimes|string|max:255',
-            'category' => 'sometimes|string|max:100',
+            'category' => 'sometimes|string|max:255',
             'description' => 'sometimes|string',
             'location_x' => 'sometimes|numeric',
             'location_y' => 'sometimes|numeric',
-            'icon' => 'sometimes|string',
-            'available_24h' => 'boolean',
+            'icon' => 'sometimes|string|max:255',
+            'available_24h' => 'sometimes|boolean',
             'features' => 'sometimes|array',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $updateData = $request->all();
-        $updateData['available_24h'] = $request->has('available_24h') ? true : false;
-        
-        $service->update($updateData);
-
-        return response()->json(['success' => true, 'service' => $service]);
+        $service->update($validated);
+        return response()->json($service);
     }
 
     public function destroy($id)
     {
-        $service = Service::findOrFail($id);
+        $service = Service::find($id);
+        if (!$service) {
+            return response()->json(['message' => 'Servizio non trovato'], 404);
+        }
         $service->delete();
-
-        return response()->json(['success' => true]);
+        return response()->json(['message' => 'Servizio eliminato con successo']);
     }
 }

@@ -1,18 +1,20 @@
 <?php
+// app/Http/Controllers/AttractionController.php
 
 namespace App\Http\Controllers;
 
 use App\Models\Attraction;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class AttractionController extends Controller
 {
+    // Lista tutte le attrazioni
     public function index()
     {
         return response()->json(Attraction::all(), 200);
     }
 
+    // Mostra una singola attrazione
     public function show($id)
     {
         $attraction = Attraction::find($id);
@@ -22,67 +24,68 @@ class AttractionController extends Controller
         return response()->json($attraction);
     }
 
+    // Crea una nuova attrazione
     public function store(Request $request)
     {
-        $validator = Validator::make($request->all(), [
+        $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'description' => 'required|string',
-            'duration' => 'required|integer|min:1',
-            'capacity' => 'required|integer|min:1',
-            'wait_time' => 'required|integer|min:0',
+            'category' => 'required|string|max:255',
+            'wait_time' => 'nullable|integer|min:0',
             'status' => 'required|string|in:open,closed,maintenance',
-            'thrill_level' => 'required|integer|min:1|max:5',
-            'min_height' => 'required|integer|min:0',
+            'thrill_level' => 'nullable|string|max:100',
+            'min_height' => 'nullable|integer|min:0',
+            'description' => 'nullable|string',
+            'duration' => 'nullable|integer|min:0',
+            'capacity' => 'nullable|integer|min:0',
+            'rating' => 'nullable|numeric|min:0|max:5',
             'location_x' => 'required|numeric',
             'location_y' => 'required|numeric',
-            'image' => 'required|string',
-            'features' => 'required|string',
+            'image' => 'nullable|string',
+            'features' => 'nullable|array'
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
-        }
-
-        $attraction = Attraction::create($request->all());
-
-        return response()->json(['success' => true, 'attraction' => $attraction]);
+        $attraction = Attraction::create($validated);
+        return response()->json($attraction, 201);
     }
 
+    // Aggiorna un'attrazione esistente
     public function update(Request $request, $id)
     {
-        $attraction = Attraction::findOrFail($id);
-
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'category' => 'required|string|max:100',
-            'description' => 'required|string',
-            'duration' => 'required|integer|min:1',
-            'capacity' => 'required|integer|min:1',
-            'wait_time' => 'required|integer|min:0',
-            'status' => 'required|string|in:open,closed,maintenance',
-            'thrill_level' => 'required|integer|min:1|max:5',
-            'min_height' => 'required|integer|min:0',
-            'location_x' => 'required|numeric',
-            'location_y' => 'required|numeric',
-            'image' => 'required|string',
-            'features' => 'required|string',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['errors' => $validator->errors()], 422);
+        $attraction = Attraction::find($id);
+        if (!$attraction) {
+            return response()->json(['message' => 'Attrazione non trovata'], 404);
         }
 
-        $attraction->update($request->all());
+        $validated = $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'category' => 'sometimes|string|max:255',
+            'wait_time' => 'sometimes|integer|min:0',
+            'status' => 'sometimes|string|in:open,closed,maintenance',
+            'thrill_level' => 'sometimes|string|max:100',
+            'min_height' => 'sometimes|integer|min:0',
+            'description' => 'sometimes|string',
+            'duration' => 'sometimes|integer|min:0',
+            'capacity' => 'sometimes|integer|min:0',
+            'rating' => 'sometimes|numeric|min:0|max:5',
+            'location_x' => 'sometimes|numeric',
+            'location_y' => 'sometimes|numeric',
+            'image' => 'sometimes|string',
+            'features' => 'sometimes|array'
+        ]);
 
-        return response()->json(['success' => true, 'attraction' => $attraction]);
+        $attraction->update($validated);
+        return response()->json($attraction);
     }
 
+    // Elimina un'attrazione
     public function destroy($id)
     {
-        $attraction = Attraction::findOrFail($id);
-        $attraction->delete();
+        $attraction = Attraction::find($id);
+        if (!$attraction) {
+            return response()->json(['message' => 'Attrazione non trovata'], 404);
+        }
 
-        return response()->json(['success' => true]);
+        $attraction->delete();
+        return response()->json(['message' => 'Attrazione eliminata con successo']);
     }
 }

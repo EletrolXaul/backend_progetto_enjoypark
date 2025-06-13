@@ -1,6 +1,6 @@
 <!-- Add Service Modal -->
 <div class="modal fade" id="addServiceModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Aggiungi Nuovo Servizio</h5>
@@ -8,6 +8,7 @@
             </div>
             <div class="modal-body">
                 <form id="addServiceForm">
+<<<<<<< HEAD
                     <div class="row">
                         <div class="col-md-6 mb-3">
                             <label for="service_name" class="form-label">Nome*</label>
@@ -18,12 +19,17 @@
                             <label for="service_category" class="form-label">Categoria</label>
                             <input type="text" class="form-control" id="service_category" name="category" required placeholder="Inserisci una categoria">
                         </div>
+=======
+                    <div class="mb-3">
+                        <label for="name" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="name" name="name" required>
+>>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
                     </div>
-                    
                     <div class="mb-3">
                         <label for="service_description" class="form-label">Descrizione*</label>
                         <textarea class="form-control" id="service_description" name="description" rows="3" required></textarea>
                     </div>
+<<<<<<< HEAD
                     
                     <div class="row">
                         <div class="col-md-6 mb-3">
@@ -62,15 +68,41 @@
                             <input type="checkbox" class="form-check-input" id="service_available_24h" name="available_24h">
                             <label class="form-check-label ms-2" for="service_available_24h">Disponibile 24h</label>
                         </div>
-                    </div>
-                    
+=======
                     <div class="mb-3">
+                        <label for="category" class="form-label">Categoria</label>
+                        <input type="text" class="form-control" id="category" name="category" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location_x" class="form-label">Posizione X</label>
+                        <input type="number" step="0.000001" class="form-control" id="location_x" name="location_x" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location_y" class="form-label">Posizione Y</label>
+                        <input type="number" step="0.000001" class="form-control" id="location_y" name="location_y" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="icon" class="form-label">Icona</label>
+                        <input type="text" class="form-control" id="icon" name="icon">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="available_24h" name="available_24h">
+                        <label class="form-check-label" for="available_24h">Disponibile 24h</label>
+>>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
+                    </div>
+                    <div class="mb-3">
+<<<<<<< HEAD
                         <label for="features" class="form-label">Caratteristiche (JSON)*</label>
                         <textarea class="form-control" id="features" name="features" rows="3" placeholder='["Accessibile", "Gratuito", "Self-service"]'></textarea>
                     </div>
                     
                     <!-- Campo nascosto per slug -->
                     <input type="hidden" id="service_slug" name="slug" value="">
+=======
+                        <label for="features" class="form-label">Caratteristiche (JSON)</label>
+                        <textarea class="form-control" id="features" name="features" rows="3"></textarea>
+                    </div>
+>>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
                 </form>
             </div>
             <div class="modal-footer">
@@ -83,7 +115,7 @@
 
 <!-- Edit Service Modal -->
 <div class="modal fade" id="editServiceModal" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Modifica Servizio</h5>
@@ -92,6 +124,7 @@
             <div class="modal-body">
                 <form id="editServiceForm">
                     <input type="hidden" id="edit_service_id" name="id">
+<<<<<<< HEAD
                     <input type="hidden" id="edit_slug" name="slug">
                     
                     <div class="row">
@@ -104,23 +137,21 @@
                             <label for="edit_category" class="form-label">Categoria*</label>
                             <input type="text" class="form-control" id="edit_category" name="category" required placeholder="Inserisci una categoria">
                         </div>
+=======
+                    <div class="mb-3">
+                        <label for="edit_name" class="form-label">Nome</label>
+                        <input type="text" class="form-control" id="edit_name" name="name" required>
+>>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
                     </div>
-                    
                     <div class="mb-3">
                         <label for="edit_description" class="form-label">Descrizione*</label>
                         <textarea class="form-control" id="edit_description" name="description" rows="3" required></textarea>
                     </div>
-                    
-                    <div class="row">
-                        <div class="col-md-6 mb-3">
-                            <label for="edit_location_x" class="form-label">Posizione X</label>
-                            <input type="number" step="0.000001" class="form-control" id="edit_location_x" name="location_x" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="edit_location_y" class="form-label">Posizione Y</label>
-                            <input type="number" step="0.000001" class="form-control" id="edit_location_y" name="location_y" required>
-                        </div>
+                    <div class="mb-3">
+                        <label for="edit_category" class="form-label">Categoria</label>
+                        <input type="text" class="form-control" id="edit_category" name="category" required>
                     </div>
+<<<<<<< HEAD
                     
                     <div class="row">
                         <!-- Per il dropdown delle icone nel form di modifica -->
@@ -148,8 +179,24 @@
                             <input type="checkbox" class="form-check-input" id="edit_available_24h" name="available_24h">
                             <label class="form-check-label ms-2" for="edit_available_24h">Disponibile 24h</label>
                         </div>
+=======
+                    <div class="mb-3">
+                        <label for="edit_location_x" class="form-label">Posizione X</label>
+                        <input type="number" step="0.000001" class="form-control" id="edit_location_x" name="location_x" required>
                     </div>
-                    
+                    <div class="mb-3">
+                        <label for="edit_location_y" class="form-label">Posizione Y</label>
+                        <input type="number" step="0.000001" class="form-control" id="edit_location_y" name="location_y" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="edit_icon" class="form-label">Icona</label>
+                        <input type="text" class="form-control" id="edit_icon" name="icon">
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input type="checkbox" class="form-check-input" id="edit_available_24h" name="available_24h">
+                        <label class="form-check-label" for="edit_available_24h">Disponibile 24h</label>
+>>>>>>> parent of a82aab4 (correzioni di tutti i controller e delle  tabelle)
+                    </div>
                     <div class="mb-3">
                         <label for="edit_features" class="form-label">Caratteristiche (JSON)*</label>
                         <textarea class="form-control" id="edit_features" name="features" rows="3"></textarea>

@@ -42,14 +42,12 @@
                         <button class="btn btn-sm btn-primary edit-shop" 
                         data-id="{{ $shop->id }}" 
                         data-name="{{ $shop->name }}" 
-                        data-slug="{{ $shop->slug }}" 
                         data-category="{{ $shop->category }}"  
                         data-description="{{ $shop->description }}" 
                         data-specialties='{{ is_array($shop->specialties) ? json_encode($shop->specialties) : $shop->specialties }}' 
                         data-opening-hours="{{ $shop->opening_hours }}" 
                         data-location-x="{{ $shop->location_x }}"  
-                        data-location-y="{{ $shop->location_y }}"
-                        data-image="{{ $shop->image }}">  
+                        data-location-y="{{ $shop->location_y }}">  
                             <i class="fas fa-edit"></i>  
                         </button>
                         <button class="btn btn-sm btn-danger delete-shop" data-id="{{ $shop->id }}">

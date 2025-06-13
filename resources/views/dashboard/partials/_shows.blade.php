@@ -52,7 +52,6 @@
                             <button class="btn btn-sm btn-primary edit-show" 
                             data-id="{{ $show->id }}" 
                             data-name="{{ $show->name }}" 
-                            data-slug="{{ $show->slug }}" 
                             data-category="{{ $show->category }}"  
                             data-description="{{ $show->description }}" 
                             data-venue="{{ $show->venue }}" 
@@ -62,10 +61,7 @@
                             data-available-seats="{{ $show->available_seats }}"  
                             data-price="{{ $show->price }}"  
                             data-rating="{{ $show->rating }}"  
-                            data-age-restriction="{{ $show->age_restriction }}"  
-                            data-location-x="{{ $show->location_x }}"  
-                            data-location-y="{{ $show->location_y }}"  
-                            data-image="{{ $show->image }}">  
+                            data-age-restriction="{{ $show->age_restriction }}">  
                                 <i class="fas fa-edit"></i>  
                             </button>
                             <button class="btn btn-sm btn-danger delete-show" data-id="{{ $show->id }}">

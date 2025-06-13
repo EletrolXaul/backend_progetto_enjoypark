@@ -36,19 +36,14 @@
                         <td>
                             <!-- Pulsanti azioni -->
                             <button class="btn btn-sm btn-primary edit-restaurant" 
-                                data-id="{{ $restaurant->id }}" 
-                                data-name="{{ $restaurant->name }}" 
-                                data-slug="{{ $restaurant->slug }}" 
-                                data-category="{{ $restaurant->category }}"  
-                                data-cuisine="{{ $restaurant->cuisine }}" 
-                                data-price-range="{{ $restaurant->price_range }}" 
-                                data-rating="{{ $restaurant->rating }}" 
-                                data-description="{{ $restaurant->description }}"  
-                                data-opening-hours="{{ $restaurant->opening_hours }}"
-                                data-location-x="{{ $restaurant->location_x }}"
-                                data-location-y="{{ $restaurant->location_y }}"
-                                data-image="{{ $restaurant->image }}"
-                                data-features='{{ is_array($restaurant->features) ? json_encode($restaurant->features) : $restaurant->features }}'>  
+                            data-id="{{ $restaurant->id }}" 
+                            data-name="{{ $restaurant->name }}" 
+                            data-category="{{ $restaurant->category }}"  
+                            data-cuisine="{{ $restaurant->cuisine }}" 
+                            data-price-range="{{ $restaurant->price_range }}" 
+                            data-rating="{{ $restaurant->rating }}" 
+                            data-description="{{ $restaurant->description }}"  
+                            data-opening-hours="{{ $restaurant->opening_hours }}">  
                                 <i class="fas fa-edit"></i>  
                             </button>
                             <button class="btn btn-sm btn-danger delete-restaurant" data-id="{{ $restaurant->id }}">
