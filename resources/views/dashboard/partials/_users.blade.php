@@ -28,7 +28,14 @@
                     <td>{{ $user->is_admin ? 'Sì' : 'No' }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td class="action-buttons">
-                        <button class="btn btn-sm btn-primary edit-user" data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#editUserModal">
+                        <button class="btn btn-sm btn-primary edit-user" 
+                        data-id="{{ $user->id }}"
+                        data-name="{{ $user->name }}"
+                        data-email="{{ $user->email }}"
+                        data-membership="{{ $user->membership }}"
+                        data-is-admin="{{ $user->is_admin ? 'true' : 'false' }}"
+                        data-bs-toggle="modal" 
+                        data-bs-target="#editUserModal">
                             <i class="fas fa-edit"></i>
                         </button>
                         <button class="btn btn-sm btn-danger delete-user" data-id="{{ $user->id }}">

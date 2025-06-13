@@ -28,7 +28,7 @@
                         </select>
                     </div>
                     <div class="mb-3 form-check">
-                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
+                        <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin" value="1">
                         <label class="form-check-label" for="is_admin">Admin</label>
                     </div>
                 </form>

@@ -19,15 +19,12 @@ $(document).ready(function() {
 
     // Edit Ticket - Load Data
     $(".edit-ticket").click(function () {
-        const ticketId = $(this).data("id");
-        const row = $(this).closest("tr");
-
-        $("#edit_ticket_id").val(ticketId);
-        $("#edit_code").val(row.find("td:eq(1)").text());
-        $("#edit_type").val(row.find("td:eq(2)").text());
-        $("#edit_price").val(row.find("td:eq(3)").text().replace("€", ""));
-        $("#edit_validity").val(row.find("td:eq(4)").text());
-
+        const $this = $(this);
+        $("#edit_ticket_id").val($this.data("id"));
+        $("#edit_code").val($this.data("code"));
+        $("#edit_type").val($this.data("type"));
+        $("#edit_price").val($this.data("price"));
+        $("#edit_validity_date").val($this.data("validity-date"));
         $("#editTicketModal").modal("show");
     });
 

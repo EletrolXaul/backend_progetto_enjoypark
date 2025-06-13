@@ -11,6 +11,7 @@ use App\Models\Service;
 use App\Models\Show;
 use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Validator;
 
 class LocationController extends Controller
 {
@@ -248,5 +249,64 @@ class LocationController extends Controller
             default:
                 return null;
         }
+    }
+
+    /**
+     * Store a newly created location in storage.
+     */
+    public function store(Request $request): JsonResponse
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'category' => 'required|string|in:attraction,restaurant,shop,service,show',
+            'location_x' => 'required|numeric',
+            'location_y' => 'required|numeric',
+            'description' => 'nullable|string',
+            'image' => 'nullable|string',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        $location = Location::create($request->all());
+    
+        return response()->json(['success' => true, 'location' => $location]);
+    }
+
+    /**
+     * Update the specified location in storage.
+     */
+    public function update(Request $request, $id): JsonResponse
+    {
+        $location = Location::findOrFail($id);
+    
+        $validator = Validator::make($request->all(), [
+            'name' => 'sometimes|string|max:255',
+            'category' => 'sometimes|string|in:attraction,restaurant,shop,service,show',
+            'location_x' => 'sometimes|numeric',
+            'location_y' => 'sometimes|numeric',
+            'description' => 'nullable|string',
+            'image' => 'nullable|string',
+        ]);
+    
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+    
+        $location->update($request->all());
+    
+        return response()->json(['success' => true, 'location' => $location]);
+    }
+
+    /**
+     * Remove the specified location from storage.
+     */
+    public function destroy($id): JsonResponse
+    {
+        $location = Location::findOrFail($id);
+        $location->delete();
+    
+        return response()->json(['success' => true]);
     }
 }

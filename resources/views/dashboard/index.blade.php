@@ -142,6 +142,7 @@
     <script src="{{ asset('js/dashboard/modals/modal-utils.js') }}"></script>
 
     <!-- File specifici per ogni tipo di modale -->
+    <script src="{{ asset('js/dashboard/modals/user-modals.js') }}"></script>
     <script src="{{ asset('js/dashboard/modals/order-modals.js') }}"></script>
     <script src="{{ asset('js/dashboard/modals/ticket-modals.js') }}"></script>
     <script src="{{ asset('js/dashboard/modals/attraction-modals.js') }}"></script>

@@ -20,16 +20,12 @@ $(document).ready(function() {
     // Edit User - Load Data
     $(".edit-user").click(function () {
         const userId = $(this).data("id");
-        const row = $(this).closest("tr");
-
         $("#edit_user_id").val(userId);
-        $("#edit_name").val(row.find("td:eq(1)").text());
-        $("#edit_email").val(row.find("td:eq(2)").text());
-        $("#edit_membership").val(row.find("td:eq(3)").text().toLowerCase());
-        $("#edit_is_admin").prop(
-            "checked",
-            row.find("td:eq(4)").text() === "Sì"
-        );
+        $("#edit_name").val($(this).data("name"));
+        $("#edit_email").val($(this).data("email"));
+        $("#edit_membership").val($(this).data("membership"));
+        $("#edit_is_admin").prop("checked", $(this).data("is-admin") === 'true' || $(this).data("is-admin") === true);
+        $("#editUserModal").modal("show");
     });
 
     // Update User
