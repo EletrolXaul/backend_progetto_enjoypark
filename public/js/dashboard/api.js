@@ -328,31 +328,6 @@ $(document).ready(function () {
 
     // Restaurant API calls
     window.restaurantApi = {
-        // Add Restaurant
-        addRestaurant: function (formData, successCallback, errorCallback) {
-            $.ajax({
-                url: "/restaurants",
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessage =
-                            "Si sono verificati i seguenti errori:<ul>";
-
-                        for (const key in errors) {
-                            errorMessage += `<li>${errors[key]}</li>`;
-                        }
-
-                        errorMessage += "</ul>";
-                        errorCallback(errorMessage);
-                    }
-                },
-            });
-        },
 
         // Update Restaurant
         updateRestaurant: function (
@@ -384,54 +359,11 @@ $(document).ready(function () {
                 },
             });
         },
-
-        // Delete Restaurant
-        deleteRestaurant: function (
-            restaurantId,
-            successCallback,
-            errorCallback
-        ) {
-            $.ajax({
-                url: `/restaurants/${restaurantId}`,
-                type: "DELETE",
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback)
-                        errorCallback(
-                            "Errore durante l'eliminazione del ristorante"
-                        );
-                },
-            });
-        },
     };
 
     // Implementazioni simili per Shop, Service, Location, PromoCode, VisitHistory e MockCreditCard
     // Shop API calls
     window.shopApi = {
-        addShop: function (formData, successCallback, errorCallback) {
-            $.ajax({
-                url: "/shops",
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessage =
-                            "Si sono verificati i seguenti errori:<ul>";
-                        for (const key in errors) {
-                            errorMessage += `<li>${errors[key]}</li>`;
-                        }
-                        errorMessage += "</ul>";
-                        errorCallback(errorMessage);
-                    }
-                },
-            });
-        },
         updateShop: function (
             shopId,
             formData,
@@ -459,47 +391,10 @@ $(document).ready(function () {
                 },
             });
         },
-        deleteShop: function (shopId, successCallback, errorCallback) {
-            $.ajax({
-                url: `/shops/${shopId}`,
-                type: "DELETE",
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback)
-                        errorCallback(
-                            "Errore durante l'eliminazione del negozio"
-                        );
-                },
-            });
-        },
     };
 
     // Service API calls
     window.serviceApi = {
-        addService: function (formData, successCallback, errorCallback) {
-            $.ajax({
-                url: "/services",
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessage =
-                            "Si sono verificati i seguenti errori:<ul>";
-                        for (const key in errors) {
-                            errorMessage += `<li>${errors[key]}</li>`;
-                        }
-                        errorMessage += "</ul>";
-                        errorCallback(errorMessage);
-                    }
-                },
-            });
-        },
         updateService: function (
             serviceId,
             formData,
@@ -524,89 +419,6 @@ $(document).ready(function () {
                         errorMessage += "</ul>";
                         errorCallback(errorMessage);
                     }
-                },
-            });
-        },
-        deleteService: function (serviceId, successCallback, errorCallback) {
-            $.ajax({
-                url: `/services/${serviceId}`,
-                type: "DELETE",
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback)
-                        errorCallback(
-                            "Errore durante l'eliminazione del servizio"
-                        );
-                },
-            });
-        },
-    };
-
-    // Location API calls
-    window.locationApi = {
-        addLocation: function (formData, successCallback, errorCallback) {
-            $.ajax({
-                url: "/locations",
-                type: "POST",
-                data: formData,
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessage =
-                            "Si sono verificati i seguenti errori:<ul>";
-                        for (const key in errors) {
-                            errorMessage += `<li>${errors[key]}</li>`;
-                        }
-                        errorMessage += "</ul>";
-                        errorCallback(errorMessage);
-                    }
-                },
-            });
-        },
-        updateLocation: function (
-            locationId,
-            formData,
-            successCallback,
-            errorCallback
-        ) {
-            $.ajax({
-                url: `/locations/${locationId}`,
-                type: "PUT",
-                data: formData,
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback) {
-                        const errors = xhr.responseJSON.errors;
-                        let errorMessage =
-                            "Si sono verificati i seguenti errori:<ul>";
-                        for (const key in errors) {
-                            errorMessage += `<li>${errors[key]}</li>`;
-                        }
-                        errorMessage += "</ul>";
-                        errorCallback(errorMessage);
-                    }
-                },
-            });
-        },
-        deleteLocation: function (locationId, successCallback, errorCallback) {
-            $.ajax({
-                url: `/locations/${locationId}`,
-                type: "DELETE",
-                success: function (response) {
-                    if (successCallback) successCallback(response);
-                },
-                error: function (xhr) {
-                    if (errorCallback)
-                        errorCallback(
-                            "Errore durante l'eliminazione della posizione"
-                        );
                 },
             });
         },

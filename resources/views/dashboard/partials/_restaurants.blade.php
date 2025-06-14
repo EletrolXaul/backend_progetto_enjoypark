@@ -1,9 +1,6 @@
 <div class="table-container">
     <h3 class="table-title">
         Ristoranti
-        <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addRestaurantModal">
-            <i class="fas fa-plus"></i> Aggiungi Ristorante
-        </button>
     </h3>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -34,25 +31,19 @@
                         <td>{{ $restaurant->opening_hours }}</td>
                         <td>{{ $restaurant->created_at ? $restaurant->created_at->format('d/m/Y') : '-' }}</td>
                         <td>
-                            <!-- Pulsanti azioni -->
-                            <button class="btn btn-sm btn-primary edit-restaurant" 
-                                data-id="{{ $restaurant->id }}" 
-                                data-name="{{ $restaurant->name }}" 
-                                data-slug="{{ $restaurant->slug }}" 
-                                data-category="{{ $restaurant->category }}"  
-                                data-cuisine="{{ $restaurant->cuisine }}" 
-                                data-price-range="{{ $restaurant->price_range }}" 
-                                data-rating="{{ $restaurant->rating }}" 
-                                data-description="{{ $restaurant->description }}"  
+                            <button type="button" class="btn btn-sm btn-info view-restaurant"
+                                data-name="{{ $restaurant->name }}"
+                                data-category="{{ $restaurant->category }}"
+                                data-cuisine="{{ $restaurant->cuisine }}"
+                                data-price-range="{{ $restaurant->price_range }}"
+                                data-rating="{{ number_format($restaurant->rating, 1) }}"
                                 data-opening-hours="{{ $restaurant->opening_hours }}"
                                 data-location-x="{{ $restaurant->location_x }}"
                                 data-location-y="{{ $restaurant->location_y }}"
-                                data-image="{{ $restaurant->image }}"
-                                data-features='{{ is_array($restaurant->features) ? json_encode($restaurant->features) : $restaurant->features }}'>  
-                                <i class="fas fa-edit"></i>  
-                            </button>
-                            <button class="btn btn-sm btn-danger delete-restaurant" data-id="{{ $restaurant->id }}">
-                                <i class="fas fa-trash"></i>
+                                data-description="{{ $restaurant->description }}"
+                                data-features='{{ json_encode($restaurant->features) }}'
+                                data-image="{{ $restaurant->image }}">
+                                <i class="fas fa-eye"></i> Dettagli
                             </button>
                         </td>
                     </tr>

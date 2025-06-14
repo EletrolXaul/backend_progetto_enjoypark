@@ -1,9 +1,6 @@
 <div class="table-container">
     <h3 class="table-title">
         Servizi
-        <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addServiceModal">
-            <i class="fas fa-plus"></i> Aggiungi Servizio
-        </button>
     </h3>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -46,22 +43,16 @@
                     </td>
                     <td>{{ $service->created_at ? $service->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
-                        <!-- Pulsanti azioni -->
-                        <button class="btn btn-sm btn-primary edit-service"
-                            data-id="{{ $service->id }}"
-                            data-name="{{ htmlspecialchars($service->name, ENT_QUOTES) }}"
-                            data-slug="{{ htmlspecialchars($service->slug, ENT_QUOTES) }}"
-                            data-category="{{ htmlspecialchars($service->category, ENT_QUOTES) }}"
-                            data-description="{{ htmlspecialchars($service->description, ENT_QUOTES) }}"
-                            data-icon="{{ htmlspecialchars($service->icon, ENT_QUOTES) }}"
-                            data-available-24h="{{ $service->available_24h }}"
+                        <button type="button" class="btn btn-sm btn-info view-service"
+                            data-name="{{ $service->name }}"
+                            data-category="{{ $service->category }}"
+                            data-icon="{{ $service->icon }}"
+                            data-available-24h="{{ $service->available_24h ? 'true' : 'false' }}"
                             data-location-x="{{ $service->location_x }}"
                             data-location-y="{{ $service->location_y }}"
-                            data-features="{{ htmlspecialchars(is_array($service->features) ? json_encode($service->features) : $service->features, ENT_QUOTES) }}">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-service" data-id="{{ $service->id }}">
-                            <i class="fas fa-trash"></i>
+                            data-description="{{ $service->description }}"
+                            data-features='{{ json_encode($service->features) }}'>
+                            <i class="fas fa-eye"></i> Dettagli
                         </button>
                     </td>
                 </tr>

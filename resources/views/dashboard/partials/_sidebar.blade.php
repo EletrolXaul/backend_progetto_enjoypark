@@ -34,9 +34,6 @@
         <a href="#services" class="nav-link" data-bs-toggle="tab" role="tab">
             <i class="fas fa-concierge-bell"></i> <span>Servizi</span>
         </a>
-        <a href="#locations" class="nav-link" data-bs-toggle="tab" role="tab">
-            <i class="fas fa-map-marker-alt"></i> <span>Posizioni</span>
-        </a>
         <a href="#promoCodes" class="nav-link" data-bs-toggle="tab" role="tab">
             <i class="fas fa-tags"></i> <span>Codici Promo</span>
         </a>

@@ -2,7 +2,6 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardController;
-use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\PromoCodeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
@@ -61,12 +60,6 @@ Route::get('/services/{id}', [ServiceController::class, 'show'])->name('services
 Route::post('/services', [ServiceController::class, 'store'])->name('services.store');
 Route::put('/services/{id}', [ServiceController::class, 'update'])->name('services.update');
 Route::delete('/services/{id}', [ServiceController::class, 'destroy'])->name('services.delete');
-
-// Rotte CRUD per Locations
-Route::get('/locations/{id}', [LocationController::class, 'show'])->name('locations.show');
-Route::post('/locations', [LocationController::class, 'store'])->name('locations.store');
-Route::put('/locations/{id}', [LocationController::class, 'update'])->name('locations.update');
-Route::delete('/locations/{id}', [LocationController::class, 'destroy'])->name('locations.delete');
 
 // Rotte CRUD per PromoCode
 Route::post('/promo-codes', [PromoCodeController::class, 'store'])->name('promo-codes.store');

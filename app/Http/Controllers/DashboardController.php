@@ -11,7 +11,6 @@ use App\Models\Show;
 use App\Models\Restaurant;
 use App\Models\Shop;
 use App\Models\Service;
-use App\Models\Location;
 use App\Models\PromoCode;
 use App\Models\VisitHistory;
 use App\Models\MockCreditCard;
@@ -45,7 +44,6 @@ class DashboardController extends Controller
             'restaurants' => $restaurants,
             'shops' => $shops,
             'services' => Service::paginate(10),
-            'locations' => Location::paginate(10),
             'promoCodes' => PromoCode::paginate(10),
             'visitHistories' => VisitHistory::paginate(10),
             'mockCreditCards' => MockCreditCard::paginate(10),

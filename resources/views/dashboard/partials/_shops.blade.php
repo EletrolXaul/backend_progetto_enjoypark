@@ -1,9 +1,6 @@
 <div class="table-container">
     <h3 class="table-title">
         Negozi
-        <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addShopModal">
-            <i class="fas fa-plus"></i> Aggiungi Negozio
-        </button>
     </h3>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -38,22 +35,15 @@
                     <td>({{ $shop->location_x }}, {{ $shop->location_y }})</td>
                     <td>{{ $shop->created_at ? $shop->created_at->format('d/m/Y') : '-' }}</td>
                     <td>
-                        <!-- Pulsanti azioni -->
-                        <button class="btn btn-sm btn-primary edit-shop" 
-                        data-id="{{ $shop->id }}" 
-                        data-name="{{ $shop->name }}" 
-                        data-slug="{{ $shop->slug }}" 
-                        data-category="{{ $shop->category }}"  
-                        data-description="{{ $shop->description }}" 
-                        data-specialties='{{ is_array($shop->specialties) ? json_encode($shop->specialties) : $shop->specialties }}' 
-                        data-opening-hours="{{ $shop->opening_hours }}" 
-                        data-location-x="{{ $shop->location_x }}"  
-                        data-location-y="{{ $shop->location_y }}"
-                        data-image="{{ $shop->image }}">  
-                            <i class="fas fa-edit"></i>  
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-shop" data-id="{{ $shop->id }}">
-                            <i class="fas fa-trash"></i>
+                        <button type="button" class="btn btn-sm btn-info view-shop"
+                            data-name="{{ $shop->name }}"
+                            data-category="{{ $shop->category }}"
+                            data-opening-hours="{{ $shop->opening_hours }}"
+                            data-location-x="{{ $shop->location_x }}"
+                            data-location-y="{{ $shop->location_y }}"
+                            data-description="{{ $shop->description }}"
+                            data-specialties='{{ json_encode($shop->specialties) }}'>
+                            <i class="fas fa-eye"></i> Dettagli
                         </button>
                     </td>
                 </tr>

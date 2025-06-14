@@ -4,7 +4,6 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\Api\OrderController;
-use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\ParkController;
 use App\Http\Controllers\Api\PromoCodeController;
@@ -20,10 +19,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/auth/logout', [AuthController::class, 'logout']);
     Route::get('/auth/me', [AuthController::class, 'me']);
     Route::post('/auth/profile', [AuthController::class, 'updateProfile']);
-
-    // Risorse protette per utenti autenticati
-    //Route::apiResource('orders', OrderController::class);
-    //Route::apiResource('tickets', TicketController::class);
     
     // Endpoint specifico per ordini con ticket
     Route::get('tickets/orders', [OrderController::class, 'getOrdersWithTickets']);
@@ -52,12 +47,11 @@ Route::middleware('auth:sanctum')->group(function () {
 // Rotte pubbliche (senza autenticazione)
 Route::get('/attractions', [AttractionController::class, 'index']);
 Route::get('/attractions/{id}', [AttractionController::class, 'show']);
-Route::get('/locations', [LocationController::class, 'index']);
-Route::get('/locations/{id}', [LocationController::class, 'show']);
+
 
 // Eventuali endpoint pubblici separati, se servono
 Route::get('/attractions/public', [AttractionController::class, 'public']);
-Route::get('/locations/public', [LocationController::class, 'public']);
+
 
 // Rotte per dati aggregati del parco (pubbliche)
 Route::prefix('park')->group(function () {
@@ -71,13 +65,6 @@ Route::prefix('park')->group(function () {
 
 // Rotta alias per compatibilità TS
 Route::get('/park-data', [ParkController::class, 'allData']);
-
-// Rotte per le location sincronizzate
-Route::prefix('locations')->group(function () {
-    Route::get('/', [LocationController::class, 'index']);
-    Route::get('/{id}', [LocationController::class, 'show']);
-    Route::post('/sync', [LocationController::class, 'syncLocations']);
-});
 
 // Rotte per utenti autenticati
 Route::middleware('auth:sanctum')->group(function () {

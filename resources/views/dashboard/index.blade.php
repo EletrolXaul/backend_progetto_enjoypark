@@ -85,11 +85,6 @@
                 @include('dashboard.partials._services')
             </div>
 
-            <!-- Locations Tab -->
-            <div class="tab-pane fade" id="locations" role="tabpanel">
-                @include('dashboard.partials._locations')
-            </div>
-
             <!-- Promo Codes Tab -->
             <div class="tab-pane fade" id="promoCodes" role="tabpanel">
                 @include('dashboard.partials._promo_codes')
@@ -118,7 +113,7 @@
     @include('dashboard.modals._restaurant_form')
     @include('dashboard.modals._shop_form')
     @include('dashboard.modals._service_form')
-    @include('dashboard.modals._location_form')
+    @include('dashboard.modals._view_modals')
     @include('dashboard.modals._promo_code_form')
     @include('dashboard.modals._visit_history_form')
     @include('dashboard.modals._mock_credit_card_form')
