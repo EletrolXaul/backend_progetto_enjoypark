@@ -20,13 +20,6 @@
                         <label for="password" class="form-label">Password</label>
                         <input type="password" class="form-control" id="password" name="password" required>
                     </div>
-                    <div class="mb-3">
-                        <label for="membership" class="form-label">Membership</label>
-                        <select class="form-select" id="membership" name="membership" required>
-                            <option value="standard">Standard</option>
-                            <option value="premium">Premium</option>
-                        </select>
-                    </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="is_admin" name="is_admin">
                         <label class="form-check-label" for="is_admin">Admin</label>
@@ -65,13 +58,6 @@
                     <div class="mb-3">
                         <label for="edit_password" class="form-label">Password (lasciare vuoto per non modificare)</label>
                         <input type="password" class="form-control" id="edit_password" name="password">
-                    </div>
-                    <div class="mb-3">
-                        <label for="edit_membership" class="form-label">Membership</label>
-                        <select class="form-select" id="edit_membership" name="membership" required>
-                            <option value="standard">Standard</option>
-                            <option value="premium">Premium</option>
-                        </select>
                     </div>
                     <div class="mb-3 form-check">
                         <input type="checkbox" class="form-check-input" id="edit_is_admin" name="is_admin" value="1">

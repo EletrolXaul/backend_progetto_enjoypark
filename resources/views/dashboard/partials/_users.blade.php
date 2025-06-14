@@ -12,7 +12,6 @@
                     <th>ID</th>
                     <th>Nome</th>
                     <th>Email</th>
-                    <th>Membership</th>
                     <th>Admin</th>
                     <th>Creato il</th>
                     <th>Azioni</th>
@@ -24,7 +23,6 @@
                     <td>{{ $user->id }}</td>
                     <td>{{ $user->name }}</td>
                     <td>{{ $user->email }}</td>
-                    <td>{{ $user->membership }}</td>
                     <td>{{ $user->is_admin ? 'Sì' : 'No' }}</td>
                     <td>{{ $user->created_at }}</td>
                     <td class="action-buttons">

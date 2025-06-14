@@ -28,7 +28,6 @@ class UserController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6',
-            'membership' => 'required|string|in:standard,premium',
             'is_admin' => 'boolean',
         ]);
 
@@ -42,7 +41,6 @@ class UserController extends Controller
             'password' => bcrypt($request->password),
             'membership' => $request->membership,
             'is_admin' => $request->is_admin ?? false,
-            'avatar' => '/placeholder.svg?height=40&width=40',
             'preferences' => [
                 'language' => 'it',
                 'theme' => 'light',
@@ -61,7 +59,6 @@ class UserController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $id,
-            'membership' => 'required|string|in:standard,premium',
             'is_admin' => 'sometimes|boolean',
             'password' => 'nullable|string|min:6',
         ]);
@@ -73,7 +70,6 @@ class UserController extends Controller
         $updateData = [
             'name' => $request->name,
             'email' => $request->email,
-            'membership' => $request->membership,
             'is_admin' => $request->has('is_admin') ? (bool)$request->is_admin : false,
         ];
 
