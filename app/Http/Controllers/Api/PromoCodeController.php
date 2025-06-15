@@ -23,6 +23,22 @@ class PromoCodeController extends Controller
         return response()->json($promoCode);
     }
 
+    public function adminIndex()
+    {
+        try {
+            $promoCodes = PromoCode::orderBy('created_at', 'desc')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $promoCodes
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel caricamento dei codici promozionali'
+            ], 500);
+        }
+    }
+
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [

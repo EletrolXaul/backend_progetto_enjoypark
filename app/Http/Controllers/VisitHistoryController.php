@@ -85,4 +85,57 @@ class VisitHistoryController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function adminIndex()
+    {
+        try {
+            $visitHistory = VisitHistory::with('user')
+                ->orderBy('created_at', 'desc')
+                ->get();
+            return response()->json([
+                'success' => true,
+                'data' => $visitHistory
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel caricamento della cronologia visite'
+            ], 500);
+        }
+    }
+
+    public function export()
+    {
+        try {
+            $visitHistory = VisitHistory::with('user')
+                ->orderBy('created_at', 'desc')
+                ->get();
+            
+            // Convert to CSV format
+            $csvData = [];
+            $csvData[] = ['ID', 'User', 'Visit Date', 'Attractions', 'Rating', 'Notes', 'Duration'];
+            
+            foreach ($visitHistory as $visit) {
+                $csvData[] = [
+                    $visit->id,
+                    $visit->user ? $visit->user->name : 'N/A',
+                    $visit->visit_date,
+                    is_array($visit->attractions) ? implode(', ', $visit->attractions) : $visit->attractions,
+                    $visit->rating ?? 'N/A',
+                    $visit->notes ?? '',
+                    $visit->duration ?? 'N/A'
+                ];
+            }
+            
+            return response()->json([
+                'success' => true,
+                'data' => $csvData
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nell\'esportazione dei dati'
+            ], 500);
+        }
+    }
 }

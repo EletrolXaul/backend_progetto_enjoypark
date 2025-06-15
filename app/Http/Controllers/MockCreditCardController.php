@@ -8,9 +8,20 @@ use Illuminate\Support\Facades\Validator;
 
 class MockCreditCardController extends Controller
 {
-    public function index()
+    public function adminIndex()
     {
-        return response()->json(MockCreditCard::all(), 200);
+        try {
+            $creditCards = MockCreditCard::orderBy('created_at', 'desc')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $creditCards
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel caricamento delle carte di credito'
+            ], 500);
+        }
     }
 
     public function show($id)

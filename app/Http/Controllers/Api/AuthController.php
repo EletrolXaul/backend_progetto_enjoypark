@@ -120,4 +120,78 @@ class AuthController extends Controller
         
         return response()->json($user);
     }
+
+    public function createUser(Request $request)
+    {
+        // Only allow admin users
+        if (!$request->user()->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6',
+            'is_admin' => 'sometimes|boolean',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+            'is_admin' => $request->is_admin ?? false,
+            'preferences' => [
+                'language' => 'it',
+                'theme' => 'light',
+                'notifications' => true,
+                'newsletter' => false,
+            ],
+            'membership' => 'standard',
+        ]);
+
+        return response()->json($user, 201);
+    }
+
+    public function updateUser(Request $request, User $user)
+    {
+        // Only allow admin users
+        if (!$request->user()->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
+        $request->validate([
+            'name' => 'sometimes|string|max:255',
+            'email' => 'sometimes|string|email|max:255|unique:users,email,' . $user->id,
+            'password' => 'sometimes|string|min:6',
+            'is_admin' => 'sometimes|boolean',
+        ]);
+
+        $updateData = $request->only(['name', 'email', 'is_admin']);
+        
+        // Only hash password if it's being updated
+        if ($request->has('password')) {
+            $updateData['password'] = Hash::make($request->password);
+        }
+
+        $user->update($updateData);
+
+        return response()->json($user);
+    }
+
+    public function deleteUser(Request $request, User $user)
+    {
+        // Only allow admin users
+        if (!$request->user()->is_admin) {
+            return response()->json(['message' => 'Unauthorized'], 403);
+        }
+        
+        // Prevent admin from deleting themselves
+        if ($user->id === $request->user()->id) {
+            return response()->json(['message' => 'Cannot delete your own account'], 400);
+        }
+        
+        $user->delete();
+        
+        return response()->json(['message' => 'User deleted successfully']);
+    }
 }

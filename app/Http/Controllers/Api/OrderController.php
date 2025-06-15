@@ -31,12 +31,20 @@ class OrderController extends Controller
     {
         $orders = Order::with(['user', 'ticketItems.ticketType'])
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->get()
+            ->map(function ($order) {
+                return [
+                    'id' => $order->id,
+                    'order_number' => $order->order_number,
+                    'user_id' => $order->user_id,
+                    'user_name' => $order->user ? $order->user->name : 'N/A',
+                    'total_price' => $order->total_price,
+                    'status' => $order->status,
+                    'created_at' => $order->created_at,
+                ];
+            });
             
-        return response()->json([
-            'success' => true,
-            'data' => $orders
-        ], 200);
+        return response()->json($orders, 200);
     }
 
     public function store(Request $request)
@@ -44,10 +52,11 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
             'total_price' => 'required|numeric|min:0',
-            'status' => 'required|string|in:pending,confirmed,used,expired',
+            'status' => 'required|string|in:pending,confirmed,used,expired,completed,cancelled',
             'tickets' => 'required|array',
+            'visit_date' => 'sometimes|date|after_or_equal:today',
         ]);
-    
+        
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
@@ -146,7 +155,8 @@ class OrderController extends Controller
         $validator = Validator::make($request->all(), [
             'user_id' => 'sometimes|exists:users,id',
             'total_price' => 'sometimes|numeric|min:0',
-            'status' => 'sometimes|string|in:pending,confirmed,used,expired',
+            'status' => 'sometimes|string|in:pending,confirmed,used,expired,completed,cancelled',
+            'visit_date' => 'sometimes|date',
         ]);
     
         if ($validator->fails()) {

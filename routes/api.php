@@ -8,6 +8,10 @@ use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\ParkController;
 use App\Http\Controllers\Api\PromoCodeController;
 use App\Http\Controllers\Api\PlannerController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\ShowController;
+use App\Http\Controllers\MockCreditCardController;
+use App\Http\Controllers\VisitHistoryController;
 
 // Rotte per autenticazione pubblica
 Route::post('/auth/login', [AuthController::class, 'login']);
@@ -25,22 +29,51 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Rotte admin protette
     Route::middleware('admin')->prefix('admin')->group(function () {
-        Route::get('orders', [OrderController::class, 'adminIndex']);
-        Route::get('orders', [OrderController::class, 'index']);
-        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
-        Route::get('tickets', [TicketController::class, 'adminIndex']);
-        Route::patch('tickets/{ticket}/status', [TicketController::class, 'updateStatus']);
+        // Statistiche admin
+        Route::get('stats', [DashboardController::class, 'getStats']);
         
-        // Add these new routes:
+        // Gestione utenti
         Route::get('users', [AuthController::class, 'getAllUsers']);
-        Route::put('users/{user}/role', [AuthController::class, 'updateUserRole']);
-        Route::get('promo-codes', [PromoCodeController::class, 'index']);
-        Route::patch('promo-codes/{code}/status', [PromoCodeController::class, 'updateStatus']);
+        Route::post('users', [AuthController::class, 'createUser']);
+        Route::put('users/{user}', [AuthController::class, 'updateUser']);
+        Route::delete('users/{user}', [AuthController::class, 'deleteUser']);
         
-        // Aggiungi queste rotte per la gestione delle attrazioni
+        // Gestione spettacoli
+        Route::get('shows', [ShowController::class, 'adminIndex']);
+        Route::post('shows', [ShowController::class, 'store']);
+        Route::put('shows/{show}', [ShowController::class, 'update']);
+        Route::delete('shows/{show}', [ShowController::class, 'destroy']);
+        
+        // Gestione attrazioni
+        Route::get('attractions', [AttractionController::class, 'adminIndex']);
         Route::post('attractions', [AttractionController::class, 'store']);
-        Route::put('attractions/{id}', [AttractionController::class, 'update']);
-        Route::delete('attractions/{id}', [AttractionController::class, 'destroy']);
+        Route::put('attractions/{attraction}', [AttractionController::class, 'update']);
+        Route::delete('attractions/{attraction}', [AttractionController::class, 'destroy']);
+        
+        // Gestione codici promozionali
+        Route::get('promo-codes', [PromoCodeController::class, 'adminIndex']);
+        Route::post('promo-codes', [PromoCodeController::class, 'store']);
+        Route::put('promo-codes/{promoCode}', [PromoCodeController::class, 'update']);
+        Route::delete('promo-codes/{promoCode}', [PromoCodeController::class, 'destroy']);
+        
+        // Gestione carte di credito
+        Route::get('credit-cards', [MockCreditCardController::class, 'adminIndex']);
+        Route::put('credit-cards/{card}/block', [MockCreditCardController::class, 'block']);
+        Route::put('credit-cards/{card}/unblock', [MockCreditCardController::class, 'unblock']);
+        Route::delete('credit-cards/{card}', [MockCreditCardController::class, 'destroy']);
+        
+        // Gestione storico visite
+        Route::get('visit-history', [VisitHistoryController::class, 'adminIndex']);
+        Route::get('visit-history/export', [VisitHistoryController::class, 'export']);
+        
+        // Gestione ordini e biglietti (già esistenti, ma da verificare)
+        Route::get('orders', [OrderController::class, 'adminIndex']);
+        Route::put('orders/{order}', [OrderController::class, 'update']);
+        Route::delete('orders/{order}', [OrderController::class, 'destroy']);
+        
+        Route::get('tickets', [TicketController::class, 'adminIndex']);
+        Route::put('tickets/{ticket}', [TicketController::class, 'update']);
+        Route::delete('tickets/{ticket}', [TicketController::class, 'destroy']);
     });
 });
 
@@ -75,9 +108,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('tickets', [TicketController::class, 'index']);
     
     // Solo admin per gestione avanzata
-    Route::middleware('admin')->prefix('admin')->group(function () {
-        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus']);
-        Route::get('users', [AuthController::class, 'getAllUsers']);
+    // Assicurati che le route admin abbiano il middleware auth:sanctum
+    Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {
+        Route::get('stats', [DashboardController::class, 'getStats']);
+        Route::get('orders', [OrderController::class, 'adminIndex']);
         // ... altre route admin
     });
 });

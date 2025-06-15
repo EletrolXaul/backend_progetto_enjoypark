@@ -93,4 +93,20 @@ class ShowController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function adminIndex()
+    {
+        try {
+            $shows = Show::orderBy('created_at', 'desc')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $shows
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel caricamento degli spettacoli'
+            ], 500);
+        }
+    }
 }

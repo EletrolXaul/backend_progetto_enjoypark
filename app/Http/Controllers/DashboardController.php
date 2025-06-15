@@ -71,4 +71,16 @@ class DashboardController extends Controller
         }
         return response()->json($show);
     }
+
+    public function getStats()
+    {
+        return response()->json([
+            'totalUsers' => User::count(),
+            'totalOrders' => Order::count(),
+            'totalTickets' => Ticket::count(),
+            'totalRevenue' => Order::sum('total_price'),
+            'todayOrders' => Order::whereDate('created_at', today())->count(),
+            'activeShows' => Show::count() // Changed from Show::where('status', 'active')->count()
+        ]);
+    }
 }
