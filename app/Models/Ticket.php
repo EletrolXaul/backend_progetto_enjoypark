@@ -13,8 +13,6 @@ class Ticket extends Model
 
     protected $fillable = [
         'user_id',
-        'order_id',
-        'ticket_type_id',
         'order_number',
         'visit_date',
         'ticket_type',
@@ -40,7 +38,7 @@ class Ticket extends Model
 
     public function order()
     {
-        return $this->belongsTo(Order::class);
+        return $this->belongsTo(Order::class, 'order_number', 'order_number');
     }
 
     public function ticketType()

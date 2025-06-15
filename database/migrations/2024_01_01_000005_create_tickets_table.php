@@ -14,7 +14,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->string('order_number');
             $table->date('visit_date');
-            $table->foreignId('ticket_type_id')->constrained('ticket_types')->onDelete('cascade');
+            $table->enum('ticket_type', ['adult', 'child', 'senior', 'family', 'standard', 'premium']);
             $table->decimal('price', 8, 2);
             $table->enum('status', ['valid', 'used', 'expired', 'cancelled'])->default('valid');
             $table->string('qr_code')->unique();
@@ -22,7 +22,6 @@ return new class extends Migration
             $table->json('metadata')->nullable();
             $table->timestamps();
             
-            // Aggiungi un indice per migliorare le performance
             $table->index('order_number');
         });
     }

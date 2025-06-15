@@ -97,32 +97,31 @@ class OrderController extends Controller
     {
         // Mappa i tipi di biglietti con i prezzi
         $ticketPrices = [
-            'standard' => 25,
-            'family' => 80,
+            'standard' => 45,
+            'family' => 160,
             'adult' => 45,
             'child' => 35,
             'senior' => 40,
         ];
         
-        foreach ($ticketsData as $type => $quantity) {
-            // Trova il ticket_type_id se esiste
-            $ticketType = TicketType::where('type', $type)->first();
+        foreach ($ticketsData as $ticketData) {
+            $type = $ticketData['ticket_type'];
+            $quantity = $ticketData['quantity'];
             
             for ($i = 0; $i < $quantity; $i++) {
                 $ticketStatus = $this->mapOrderStatusToTicketStatus($order->status);
                 
                 Ticket::create([
                     'user_id' => $order->user_id,
-                    'ticket_type_id' => $ticketType ? $ticketType->id : null,
-                    'order_number' => $order->order_number,
+                    'order_number' => $order->order_number, // Usa order_number invece di order_id
                     'visit_date' => $order->visit_date,
-                    'ticket_type' => $type,
-                    'price' => $ticketPrices[$type] ?? 25,
+                    'ticket_type' => $type, // Usa ticket_type direttamente
+                    'price' => $ticketPrices[$type] ?? 45,
                     'status' => $ticketStatus,
                     'qr_code' => $this->generateUniqueQRCode(),
                     'metadata' => [
-                        'created_from' => 'dashboard',
-                        'order_id' => $order->id
+                        'created_from' => 'frontend',
+                        'order_number' => $order->order_number // Salva order_number nei metadata
                     ]
                 ]);
             }
