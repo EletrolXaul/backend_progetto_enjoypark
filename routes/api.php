@@ -107,6 +107,10 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('orders/{id}', [OrderController::class, 'show']);
     Route::get('tickets', [TicketController::class, 'index']);
     
+    // Nuove routes per validazione QR
+    Route::post('tickets/validate', [TicketController::class, 'validateQR']);
+    Route::put('tickets/update-status', [TicketController::class, 'updateStatus']);
+    
     // Solo admin per gestione avanzata
     // Assicurati che le route admin abbiano il middleware auth:sanctum
     Route::middleware(['auth:sanctum'])->prefix('admin')->group(function () {

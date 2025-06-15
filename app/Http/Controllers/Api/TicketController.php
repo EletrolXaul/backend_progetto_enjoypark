@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Ticket;
+use App\Models\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -127,5 +128,82 @@ class TicketController extends Controller
                 'message' => 'Errore nel recupero dei tipi di biglietti'
             ], 500);
         }
+    }
+
+    public function validateQR(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'qr_code' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false, 
+                'message' => 'QR Code richiesto'
+            ], 422);
+        }
+
+        $ticket = Ticket::where('qr_code', $request->qr_code)
+                       ->with(['order'])
+                       ->first();
+
+        if (!$ticket) {
+            return response()->json([
+                'success' => false,
+                'message' => 'QR Code non valido o non trovato'
+            ], 404);
+        }
+
+        $order = Order::find($ticket->metadata['order_id'] ?? null);
+
+        return response()->json([
+            'success' => true,
+            'ticket' => $ticket,
+            'order' => $order,
+            'message' => $this->getStatusMessage($ticket->status)
+        ]);
+    }
+
+    public function updateStatus(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'qr_code' => 'required|string',
+            'status' => 'required|string|in:valid,used,expired,invalid',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false, 
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $ticket = Ticket::where('qr_code', $request->qr_code)->first();
+
+        if (!$ticket) {
+            return response()->json([
+                'success' => false,
+                'message' => 'QR Code non trovato'
+            ], 404);
+        }
+
+        $ticket->update(['status' => $request->status]);
+
+        return response()->json([
+            'success' => true,
+            'ticket' => $ticket,
+            'message' => 'Stato aggiornato con successo'
+        ]);
+    }
+
+    private function getStatusMessage($status)
+    {
+        return match($status) {
+            'valid' => 'Biglietto valido - Accesso consentito',
+            'used' => 'Biglietto già utilizzato',
+            'expired' => 'Biglietto scaduto',
+            'invalid' => 'Biglietto non valido',
+            default => 'Stato sconosciuto'
+        };
     }
 }
