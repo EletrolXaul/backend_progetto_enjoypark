@@ -11,7 +11,26 @@ class MockCreditCardController extends Controller
     public function adminIndex()
     {
         try {
-            $creditCards = MockCreditCard::orderBy('created_at', 'desc')->get();
+            $creditCards = MockCreditCard::orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($card) {
+                    return [
+                        'id' => $card->id,
+                        'user_name' => $card->name,
+                        'user_email' => 'user@example.com', // Placeholder
+                        'card_last_four' => substr($card->number, -4),
+                        'card_brand' => $card->type,
+                        'card_type' => 'credit',
+                        'expiry_month' => (int)substr($card->expiry, 0, 2),
+                        'expiry_year' => (int)("20" . substr($card->expiry, 3, 2)),
+                        'status' => $card->result === 'success' ? 'active' : 'blocked',
+                        'is_default' => false,
+                        'total_transactions' => 0,
+                        'total_amount' => 0,
+                        'last_used' => null,
+                        'created_at' => $card->created_at,
+                    ];
+                });
             return response()->json([
                 'success' => true,
                 'data' => $creditCards

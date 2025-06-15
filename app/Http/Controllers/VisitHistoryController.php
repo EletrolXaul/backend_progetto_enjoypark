@@ -91,7 +91,23 @@ class VisitHistoryController extends Controller
         try {
             $visitHistory = VisitHistory::with('user')
                 ->orderBy('created_at', 'desc')
-                ->get();
+                ->get()
+                ->map(function ($visit) {
+                    return [
+                        'id' => $visit->id,
+                        'user_id' => $visit->user_id,
+                        'user_name' => $visit->user ? $visit->user->name : 'N/A',
+                        'user_email' => $visit->user ? $visit->user->email : 'N/A',
+                        'entry_time' => $visit->created_at,
+                        'exit_time' => null, // Placeholder
+                        'duration' => $visit->duration ?? null,
+                        'attractions_visited' => $visit->attractions ?? [],
+                        'shows_attended' => [], // Placeholder
+                        'total_spent' => 0, // Placeholder
+                        'visit_date' => $visit->visit_date,
+                        'status' => 'completed', // Placeholder
+                    ];
+                });
             return response()->json([
                 'success' => true,
                 'data' => $visitHistory
