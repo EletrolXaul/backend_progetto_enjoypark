@@ -46,7 +46,7 @@ class PromoCodeController extends Controller
             'description' => 'required|string|max:255',
             'discount' => 'required|numeric|min:0|max:100',
             'type' => 'required|string|in:percentage,fixed',
-            'valid_until' => 'required|date|after_or_equal:today', // Cambiato da 'after:today'
+            'valid_until' => 'required|date|after_or_equal:today',
             'min_amount' => 'nullable|numeric|min:0',
             'max_discount' => 'nullable|numeric|min:0',
             'usage_limit' => 'nullable|integer|min:0',
@@ -59,7 +59,8 @@ class PromoCodeController extends Controller
     
         $promoCodeData = $request->all();
         $promoCodeData['used_count'] = 0;
-        $promoCodeData['is_active'] = $request->has('is_active') ? true : false;
+        // Correzione: usa il valore effettivo del campo, non has()
+        $promoCodeData['is_active'] = $request->input('is_active', true);
         
         $promoCode = PromoCode::create($promoCodeData);
     
@@ -71,11 +72,11 @@ class PromoCodeController extends Controller
         $promoCode = PromoCode::findOrFail($id);
     
         $validator = Validator::make($request->all(), [
-            'code' => 'sometimes|string|max:50|unique:promo_codes,code,' . $id,
-            'description' => 'sometimes|string|max:255',
-            'discount' => 'sometimes|numeric|min:0|max:100',
-            'type' => 'sometimes|string|in:percentage,fixed',
-            'valid_until' => 'sometimes|date',
+            'code' => 'required|string|max:50|unique:promo_codes,code,' . $id,
+            'description' => 'required|string|max:255',
+            'discount' => 'required|numeric|min:0|max:100',
+            'type' => 'required|string|in:percentage,fixed',
+            'valid_until' => 'required|date|after_or_equal:today',
             'min_amount' => 'nullable|numeric|min:0',
             'max_discount' => 'nullable|numeric|min:0',
             'usage_limit' => 'nullable|integer|min:0',
@@ -88,7 +89,8 @@ class PromoCodeController extends Controller
         }
     
         $updateData = $request->all();
-        $updateData['is_active'] = $request->has('is_active') ? false : true;
+        // Correzione: usa il valore effettivo del campo, non has()
+        $updateData['is_active'] = $request->input('is_active', $promoCode->is_active);
         
         $promoCode->update($updateData);
     
