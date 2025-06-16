@@ -100,6 +100,7 @@ Route::prefix('park')->group(function () {
 Route::get('/park-data', [ParkController::class, 'allData']);
 
 // Rotte per utenti autenticati
+// Aggiungi questa rotta nella sezione delle rotte autenticate
 Route::middleware('auth:sanctum')->group(function () {
     // Ordini accessibili a tutti gli utenti autenticati
     Route::get('orders', [OrderController::class, 'index']);
@@ -118,4 +119,13 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('orders', [OrderController::class, 'adminIndex']);
         // ... altre route admin
     });
+    
+    // Rotte per il planner
+    Route::get('planner/items', [PlannerController::class, 'index']);
+    Route::post('planner/items', [PlannerController::class, 'store']);
+    Route::put('planner/items/{id}', [PlannerController::class, 'update']);
+    Route::delete('planner/items/{id}', [PlannerController::class, 'destroy']);
+    
+    // Aggiungi questa nuova rotta
+    Route::get('user/tickets', [TicketController::class, 'getUserTickets']);
 });

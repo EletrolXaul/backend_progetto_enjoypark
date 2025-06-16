@@ -206,4 +206,62 @@ class TicketController extends Controller
             default => 'Stato sconosciuto'
         };
     }
+    
+    // Aggiungi questo metodo nel TicketController
+    public function getUserTickets(Request $request)
+    {
+        $user = $request->user();
+        
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Utente non autenticato'
+            ], 401);
+        }
+        
+        try {
+            // Recupera tutti i biglietti dell'utente con le informazioni dell'ordine
+            $tickets = Ticket::with(['order'])
+                ->where('user_id', $user->id)
+                ->orderBy('created_at', 'desc')
+                ->get();
+            
+            // Raggruppa i biglietti per ordine
+            $ticketsByOrder = $tickets->groupBy('order_number')->map(function ($orderTickets) {
+                $firstTicket = $orderTickets->first();
+                $order = $firstTicket->order;
+                
+                return [
+                    'id' => $order ? $order->id : null,
+                    'order_number' => $firstTicket->order_number,
+                    'visit_date' => $firstTicket->visit_date,
+                    'purchase_date' => $order ? $order->created_at : $firstTicket->created_at,
+                    'total_price' => $orderTickets->sum('price'),
+                    'status' => $order ? $order->status : 'unknown',
+                    'customer_info' => [
+                        'name' => $order ? $order->customer_name : $firstTicket->user->name,
+                        'email' => $order ? $order->customer_email : $firstTicket->user->email,
+                    ],
+                    'ticketItems' => $orderTickets->map(function ($ticket) {
+                        return [
+                            'id' => $ticket->id,
+                            'ticket_type' => $ticket->ticket_type,
+                            'price' => $ticket->price,
+                            'qr_code' => $ticket->qr_code,
+                            'status' => $ticket->status,
+                            'order_number' => $ticket->order_number
+                        ];
+                    })->toArray()
+                ];
+            })->values();
+            
+            return response()->json($ticketsByOrder);
+            
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel recupero dei biglietti: ' . $e->getMessage()
+            ], 500);
+        }
+    }
 }

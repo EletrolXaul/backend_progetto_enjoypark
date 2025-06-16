@@ -17,24 +17,37 @@ class OrderController extends Controller
     // Aggiungi questo metodo che manca
     public function getOrdersWithTickets(Request $request)
     {
-        try {
-            $user = $request->user();
-
-            $orders = Order::where('user_id', $user->id)
-                ->with(['user', 'ticketItems'])
-                ->orderBy('created_at', 'desc')
-                ->get();
-
-            // Aggiungi QR codes a ogni ordine
-            $orders->each(function ($order) {
-                $order->qr_codes = $order->ticketItems->pluck('qr_code')->toArray();
-            });
-
-            return response()->json($orders);
-        } catch (\Exception $e) {
-            Log::error('Errore nel caricamento ordini con biglietti: ' . $e->getMessage());
-            return response()->json(['error' => 'Errore nel caricamento ordini'], 500);
+        $user = $request->user();
+        
+        // Debug: verifica relazione
+        Log::info('🔍 Debug ticketItems relationship');
+        
+        $orders = Order::with(['user', 'ticketItems'])
+            ->where('user_id', $user->id)
+            ->get();
+        
+        // Debug dettagliato per ogni ordine
+        foreach ($orders as $order) {
+            Log::info("Ordine {$order->order_number}:", [
+                'id' => $order->id,
+                'order_number' => $order->order_number,
+                'ticketItems_count' => $order->ticketItems->count(),
+                'ticketItems_data' => $order->ticketItems->toArray()
+            ]);
         }
+        
+        // DEBUG: Aggiungi questo per vedere i ticketItems
+        $orders->each(function ($order) {
+            Log::info('Order debug:', [
+                'order_id' => $order->id,
+                'order_number' => $order->order_number,
+                'ticketItems_count' => $order->ticketItems->count(),
+                'ticketItems' => $order->ticketItems->toArray()
+            ]);
+            $order->qr_codes = $order->ticketItems->pluck('qr_code')->toArray();
+        });
+    
+        return response()->json($orders);
     }
 
     public function index(Request $request)
