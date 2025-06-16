@@ -102,4 +102,83 @@ class PromoCodeController extends Controller
     
         return response()->json(['success' => true]);
     }
+
+    /**
+     * Valida un codice promozionale
+     */
+    public function validatePromo(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'code' => 'required|string',
+            'order_amount' => 'required|numeric|min:0'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Dati non validi',
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        $code = strtoupper(trim($request->code));
+        $orderAmount = $request->order_amount;
+
+        // Trova il codice promozionale
+        $promoCode = PromoCode::where('code', $code)
+            ->where('is_active', true)
+            ->where('valid_until', '>=', now())
+            ->first();
+
+        if (!$promoCode) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Codice promozionale non valido o scaduto'
+            ], 404);
+        }
+
+        // Verifica l'importo minimo
+        if ($promoCode->min_amount && $orderAmount < $promoCode->min_amount) {
+            return response()->json([
+                'success' => false,
+                'message' => "Importo minimo richiesto: €{$promoCode->min_amount}"
+            ], 400);
+        }
+
+        // Verifica il limite di utilizzo
+        if ($promoCode->usage_limit && $promoCode->used_count >= $promoCode->usage_limit) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Codice promozionale esaurito'
+            ], 400);
+        }
+
+        // Calcola lo sconto
+        $discountAmount = 0;
+        if ($promoCode->type === 'percentage') {
+            $discountAmount = ($orderAmount * $promoCode->discount) / 100;
+            // Applica il limite massimo se presente
+            if ($promoCode->max_discount && $discountAmount > $promoCode->max_discount) {
+                $discountAmount = $promoCode->max_discount;
+            }
+        } else {
+            $discountAmount = $promoCode->discount;
+        }
+
+        // Assicurati che lo sconto non superi l'importo dell'ordine
+        $discountAmount = min($discountAmount, $orderAmount);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Codice promozionale applicato con successo',
+            'data' => [
+                'code' => $promoCode->code,
+                'description' => $promoCode->description,
+                'discount_amount' => round($discountAmount, 2),
+                'type' => $promoCode->type,
+                'discount_value' => $promoCode->discount,
+                'new_total' => round($orderAmount - $discountAmount, 2)
+            ]
+        ]);
+    }
 }

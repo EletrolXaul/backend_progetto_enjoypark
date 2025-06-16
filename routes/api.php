@@ -6,6 +6,9 @@ use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\TicketController;
 use App\Http\Controllers\Api\ParkController;
+use App\Http\Controllers\RestaurantController;
+use App\Http\Controllers\ShopController;
+use App\Http\Controllers\ServiceController;
 use App\Http\Controllers\Api\PromoCodeController;
 use App\Http\Controllers\Api\PlannerController;
 use App\Http\Controllers\DashboardController;
@@ -81,6 +84,16 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::get('/attractions', [AttractionController::class, 'index']);
 Route::get('/attractions/{id}', [AttractionController::class, 'show']);
 
+// Aggiungi queste route mancanti
+Route::get('/restaurants', [RestaurantController::class, 'index']);
+Route::get('/restaurants/{id}', [RestaurantController::class, 'show']);
+
+Route::get('/shops', [ShopController::class, 'index']);
+Route::get('/shops/{id}', [ShopController::class, 'show']);
+
+Route::get('/services', [ServiceController::class, 'index']);
+Route::get('/services/{id}', [ServiceController::class, 'show']);
+
 
 // Eventuali endpoint pubblici separati, se servono
 Route::get('/attractions/public', [AttractionController::class, 'public']);
@@ -128,4 +141,5 @@ Route::middleware('auth:sanctum')->group(function () {
     
     // Aggiungi questa nuova rotta
     Route::get('user/tickets', [TicketController::class, 'getUserTickets']);
+    Route::post('/tickets/validate-promo', [PromoCodeController::class, 'validatePromo']);
 });
