@@ -214,4 +214,36 @@ class OrderController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    public function adminIndex()
+    {
+        try {
+            $orders = Order::with(['user', 'ticketItems'])
+                ->orderBy('created_at', 'desc')
+                ->get()
+                ->map(function ($order) {
+                    return [
+                        'id' => $order->id,
+                        'order_number' => $order->order_number,
+                        'user_id' => $order->user_id,
+                        'user_name' => $order->user ? $order->user->name : 'Utente sconosciuto',
+                        'total_price' => $order->total_price,
+                        'status' => $order->status,
+                        'created_at' => $order->created_at,
+                        'ticketItems' => $order->ticketItems
+                    ];
+                });
+    
+                return response()->json([
+                    'success' => true,
+                    'data' => $orders
+                ]);
+            } catch (\Exception $e) {
+                Log::error('Errore nel caricamento ordini admin: ' . $e->getMessage());
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Errore nel caricamento ordini'
+                ], 500);
+            }
+        }
 }
