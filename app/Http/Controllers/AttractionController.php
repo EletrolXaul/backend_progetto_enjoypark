@@ -28,7 +28,7 @@ class AttractionController extends Controller
             'name' => 'required|string|max:255',
             'category' => 'required|string|max:100',
             'description' => 'required|string',
-            'duration' => 'required|integer|min:1',
+            'duration' => 'required|string',
             'capacity' => 'required|integer|min:1',
             'wait_time' => 'required|integer|min:0',
             'status' => 'required|string|in:open,closed,maintenance',
@@ -37,7 +37,7 @@ class AttractionController extends Controller
             'location_x' => 'required|numeric',
             'location_y' => 'required|numeric',
             'image' => 'required|string',
-            'features' => 'required|string',
+            'features' => 'required', // Rimuovi la validazione |string per accettare sia stringhe che array
         ]);
 
         if ($validator->fails()) {
