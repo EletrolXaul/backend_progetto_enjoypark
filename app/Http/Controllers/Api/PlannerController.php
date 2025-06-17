@@ -24,20 +24,44 @@ class PlannerController extends Controller
     {
         $request->validate([
             'date' => 'required|date',
-            'attraction_id' => 'required|integer',
-            'time' => 'required|string',
-            'notes' => 'nullable|string'
+            'items' => 'required|array',
+            'items.*.id' => 'required|string',
+            'items.*.name' => 'required|string',
+            'items.*.type' => 'required|in:attraction,show,restaurant,shop,service',
+            'items.*.time' => 'nullable|string',
+            'items.*.notes' => 'nullable|string',
+            'items.*.priority' => 'required|in:low,medium,high',
+            'items.*.completed' => 'required|boolean',
+            'items.*.originalData' => 'nullable|array'  // Cambiato da original_data a originalData
         ]);
+    
+        $user = $request->user();
+        $date = $request->date;
         
-        $item = PlannerItem::create([
-            'user_id' => $request->user()->id,
-            'date' => $request->date,
-            'attraction_id' => $request->attraction_id,
-            'time' => $request->time,
-            'notes' => $request->notes
-        ]);
+        // Elimina gli items esistenti per questa data
+        PlannerItem::where('user_id', $user->id)
+            ->where('date', $date)
+            ->delete();
         
-        return response()->json($item, 201);
+        // Crea i nuovi items
+        $createdItems = [];
+        foreach ($request->items as $itemData) {
+            $item = PlannerItem::create([
+                'user_id' => $user->id,
+                'date' => $date,
+                'item_id' => $itemData['id'],
+                'name' => $itemData['name'],
+                'type' => $itemData['type'],
+                'time' => $itemData['time'],
+                'notes' => $itemData['notes'],
+                'priority' => $itemData['priority'],
+                'completed' => $itemData['completed'],
+                'original_data' => $itemData['originalData'] ?? null  // Mapping corretto
+            ]);
+            $createdItems[] = $item;
+        }
+        
+        return response()->json($createdItems, 201);
     }
     
     public function update(Request $request, $id)
