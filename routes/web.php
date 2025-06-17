@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\DashboardController;
+//use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\Api\PromoCodeController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
@@ -15,7 +15,16 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\MockCreditCardController;
 
 // Dashboard principale
-Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
+/* Route::get('/', [DashboardController::class, 'index'])->name('dashboard'); */
+
+// Route principale che mostra solo lo stato del server
+Route::get('/', function () {
+    return view('server-status');
+});
+
+Route::fallback(function () {
+    return response()->json(['message' => 'Not Found'], 404);
+});
 
 // Rotte CRUD per Users
 Route::post('/users', [UserController::class, 'store'])->name('users.store');
