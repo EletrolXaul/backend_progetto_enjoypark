@@ -1,17 +1,19 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
-use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\Api\OrderController;
 use App\Http\Controllers\Api\TicketController;
+use App\Http\Controllers\Api\PlannerController;
+use App\Http\Controllers\Api\PromoCodeController;
+use App\Http\Controllers\Api\TicketTypeController; // Add this line
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\AttractionController;
 use App\Http\Controllers\Api\ParkController;
 use App\Http\Controllers\RestaurantController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\ServiceController;
-use App\Http\Controllers\Api\PromoCodeController;
-use App\Http\Controllers\Api\PlannerController;
-use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ShowController;
 use App\Http\Controllers\MockCreditCardController;
 use App\Http\Controllers\VisitHistoryController;
@@ -40,6 +42,16 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('users', [AuthController::class, 'createUser']);
         Route::put('users/{user}', [AuthController::class, 'updateUser']);
         Route::delete('users/{user}', [AuthController::class, 'deleteUser']);
+        
+        // Gestione tipi di biglietto
+        Route::get('ticket-types', [App\Http\Controllers\Api\TicketTypeController::class, 'index']);
+        Route::post('ticket-types', [App\Http\Controllers\Api\TicketTypeController::class, 'store']);
+        Route::get('ticket-types/{id}', [App\Http\Controllers\Api\TicketTypeController::class, 'show']);
+        Route::put('ticket-types/{id}', [App\Http\Controllers\Api\TicketTypeController::class, 'update']);
+        Route::delete('ticket-types/{id}', [App\Http\Controllers\Api\TicketTypeController::class, 'destroy']);
+        
+        // Gestione planner (admin view)
+        Route::get('planner-items', [PlannerController::class, 'adminIndex']);
         
         // Gestione spettacoli
         Route::get('shows', [ShowController::class, 'adminIndex']);

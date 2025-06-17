@@ -203,6 +203,71 @@
     </div>
 </div>
 
+<!-- View User Modal -->
+<div class="modal fade" id="viewUserModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Dettagli Utente</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Informazioni Generali</h6>
+                        <table class="table table-borderless">
+                            <tr><td><strong>ID:</strong></td><td id="view-user-id"></td></tr>
+                            <tr><td><strong>Nome:</strong></td><td id="view-user-name"></td></tr>
+                            <tr><td><strong>Email:</strong></td><td id="view-user-email"></td></tr>
+                            <tr><td><strong>Amministratore:</strong></td><td id="view-user-admin"></td></tr>
+                            <tr><td><strong>Registrato il:</strong></td><td id="view-user-created"></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- View Order Modal -->
+<div class="modal fade" id="viewOrderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Dettagli Ordine</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Informazioni Ordine</h6>
+                        <table class="table table-borderless">
+                            <tr><td><strong>ID:</strong></td><td id="view-order-id"></td></tr>
+                            <tr><td><strong>Numero Ordine:</strong></td><td id="view-order-number"></td></tr>
+                            <tr><td><strong>Utente:</strong></td><td id="view-order-user"></td></tr>
+                            <tr><td><strong>Prezzo Totale:</strong></td><td id="view-order-total"></td></tr>
+                            <tr><td><strong>Stato:</strong></td><td id="view-order-status"></td></tr>
+                            <tr><td><strong>Data Creazione:</strong></td><td id="view-order-created"></td></tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Chiudi</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
 <script>
 // View restaurant functionality
 document.addEventListener('click', function(e) {
@@ -332,4 +397,160 @@ document.addEventListener('click', function(e) {
         $('#viewServiceModal').modal('show');
     }
 });
+
+// Ticket View Modal
+function showTicketDetails(button) {
+    const ticketData = {
+        id: button.getAttribute('data-id'),
+        code: button.getAttribute('data-code'),
+        type: button.getAttribute('data-type'),
+        price: button.getAttribute('data-price'),
+        purchaseDate: button.getAttribute('data-purchase-date'),
+        validDate: button.getAttribute('data-valid-date'),
+        status: button.getAttribute('data-status'),
+        user: button.getAttribute('data-user')
+    };
+    
+    document.getElementById('view-ticket-id').textContent = ticketData.id;
+    document.getElementById('view-ticket-code').textContent = ticketData.code;
+    document.getElementById('view-ticket-type').textContent = ticketData.type;
+    document.getElementById('view-ticket-price').textContent = ticketData.price;
+    document.getElementById('view-ticket-purchase-date').textContent = ticketData.purchaseDate;
+    document.getElementById('view-ticket-valid-date').textContent = ticketData.validDate;
+    document.getElementById('view-ticket-status').textContent = ticketData.status;
+    document.getElementById('view-ticket-user').textContent = ticketData.user;
+    
+    new bootstrap.Modal(document.getElementById('viewTicketModal')).show();
+}
+
+// Attraction View Modal
+function showAttractionDetails(button) {
+    const attractionData = {
+        id: button.getAttribute('data-id'),
+        name: button.getAttribute('data-name'),
+        type: button.getAttribute('data-type'),
+        duration: button.getAttribute('data-duration'),
+        capacity: button.getAttribute('data-capacity'),
+        minHeight: button.getAttribute('data-min-height'),
+        status: button.getAttribute('data-status'),
+        zone: button.getAttribute('data-zone'),
+        description: button.getAttribute('data-description')
+    };
+    
+    document.getElementById('view-attraction-id').textContent = attractionData.id;
+    document.getElementById('view-attraction-name').textContent = attractionData.name;
+    document.getElementById('view-attraction-type').textContent = attractionData.type;
+    document.getElementById('view-attraction-duration').textContent = attractionData.duration;
+    document.getElementById('view-attraction-capacity').textContent = attractionData.capacity;
+    document.getElementById('view-attraction-min-height').textContent = attractionData.minHeight;
+    document.getElementById('view-attraction-status').textContent = attractionData.status;
+    document.getElementById('view-attraction-zone').textContent = attractionData.zone;
+    document.getElementById('view-attraction-description').textContent = attractionData.description;
+    
+    new bootstrap.Modal(document.getElementById('viewAttractionModal')).show();
+}
+
+// Show View Modal
+function showShowDetails(button) {
+    const showData = {
+        id: button.getAttribute('data-id'),
+        name: button.getAttribute('data-name'),
+        duration: button.getAttribute('data-duration'),
+        capacity: button.getAttribute('data-capacity'),
+        startTime: button.getAttribute('data-start-time'),
+        endTime: button.getAttribute('data-end-time'),
+        status: button.getAttribute('data-status'),
+        zone: button.getAttribute('data-zone'),
+        description: button.getAttribute('data-description')
+    };
+    
+    document.getElementById('view-show-id').textContent = showData.id;
+    document.getElementById('view-show-name').textContent = showData.name;
+    document.getElementById('view-show-duration').textContent = showData.duration;
+    document.getElementById('view-show-capacity').textContent = showData.capacity;
+    document.getElementById('view-show-start-time').textContent = showData.startTime;
+    document.getElementById('view-show-end-time').textContent = showData.endTime;
+    document.getElementById('view-show-status').textContent = showData.status;
+    document.getElementById('view-show-zone').textContent = showData.zone;
+    document.getElementById('view-show-description').textContent = showData.description;
+    
+    new bootstrap.Modal(document.getElementById('viewShowModal')).show();
+}
+
+// Promo Code View Modal
+function showPromoCodeDetails(button) {
+    const promoData = {
+        id: button.getAttribute('data-id'),
+        code: button.getAttribute('data-code'),
+        discount: button.getAttribute('data-discount'),
+        type: button.getAttribute('data-type'),
+        startDate: button.getAttribute('data-start-date'),
+        endDate: button.getAttribute('data-end-date'),
+        maxUses: button.getAttribute('data-max-uses'),
+        currentUses: button.getAttribute('data-current-uses'),
+        description: button.getAttribute('data-description')
+    };
+    
+    document.getElementById('view-promo-id').textContent = promoData.id;
+    document.getElementById('view-promo-code').textContent = promoData.code;
+    document.getElementById('view-promo-discount').textContent = promoData.discount;
+    document.getElementById('view-promo-type').textContent = promoData.type;
+    document.getElementById('view-promo-start-date').textContent = promoData.startDate;
+    document.getElementById('view-promo-end-date').textContent = promoData.endDate;
+    document.getElementById('view-promo-max-uses').textContent = promoData.maxUses;
+    document.getElementById('view-promo-current-uses').textContent = promoData.currentUses;
+    document.getElementById('view-promo-description').textContent = promoData.description;
+    
+    new bootstrap.Modal(document.getElementById('viewPromoCodeModal')).show();
+}
+
+// Visit History View Modal
+function showVisitDetails(button) {
+    const visitData = {
+        id: button.getAttribute('data-id'),
+        user: button.getAttribute('data-user'),
+        attraction: button.getAttribute('data-attraction'),
+        date: button.getAttribute('data-date'),
+        entryTime: button.getAttribute('data-entry-time'),
+        exitTime: button.getAttribute('data-exit-time'),
+        duration: button.getAttribute('data-duration'),
+        rating: button.getAttribute('data-rating')
+    };
+    
+    document.getElementById('view-visit-id').textContent = visitData.id;
+    document.getElementById('view-visit-user').textContent = visitData.user;
+    document.getElementById('view-visit-attraction').textContent = visitData.attraction;
+    document.getElementById('view-visit-date').textContent = visitData.date;
+    document.getElementById('view-visit-entry-time').textContent = visitData.entryTime;
+    document.getElementById('view-visit-exit-time').textContent = visitData.exitTime;
+    document.getElementById('view-visit-duration').textContent = visitData.duration;
+    document.getElementById('view-visit-rating').textContent = visitData.rating;
+    
+    new bootstrap.Modal(document.getElementById('viewVisitModal')).show();
+}
+
+// Credit Card View Modal
+function showCreditCardDetails(button) {
+    const cardData = {
+        id: button.getAttribute('data-id'),
+        user: button.getAttribute('data-user'),
+        number: button.getAttribute('data-number'),
+        type: button.getAttribute('data-type'),
+        expiry: button.getAttribute('data-expiry'),
+        holder: button.getAttribute('data-holder'),
+        isDefault: button.getAttribute('data-default'),
+        created: button.getAttribute('data-created')
+    };
+    
+    document.getElementById('view-card-id').textContent = cardData.id;
+    document.getElementById('view-card-user').textContent = cardData.user;
+    document.getElementById('view-card-number').textContent = cardData.number;
+    document.getElementById('view-card-type').textContent = cardData.type;
+    document.getElementById('view-card-expiry').textContent = cardData.expiry;
+    document.getElementById('view-card-holder').textContent = cardData.holder;
+    document.getElementById('view-card-default').textContent = cardData.isDefault === 'true' ? 'Sì' : 'No';
+    document.getElementById('view-card-created').textContent = cardData.created;
+    
+    new bootstrap.Modal(document.getElementById('viewCreditCardModal')).show();
+}
 </script>

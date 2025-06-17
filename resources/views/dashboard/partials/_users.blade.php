@@ -1,9 +1,6 @@
 <div class="table-container">
     <h3 class="table-title">
         Utenti
-        <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addUserModal">
-            <i class="fas fa-plus"></i> Aggiungi Utente
-        </button>
     </h3>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -19,24 +16,35 @@
             </thead>
             <tbody>
                 @foreach ($users as $user)
-                <tr>
-                    <td>{{ $user->id }}</td>
-                    <td>{{ $user->name }}</td>
-                    <td>{{ $user->email }}</td>
-                    <td>{{ $user->is_admin ? 'Sì' : 'No' }}</td>
-                    <td>{{ $user->created_at }}</td>
-                    <td class="action-buttons">
-                        <button class="btn btn-sm btn-primary edit-user" data-id="{{ $user->id }}" data-bs-toggle="modal" data-bs-target="#editUserModal">
-                            <i class="fas fa-edit"></i>
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-user" data-id="{{ $user->id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
+                    <tr>
+                        <td><span class="badge bg-secondary">#{{ $user->id }}</span></td>
+                        <td class="text-truncate">{{ $user->name }}</td>
+                        <td class="text-truncate">{{ $user->email }}</td>
+                        <td>
+                            @if($user->is_admin)
+                                <span class="badge bg-success">Sì</span>
+                            @else
+                                <span class="badge bg-secondary">No</span>
+                            @endif
+                        </td>
+                        <td><small class="text-muted">{{ $user->created_at->format('d/m/Y') }}</small></td>
+                        <td class="action-buttons">
+                            <button class="btn btn-sm btn-info view-user" data-id="{{ $user->id }}"
+                                data-name="{{ $user->name }}" data-email="{{ $user->email }}"
+                                data-admin="{{ $user->is_admin ? 'Sì' : 'No' }}"
+                                data-created="{{ $user->created_at->format('d/m/Y H:i') }}" data-bs-toggle="modal"
+                                data-bs-target="#viewUserModal">
+                                <i class="fas fa-eye"></i> Visualizza
+                            </button>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
     </div>
-    {{ $users->links() }}
+    <div class="pagination-container">
+        {{ $users->links() }}
+    </div>
+</div>
+{{ $users->links() }}
 </div>

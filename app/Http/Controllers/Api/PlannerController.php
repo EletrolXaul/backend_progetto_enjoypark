@@ -3,84 +3,150 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\PlannerItem;
 use Illuminate\Http\Request;
-use App\Models\PlannerItem; // Assumendo che tu abbia questo model
 
 class PlannerController extends Controller
 {
     public function index(Request $request)
     {
         $user = $request->user();
-        $date = $request->query('date');
         
-        $items = PlannerItem::where('user_id', $user->id)
-            ->where('date', $date)
-            ->get();
-            
-        return response()->json($items);
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Utente non autenticato'
+            ], 401);
+        }
+
+        try {
+            $items = PlannerItem::where('user_id', $user->id)
+                ->orderBy('date', 'asc')
+                ->orderBy('time', 'asc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $items
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel caricamento del planner',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-    
+
+    // Admin method to get all planner items
+    public function adminIndex()
+    {
+        try {
+            $plannerItems = PlannerItem::with('user')
+                ->orderBy('created_at', 'desc')
+                ->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $plannerItems
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel caricamento degli elementi del planner',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     public function store(Request $request)
     {
-        $request->validate([
-            'date' => 'required|date',
-            'items' => 'required|array',
-            'items.*.id' => 'required|string',
-            'items.*.name' => 'required|string',
-            'items.*.type' => 'required|in:attraction,show,restaurant,shop,service',
-            'items.*.time' => 'nullable|string',
-            'items.*.notes' => 'nullable|string',
-            'items.*.priority' => 'required|in:low,medium,high',
-            'items.*.completed' => 'required|boolean',
-            'items.*.originalData' => 'nullable|array'  // Cambiato da original_data a originalData
-        ]);
-    
         $user = $request->user();
-        $date = $request->date;
         
-        // Elimina gli items esistenti per questa data
-        PlannerItem::where('user_id', $user->id)
-            ->where('date', $date)
-            ->delete();
-        
-        // Crea i nuovi items
-        $createdItems = [];
-        foreach ($request->items as $itemData) {
-            $item = PlannerItem::create([
-                'user_id' => $user->id,
-                'date' => $date,
-                'item_id' => $itemData['id'],
-                'name' => $itemData['name'],
-                'type' => $itemData['type'],
-                'time' => $itemData['time'],
-                'notes' => $itemData['notes'],
-                'priority' => $itemData['priority'],
-                'completed' => $itemData['completed'],
-                'original_data' => $itemData['originalData'] ?? null  // Mapping corretto
-            ]);
-            $createdItems[] = $item;
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Utente non autenticato'
+            ], 401);
         }
-        
-        return response()->json($createdItems, 201);
+
+        try {
+            // Clear existing items for the date
+            PlannerItem::where('user_id', $user->id)
+                ->where('date', $request->date)
+                ->delete();
+
+            // Create new items
+            foreach ($request->items as $itemData) {
+                $item = PlannerItem::create([
+                    'user_id' => $user->id,
+                    'date' => $request->date,
+                    'item_id' => $itemData['item_id'],
+                    'name' => $itemData['name'],
+                    'type' => $itemData['type'],
+                    'time' => $itemData['time'] ?? null,
+                    'notes' => $itemData['notes'] ?? null,
+                    'priority' => $itemData['priority'] ?? 'medium',
+                    'completed' => $itemData['completed'] ?? false,
+                    'original_data' => $itemData['original_data'] ?? null
+                ]);
+            }
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Planner salvato con successo'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nel salvataggio del planner',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-    
+
     public function update(Request $request, $id)
     {
-        $item = PlannerItem::where('user_id', $request->user()->id)
-            ->findOrFail($id);
-            
-        $item->update($request->only(['time', 'notes']));
-        
-        return response()->json($item);
+        try {
+            $item = PlannerItem::where('user_id', $request->user()->id)
+                ->findOrFail($id);
+
+            $item->update($request->only([
+                'time', 'notes', 'priority', 'completed'
+            ]));
+
+            return response()->json([
+                'success' => true,
+                'data' => $item,
+                'message' => 'Elemento aggiornato con successo'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nell\'aggiornamento dell\'elemento',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-    
+
     public function destroy(Request $request, $id)
     {
-        $item = PlannerItem::where('user_id', $request->user()->id)
-            ->findOrFail($id);
-            
-        $item->delete();
-        
-        return response()->json(['message' => 'Item eliminato']);
+        try {
+            $item = PlannerItem::where('user_id', $request->user()->id)
+                ->findOrFail($id);
+
+            $item->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Elemento eliminato con successo'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Errore nell\'eliminazione dell\'elemento',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 }

@@ -1,9 +1,6 @@
 <div class="table-container">
     <h3 class="table-title">
         Attrazioni
-        <button class="btn btn-sm btn-light" data-bs-toggle="modal" data-bs-target="#addAttractionModal">
-            <i class="fas fa-plus"></i> Aggiungi Attrazione
-        </button>
     </h3>
     <div class="table-responsive">
         <table class="table table-striped table-hover">
@@ -25,51 +22,43 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach($attractions as $attraction)
-                <tr>
-                    <td>{{ $attraction->id }}</td>
-                    <td>{{ $attraction->name }}</td>
-                    <td>{{ $attraction->category }}</td>
-                    <td>{{ Str::limit($attraction->description, 30) }}</td>
-                    <td>{{ $attraction->capacity }}</td>
-                    <td>{{ $attraction->duration }}</td>
-                    <td>{{ $attraction->min_height }} cm</td>
-                    <td>{{ $attraction->wait_time }} min</td>
-                    <td>
-                        @if($attraction->status == 'open')
-                            <span class="badge bg-success">Aperto</span>
-                        @elseif($attraction->status == 'closed')
-                            <span class="badge bg-danger">Chiuso</span>
-                        @else
-                            <span class="badge bg-warning">Manutenzione</span>
-                        @endif
-                    </td>
-                    <td>{{ $attraction->thrill_level }}/5</td>
-                    <td>{{ number_format($attraction->rating, 1) }}/5</td>
-                    <td>{{ $attraction->created_at ? $attraction->created_at->format('d/m/Y') : '-' }}</td>
-                    <td>
-                        <button class="btn btn-sm btn-primary edit-attraction" 
-                        data-id="{{ $attraction->id }}" 
-                        data-name="{{ $attraction->name }}" 
-                        data-category="{{ $attraction->category }}"  
-                        data-description="{{ $attraction->description }}" 
-                        data-capacity="{{ $attraction->capacity }}" 
-                        data-duration="{{ trim($attraction->duration) }}" 
-                        data-min-height="{{ $attraction->min_height }}"  
-                        data-wait-time="{{ $attraction->wait_time }}"  
-                        data-status="{{ $attraction->status }}"  
-                        data-thrill-level="{{ $attraction->thrill_level }}"  
-                        data-location-x="{{ $attraction->location_x }}"  
-                        data-location-y="{{ $attraction->location_y }}"  
-                        data-image="{{ $attraction->image }}"  
-                        data-features='{{ json_encode($attraction->features) }}'>  
-                            <i class="fas fa-edit"></i>  
-                        </button>
-                        <button class="btn btn-sm btn-danger delete-attraction" data-id="{{ $attraction->id }}">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                </tr>
+                @foreach ($attractions as $attraction)
+                    <tr>
+                        <td>{{ $attraction->id }}</td>
+                        <td>{{ $attraction->name }}</td>
+                        <td>{{ $attraction->category }}</td>
+                        <td>{{ Str::limit($attraction->description, 30) }}</td>
+                        <td>{{ $attraction->capacity }}</td>
+                        <td>{{ $attraction->duration }}</td>
+                        <td>{{ $attraction->min_height }} cm</td>
+                        <td>{{ $attraction->wait_time }} min</td>
+                        <td>
+                            @if ($attraction->status == 'open')
+                                <span class="badge bg-success">Aperto</span>
+                            @elseif($attraction->status == 'closed')
+                                <span class="badge bg-danger">Chiuso</span>
+                            @else
+                                <span class="badge bg-warning">Manutenzione</span>
+                            @endif
+                        </td>
+                        <td>{{ $attraction->thrill_level }}/5</td>
+                        <td>{{ number_format($attraction->rating, 1) }}/5</td>
+                        <td>{{ $attraction->created_at ? $attraction->created_at->format('d/m/Y') : '-' }}</td>
+                        <td>
+                            <button class="btn btn-sm btn-info" onclick="showAttractionDetails(this)"
+                                data-id="{{ $attraction->id }}" data-name="{{ $attraction->name }}"
+                                data-category="{{ $attraction->category }}"
+                                data-description="{{ $attraction->description }}"
+                                data-capacity="{{ $attraction->capacity }}"
+                                data-duration="{{ $attraction->duration }}"
+                                data-min-height="{{ $attraction->min_height }}"
+                                data-wait-time="{{ $attraction->wait_time }}" data-status="{{ $attraction->status }}"
+                                data-thrill-level="{{ $attraction->thrill_level }}"
+                                data-rating="{{ $attraction->rating }}">
+                                <i class="fas fa-eye"></i> Visualizza
+                            </button>
+                        </td>
+                    </tr>
                 @endforeach
             </tbody>
         </table>
