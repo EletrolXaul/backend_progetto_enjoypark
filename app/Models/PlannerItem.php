@@ -23,4 +23,10 @@ class PlannerItem extends Model
         'completed' => 'boolean',
         'original_data' => 'array'
     ];
+    
+    // Aggiungi questa relazione
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

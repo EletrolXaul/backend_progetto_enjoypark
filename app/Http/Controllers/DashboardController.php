@@ -14,6 +14,7 @@ use App\Models\Service;
 use App\Models\PromoCode;
 use App\Models\VisitHistory;
 use App\Models\MockCreditCard;
+use App\Models\PlannerItem; // Aggiungi questo import
 use Illuminate\Http\Request;
 
 class DashboardController extends Controller
@@ -47,6 +48,7 @@ class DashboardController extends Controller
             'promoCodes' => PromoCode::paginate(10),
             'visitHistories' => VisitHistory::paginate(10),
             'mockCreditCards' => MockCreditCard::paginate(10),
+            'plannerItems' => PlannerItem::with('user')->orderBy('created_at', 'desc')->paginate(10), // Aggiungi questa riga
         ];
 
         // Aggiunta di statistiche per la dashboard
@@ -56,6 +58,7 @@ class DashboardController extends Controller
             'totalTicketTypes' => TicketType::count(),
             'totalTickets' => Ticket::count(),
             'totalAttractions' => Attraction::count(),
+            'totalPlannerItems' => PlannerItem::count(), // Aggiungi questa riga
             'recentOrders' => Order::orderBy('created_at', 'desc')->take(5)->get(),
             'recentUsers' => User::orderBy('created_at', 'desc')->take(5)->get(),
         ];

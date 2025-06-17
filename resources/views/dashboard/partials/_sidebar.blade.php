@@ -43,5 +43,9 @@
         <a href="#mockCreditCards" class="nav-link" data-bs-toggle="tab" role="tab">
             <i class="fas fa-credit-card"></i> <span>Carte di Credito</span>
         </a>
+        <!-- Aggiungi questa nuova voce -->
+        <a href="#plannerItems" class="nav-link" data-bs-toggle="tab" role="tab">
+            <i class="fas fa-calendar-alt"></i> <span>Planner Utenti</span>
+        </a>
     </div>
 </div>

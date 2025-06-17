@@ -99,6 +99,10 @@
             <div class="tab-pane fade" id="mockCreditCards" role="tabpanel">
                 @include('dashboard.partials._mock_credit_cards')
             </div>
+            <!-- Planner Items Tab -->
+            <div class="tab-pane fade" id="plannerItems" role="tabpanel">
+                @include('dashboard.partials._planner_items')
+            </div>
         </div>
     </div>
 
