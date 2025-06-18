@@ -37,8 +37,14 @@ class Attraction extends Model
     public function location(): Attribute
     {
         return Attribute::make(
-            get: fn() => ['x' => $this->location_x, 'y' => $this->location_y],
-            set: fn($value) => ['location_x' => $value['x'], 'location_y' => $value['y']]
+            get: fn($value, $attributes) => [
+                'x' => $attributes['location_x'] ?? 0,
+                'y' => $attributes['location_y'] ?? 0
+            ],
+            set: fn($value) => [
+                'location_x' => $value['x'] ?? 0,
+                'location_y' => $value['y'] ?? 0
+            ]
         );
     }
 }
