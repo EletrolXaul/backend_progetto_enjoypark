@@ -16,8 +16,8 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             
-            // Preferences JSON
-            $table->json('preferences')->default('{"language":"it","theme":"light","notifications":true,"newsletter":false}');
+            // Preferences JSON - RIMOSSO il default value
+            $table->json('preferences')->nullable();
             
             // Admin flag
             $table->boolean('is_admin')->default(false);

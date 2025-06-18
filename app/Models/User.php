@@ -54,4 +54,26 @@ class User extends Authenticatable
     {
         $this->attributes['is_admin'] = (bool) $value;
     }
+
+    // Nel Model User, aggiungi:
+
+    protected $attributes = [
+        'preferences' => '{"language":"it","theme":"light","notifications":true,"newsletter":false}',
+        'is_admin' => false,
+    ];
+
+    // Oppure usa un accessor/mutator:
+    protected function getPreferencesAttribute($value)
+    {
+        if (is_null($value)) {
+            return [
+                'language' => 'it',
+                'theme' => 'light',
+                'notifications' => true,
+                'newsletter' => false
+            ];
+        }
+        
+        return json_decode($value, true);
+    }
 }
