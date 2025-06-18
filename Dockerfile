@@ -26,10 +26,10 @@ FROM richarvey/nginx-php-fpm:latest
 COPY --from=build /app/public/build /var/www/html/public/build
 
 # Copia i file dell'applicazione Laravel
-COPY . .
+COPY . /var/www/html
 
 # Image config
-ENV SKIP_COMPOSER 1
+ENV SKIP_COMPOSER 0
 ENV WEBROOT /var/www/html/public
 ENV PHP_ERRORS_STDERR 1
 ENV RUN_SCRIPTS 1
@@ -42,6 +42,13 @@ ENV LOG_CHANNEL stderr
 
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
+
+# Installa le dipendenze PHP
+RUN composer install --no-dev --optimize-autoloader
+
+# Imposta i permessi
+RUN chmod -R 775 storage bootstrap/cache
+RUN chown -R www-data:www-data /var/www/html
 
 CMD ["/start.sh"]
 
