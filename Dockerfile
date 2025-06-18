@@ -51,59 +51,50 @@ RUN chown -R www-data:www-data /var/www/html \
 RUN a2enmod rewrite
 
 # Configura Apache per usare la porta dinamica di Render
+# Configura Apache per porta dinamica
 RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf
-
-# Configura VirtualHost per la porta dinamica
-RUN echo '<VirtualHost *:${PORT}>\n\
-    DocumentRoot /var/www/html/public\n\
-    <Directory /var/www/html/public>\n\
-        AllowOverride All\n\
-        Require all granted\n\
-    </Directory>\n\
-    ErrorLog ${APACHE_LOG_DIR}/error.log\n\
-    CustomLog ${APACHE_LOG_DIR}/access.log combined\n\
-</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+RUN echo '<VirtualHost *:${PORT}>\n    ServerName localhost\n DocumentRoot /var/www/html/public\n    <Directory /var/www/html/public>\n AllowOverride All\n        Require all granted\n    </Directory>\n    ErrorLog ${APACHE_LOG_DIR}/error.log\n    CustomLog ${APACHE_LOG_DIR}/access.log combined\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
 # Crea script di avvio migliorato
 RUN echo '#!/bin/bash\n\
-set -e\n\
-\n\
-# Imposta la porta (default 10000 per Render)\n\
-export PORT=${PORT:-10000}\n\
-echo "Starting application on port $PORT"\n\
-\n\
-# Funzione per testare la connessione al database\n\
-test_db_connection() {\n\
+    set -e\n\
+    \n\
+    # Imposta la porta (default 10000 per Render)\n\
+    export PORT=${PORT:-10000}\n\
+    echo "Starting application on port $PORT"\n\
+    \n\
+    # Funzione per testare la connessione al database\n\
+    test_db_connection() {\n\
     php artisan migrate:status > /dev/null 2>&1\n\
-}\n\
-\n\
-# Aspetta il database con timeout\n\
-echo "Waiting for database connection..."\n\
-counter=0\n\
-max_attempts=30\n\
-\n\
-while ! test_db_connection; do\n\
+    }\n\
+    \n\
+    # Aspetta il database con timeout esteso\n\
+    echo "Waiting for database connection..."\n\
+    counter=0\n\
+    max_attempts=60\n\
+    \n\
+    while ! test_db_connection; do\n\
     if [ $counter -ge $max_attempts ]; then\n\
-        echo "Database connection timeout after 60 seconds"\n\
-        echo "Starting Apache without migrations..."\n\
-        break\n\
+    echo "Database connection timeout after 120 seconds"\n\
+    echo "Starting Apache without migrations..."\n\
+    break\n\
     fi\n\
     echo "Database not ready, waiting... ($counter/$max_attempts)"\n\
     sleep 2\n\
     counter=$((counter + 1))\n\
-done\n\
-\n\
-# Se il database è connesso, esegui migrazioni\n\
-if test_db_connection; then\n\
+    done\n\
+    \n\
+    # Se il database è connesso, esegui migrazioni\n\
+    if test_db_connection; then\n\
     echo "Database connected successfully!"\n\
     echo "Running migrations..."\n\
     php artisan migrate --force || echo "Migration failed, continuing..."\n\
     echo "Running seeders..."\n\
     php artisan db:seed --force || echo "Seeder failed, continuing..."\n\
-fi\n\
-\n\
-echo "Starting Apache on port $PORT..."\n\
-exec apache2-foreground' > /usr/local/bin/start.sh \
+    fi\n\
+    \n\
+    echo "Starting Apache on port $PORT..."\n\
+    exec apache2-foreground' > /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
 # Esponi la porta dinamica
