@@ -23,7 +23,9 @@ COPY . /var/www/html
 WORKDIR /var/www/html
 
 # Imposta i permessi
-RUN chown -R www-data:www-data /var/www/html \
+RUN mkdir -p /var/www/html/storage \
+    && mkdir -p /var/www/html/bootstrap/cache \
+    && chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
