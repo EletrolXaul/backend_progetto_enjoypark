@@ -22,10 +22,15 @@ COPY . /var/www/html
 # Imposta la directory di lavoro
 WORKDIR /var/www/html
 
+# Crea le directory necessarie per Laravel
+RUN mkdir -p /var/www/html/bootstrap/cache \
+    && mkdir -p /var/www/html/storage/framework/cache \
+    && mkdir -p /var/www/html/storage/framework/sessions \
+    && mkdir -p /var/www/html/storage/framework/views \
+    && mkdir -p /var/www/html/storage/logs
+
 # Imposta i permessi
-RUN mkdir -p /var/www/html/storage \
-    && mkdir -p /var/www/html/bootstrap/cache \
-    && chown -R www-data:www-data /var/www/html \
+RUN chown -R www-data:www-data /var/www/html \
     && chmod -R 755 /var/www/html/storage \
     && chmod -R 755 /var/www/html/bootstrap/cache
 
@@ -70,7 +75,12 @@ RUN echo '#!/bin/bash' > /var/www/html/start.sh \
     && echo 'echo "Running Laravel optimizations..."' >> /var/www/html/start.sh \
     && echo 'php artisan config:cache' >> /var/www/html/start.sh \
     && echo 'php artisan route:cache' >> /var/www/html/start.sh \
-    && echo 'php artisan view:cache' >> /var/www/html/start.sh \
+    && echo '# Skip view:cache if no views exist' >> /var/www/html/start.sh \
+    && echo 'if [ -d "resources/views" ] && [ "$(find resources/views -name "*.blade.php" | wc -l)" -gt 0 ]; then' >> /var/www/html/start.sh \
+    && echo '  php artisan view:cache' >> /var/www/html/start.sh \
+    && echo 'else' >> /var/www/html/start.sh \
+    && echo '  echo "No Blade views found, skipping view:cache"' >> /var/www/html/start.sh \
+    && echo 'fi' >> /var/www/html/start.sh \
     && echo 'if mysql -h"$MYSQL_HOST" -P"$MYSQL_PORT" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "USE $MYSQL_DATABASE;" 2>/dev/null; then' >> /var/www/html/start.sh \
     && echo '  echo "Running migrations..."' >> /var/www/html/start.sh \
     && echo '  php artisan migrate --force' >> /var/www/html/start.sh \
@@ -86,5 +96,5 @@ RUN echo '#!/bin/bash' > /var/www/html/start.sh \
 # Esponi la porta
 EXPOSE $PORT
 
-# Comando di avvio
+# Avvia l'applicazione
 CMD ["/var/www/html/start.sh"]
