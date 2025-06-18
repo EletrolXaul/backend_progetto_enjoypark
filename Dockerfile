@@ -33,7 +33,12 @@ RUN mkdir -p /var/www/html/storage/logs \
     && mkdir -p /var/www/html/bootstrap/cache
 
 # Installa dipendenze PHP
-RUN composer install --no-dev --optimize-autoloader
+# Esegui comandi Laravel per ottimizzazione e setup
+RUN php artisan config:cache \
+    && php artisan route:cache \
+    && php artisan view:cache \
+    && php artisan migrate --force \
+    && php artisan db:seed --force
 
 # Imposta i permessi
 RUN chown -R www-data:www-data /var/www/html \
