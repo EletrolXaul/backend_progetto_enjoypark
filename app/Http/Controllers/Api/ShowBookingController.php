@@ -9,7 +9,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
-use Carbon\Carbon;
 
 class ShowBookingController extends Controller
 {
@@ -32,7 +31,7 @@ class ShowBookingController extends Controller
         $showId = $request->show_id;
         $timeSlot = $request->time_slot;
         $seatsBooked = $request->seats_booked ?? 1;
-        $bookingDate = Carbon::today();
+        $bookingDate = today();
 
         try {
             return DB::transaction(function () use ($userId, $showId, $timeSlot, $seatsBooked, $bookingDate) {
