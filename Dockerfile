@@ -7,14 +7,15 @@ RUN apt-get update && apt-get install -y \
     libpng-dev \
     libonig-dev \
     libxml2-dev \
+    libpq-dev \
     zip \
     unzip
 
 # Pulisce la cache
 RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Installa estensioni PHP
-RUN docker-php-ext-install pdo_mysql mbstring exif pcntl bcmath gd
+# Installa estensioni PHP (incluso PostgreSQL)
+RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Installa Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -25,7 +26,7 @@ WORKDIR /var/www/html
 # Copia i file dell'applicazione
 COPY . /var/www/html
 
-# Crea le directory necessarie e imposta i permessi PRIMA di composer install
+# Crea le directory necessarie
 RUN mkdir -p /var/www/html/storage/logs \
     && mkdir -p /var/www/html/storage/framework/cache \
     && mkdir -p /var/www/html/storage/framework/sessions \
@@ -35,14 +36,10 @@ RUN mkdir -p /var/www/html/storage/logs \
 # Installa dipendenze PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Esegui comandi Laravel per ottimizzazione e setup
+# Esegui comandi Laravel per ottimizzazione
 RUN php artisan config:cache \
     && php artisan route:cache \
     && php artisan view:cache
-
-# Esegui le migrazioni e i seeder
-RUN php artisan migrate --force \
-    && php artisan db:seed --force
 
 # Imposta i permessi
 RUN chown -R www-data:www-data /var/www/html \
@@ -58,12 +55,27 @@ RUN echo '<VirtualHost *:80>\n\
     DocumentRoot /var/www/html/public\n\
     <Directory /var/www/html/public>\n\
         AllowOverride All\n\
-        Require all granted\n\
     </Directory>\n\
 </VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+
+# Crea script di avvio
+RUN echo '#!/bin/bash\n\
+set -e\n\
+echo "Waiting for database..."\n\
+until php artisan migrate:status > /dev/null 2>&1; do\n\
+  echo "Database not ready, waiting..."\n\
+  sleep 2\n\
+done\n\
+echo "Running migrations..."\n\
+php artisan migrate --force\n\
+echo "Running seeders..."\n\
+php artisan db:seed --force\n\
+echo "Starting Apache..."\n\
+exec apache2-foreground' > /usr/local/bin/start.sh \
+    && chmod +x /usr/local/bin/start.sh
 
 # Esponi la porta 80
 EXPOSE 80
 
-# Avvia Apache
-CMD ["apache2-foreground"]
+# Usa lo script di avvio
+CMD ["/usr/local/bin/start.sh"]
