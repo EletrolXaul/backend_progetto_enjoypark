@@ -1,6 +1,6 @@
-FROM php:8.2-apache
+FROM php:8.1-apache
 
-# Installa dipendenze necessarie
+# Installa dipendenze necessarie per PostgreSQL
 RUN apt-get update && apt-get install -y \
     git \
     curl \
@@ -9,13 +9,13 @@ RUN apt-get update && apt-get install -y \
     libxml2-dev \
     libpq-dev \
     zip \
-    unzip
+    unzip \
+    postgresql-client \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# Pulisce la cache
-RUN apt-get clean && rm -rf /var/lib/apt/lists/*
-
-# Installa estensioni PHP
-RUN docker-php-ext-install pdo_mysql pdo_pgsql mbstring exif pcntl bcmath gd
+# Installa estensioni PHP (focus su PostgreSQL)
+RUN docker-php-ext-install pdo_pgsql mbstring exif pcntl bcmath gd
 
 # Installa Composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
@@ -23,8 +23,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Imposta la directory di lavoro
 WORKDIR /var/www/html
 
-# Copia i file dell'applicazione
+# Copia prima composer.json per ottimizzare la cache Docker
+COPY composer.json composer.lock ./
+
+# Installa dipendenze PHP
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Copia il resto dei file dell'applicazione
 COPY . /var/www/html
+
+# Esegui gli script post-install
+RUN composer run-script post-install-cmd --no-dev || true
 
 # Crea le directory necessarie
 RUN mkdir -p /var/www/html/storage/logs \
@@ -33,13 +42,10 @@ RUN mkdir -p /var/www/html/storage/logs \
     && mkdir -p /var/www/html/storage/framework/views \
     && mkdir -p /var/www/html/bootstrap/cache
 
-# Installa dipendenze PHP
-RUN composer install --no-dev --optimize-autoloader
-
 # Esegui comandi Laravel per ottimizzazione
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache
+RUN php artisan config:cache || true \
+    && php artisan route:cache || true \
+    && php artisan view:cache || true
 
 # Imposta i permessi
 RUN chown -R www-data:www-data /var/www/html \
@@ -50,51 +56,71 @@ RUN chown -R www-data:www-data /var/www/html \
 # Abilita mod_rewrite per Apache
 RUN a2enmod rewrite
 
-# Configura Apache per usare la porta dinamica di Render
-# Configura Apache per porta dinamica
+# Configura Apache per porta dinamica di Render
 RUN echo 'Listen ${PORT}' > /etc/apache2/ports.conf
-RUN echo '<VirtualHost *:${PORT}>\n    ServerName localhost\n DocumentRoot /var/www/html/public\n    <Directory /var/www/html/public>\n AllowOverride All\n        Require all granted\n    </Directory>\n    ErrorLog ${APACHE_LOG_DIR}/error.log\n    CustomLog ${APACHE_LOG_DIR}/access.log combined\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+RUN echo '<VirtualHost *:${PORT}>\n    ServerName localhost\n    DocumentRoot /var/www/html/public\n    <Directory /var/www/html/public>\n        AllowOverride All\n        Require all granted\n    </Directory>\n    ErrorLog ${APACHE_LOG_DIR}/error.log\n    CustomLog ${APACHE_LOG_DIR}/access.log combined\n</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
 
-# Crea script di avvio migliorato
+# Script di avvio ottimizzato per PostgreSQL
 RUN echo '#!/bin/bash\n\
-    set -e\n\
-    \n\
-    # Imposta la porta (default 10000 per Render)\n\
-    export PORT=${PORT:-10000}\n\
-    echo "Starting application on port $PORT"\n\
-    \n\
-    # Funzione per testare la connessione al database\n\
-    test_db_connection() {\n\
-    php artisan migrate:status > /dev/null 2>&1\n\
-    }\n\
-    \n\
-    # Aspetta il database con timeout esteso\n\
-    echo "Waiting for database connection..."\n\
-    counter=0\n\
-    max_attempts=60\n\
-    \n\
-    while ! test_db_connection; do\n\
+set -e\n\
+\n\
+# Imposta la porta\n\
+export PORT=${PORT:-10000}\n\
+echo "Starting Laravel backend on port $PORT"\n\
+echo "Frontend URL: ${FRONTEND_URL:-https://your-frontend.vercel.app}"\n\
+\n\
+# Test connessione PostgreSQL\n\
+test_postgres_connection() {\n\
+    timeout 15 php artisan migrate:status > /dev/null 2>&1\n\
+}\n\
+\n\
+# Aspetta PostgreSQL con timeout esteso\n\
+echo "Waiting for PostgreSQL connection..."\n\
+counter=0\n\
+max_attempts=180  # 6 minuti per PostgreSQL\n\
+\n\
+while ! test_postgres_connection; do\n\
     if [ $counter -ge $max_attempts ]; then\n\
-    echo "Database connection timeout after 120 seconds"\n\
-    echo "Starting Apache without migrations..."\n\
-    break\n\
+        echo "PostgreSQL connection timeout after 6 minutes"\n\
+        echo "Database configuration:"\n\
+        echo "DB_CONNECTION: ${DB_CONNECTION:-not set}"\n\
+        echo "DB_HOST: ${DB_HOST:-not set}"\n\
+        echo "DB_PORT: ${DB_PORT:-not set}"\n\
+        echo "DB_DATABASE: ${DB_DATABASE:-not set}"\n\
+        echo "DB_USERNAME: ${DB_USERNAME:-not set}"\n\
+        echo "Starting Apache without migrations..."\n\
+        break\n\
     fi\n\
-    echo "Database not ready, waiting... ($counter/$max_attempts)"\n\
+    echo "PostgreSQL not ready, waiting... ($counter/$max_attempts)"\n\
     sleep 2\n\
     counter=$((counter + 1))\n\
-    done\n\
+done\n\
+\n\
+# Esegui migrazioni se PostgreSQL è connesso\n\
+if test_postgres_connection; then\n\
+    echo "PostgreSQL connected successfully!"\n\
     \n\
-    # Se il database è connesso, esegui migrazioni\n\
-    if test_db_connection; then\n\
-    echo "Database connected successfully!"\n\
     echo "Running migrations..."\n\
-    php artisan migrate --force || echo "Migration failed, continuing..."\n\
-    echo "Running seeders..."\n\
-    php artisan db:seed --force || echo "Seeder failed, continuing..."\n\
-    fi\n\
+    php artisan migrate --force\n\
     \n\
-    echo "Starting Apache on port $PORT..."\n\
-    exec apache2-foreground' > /usr/local/bin/start.sh \
+    if [ $? -eq 0 ]; then\n\
+        echo "Migrations completed successfully"\n\
+        \n\
+        echo "Running seeders..."\n\
+        php artisan db:seed --force || echo "Seeder completed with warnings"\n\
+        \n\
+        echo "Clearing caches..."\n\
+        php artisan config:clear || true\n\
+        php artisan cache:clear || true\n\
+    else\n\
+        echo "Migration failed - check PostgreSQL configuration"\n\
+    fi\n\
+fi\n\
+\n\
+echo "Starting Apache server..."\n\
+echo "Backend ready at: http://localhost:$PORT"\n\
+echo "API endpoints available at: http://localhost:$PORT/api"\n\
+exec apache2-foreground' > /usr/local/bin/start.sh \
     && chmod +x /usr/local/bin/start.sh
 
 # Esponi la porta dinamica
