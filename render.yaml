@@ -3,6 +3,6 @@ services:
     name: enjoypark-backend
     runtime: php
     plan: free
-    buildCommand: './build.sh'
+    buildCommand: 'composer install --no-dev --optimize-autoloader && php artisan config:cache && php artisan route:cache && php artisan view:cache && php artisan migrate --force'
     startCommand: 'php artisan serve --host 0.0.0.0 --port 10000'
     phpVersion: 8.4
