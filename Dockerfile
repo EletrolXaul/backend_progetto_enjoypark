@@ -34,11 +34,13 @@ RUN mkdir -p /var/www/html/storage/logs \
 
 # Installa dipendenze PHP
 # Esegui comandi Laravel per ottimizzazione e setup
-RUN php artisan config:cache \
-    && php artisan route:cache \
-    && php artisan view:cache \
-    && php artisan migrate --force \
-    && php artisan db:seed --force
+RUN php artisan config:cache 
+RUN php artisan route:cache 
+RUN php artisan view:cache
+#Esegui le migrazioni
+RUN php artisan migrate --force 
+# Esegui i seeder
+RUN artisan db:seed --force
 
 # Imposta i permessi
 RUN chown -R www-data:www-data /var/www/html \
