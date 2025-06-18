@@ -13,8 +13,6 @@ RUN npm install
 # Copia solo i file necessari per il build
 COPY resources/ resources/
 COPY vite.config.js .
-COPY postcss.config.js .
-COPY tailwind.config.js .
 
 # Compila gli asset
 RUN npm run build
@@ -46,7 +44,7 @@ ENV COMPOSER_ALLOW_SUPERUSER 1
 # Installa le dipendenze PHP
 RUN composer install --no-dev --optimize-autoloader
 
-# Imposta i permessi
+# Imposta i permessi di lettura, scrittura ed esecuzione
 RUN chmod -R 775 storage bootstrap/cache
 RUN chown -R www-data:www-data /var/www/html
 
