@@ -135,27 +135,33 @@ class TicketController extends Controller
         $validator = Validator::make($request->all(), [
             'qr_code' => 'required|string',
         ]);
-
+    
         if ($validator->fails()) {
             return response()->json([
                 'success' => false, 
                 'message' => 'QR Code richiesto'
             ], 422);
         }
-
+    
         $ticket = Ticket::where('qr_code', $request->qr_code)
                        ->with(['order'])
                        ->first();
-
+    
         if (!$ticket) {
             return response()->json([
                 'success' => false,
                 'message' => 'QR Code non valido o non trovato'
             ], 404);
         }
-
-        $order = Order::find($ticket->metadata['order_id'] ?? null);
-
+    
+        // Usa la relazione già caricata invece di cercare separatamente
+        $order = $ticket->order;
+        
+        // Aggiungi il formato camelCase per compatibilità frontend
+        if ($order && $order->customer_info) {
+            $order->customerInfo = $order->customer_info;
+        }
+    
         return response()->json([
             'success' => true,
             'ticket' => $ticket,
