@@ -3,13 +3,13 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Shop;
 
 class ShopTableSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('shops')->insert([
+        $shops = [
             [
                 'slug' => 'main-gift-shop',
                 'name' => 'Gift Shop Principale',
@@ -76,6 +76,13 @@ class ShopTableSeeder extends Seeder
                 'specialties' => json_encode(["Trucchi di magia", "Bacchette magiche", "Cristalli", "Libri di magia"]),
                 'opening_hours' => '11:00 - 20:00',
             ],
-        ]);
+        ];
+
+        foreach ($shops as $shop) {
+            Shop::updateOrCreate(
+                ['slug' => $shop['slug']],
+                $shop
+            );
+        }
     }
 }

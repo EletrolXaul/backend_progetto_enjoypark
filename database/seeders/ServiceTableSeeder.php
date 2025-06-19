@@ -3,13 +3,13 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Service;
 
 class ServiceTableSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('services')->insert([
+        $services = [
             [
                 'slug' => 'north-parking',
                 'name' => 'Parcheggio Nord',
@@ -142,6 +142,13 @@ class ServiceTableSeeder extends Seeder
                 'available_24h' => true,
                 'features' => json_encode(["Prelievi", "Ricariche", "Commissioni basse", "Sempre attivo"]),
             ],
-        ]);
+        ];
+
+        foreach ($services as $service) {
+            Service::updateOrCreate(
+                ['slug' => $service['slug']],
+                $service
+            );
+        }
     }
 }

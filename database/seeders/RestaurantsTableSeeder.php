@@ -3,13 +3,13 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Restaurant;
 
 class RestaurantsTableSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('restaurants')->insert([
+        $restaurants = [
             [
                 'slug' => 'central-restaurant',
                 'name' => 'Ristorante Centrale',
@@ -94,6 +94,13 @@ class RestaurantsTableSeeder extends Seeder
                 'features' => json_encode(["Tema magico", "Dolci speciali", "Caffè di qualità", "Atmosfera unica"]),
                 'opening_hours' => '08:00 - 20:00',
             ],
-        ]);
+        ];
+
+        foreach ($restaurants as $data) {
+            Restaurant::updateOrCreate(
+                ['name' => $data['name']], // Trova per nome
+                $data // Aggiorna o crea con questi dati
+            );
+        }
     }
 }
