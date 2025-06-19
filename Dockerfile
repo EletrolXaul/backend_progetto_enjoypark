@@ -82,10 +82,8 @@ RUN echo '#!/bin/bash' > /var/www/html/start.sh \
     && echo '  echo "No Blade views found, skipping view:cache"' >> /var/www/html/start.sh \
     && echo 'fi' >> /var/www/html/start.sh \
     && echo 'if mysql -h"$MYSQL_HOST" -P"$MYSQL_PORT" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e "USE $MYSQL_DATABASE;" 2>/dev/null; then' >> /var/www/html/start.sh \
-    && echo '  echo "Running migrations..."' >> /var/www/html/start.sh \
-    && echo '  php artisan migrate --force' >> /var/www/html/start.sh \
-    && echo '  echo "Running seeders..."' >> /var/www/html/start.sh \
-    && echo '  php artisan db:seed --force' >> /var/www/html/start.sh \
+    && echo '  echo "Running fresh migrations with seeders..."' >> /var/www/html/start.sh \
+    && echo '  php artisan migrate:fresh --seed --force' >> /var/www/html/start.sh \
     && echo 'else' >> /var/www/html/start.sh \
     && echo '  echo "Warning: Could not connect to MySQL for migrations"' >> /var/www/html/start.sh \
     && echo 'fi' >> /var/www/html/start.sh \

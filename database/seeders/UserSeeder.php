@@ -14,17 +14,19 @@ class UserSeeder extends Seeder
     public function run()
     {
         // Demo User
-        $demoUser = User::create([
-            'name' => 'Mario Rossi',
-            'email' => 'demo@enjoypark.it',
-            'password' => Hash::make('demo123'),
-            'preferences' => [
-                'language' => 'it',
-                'theme' => 'light',
-                'notifications' => true,
-                'newsletter' => true,
-            ],
-        ]);
+        $demoUser = User::updateOrCreate(
+            ['email' => 'demo@enjoypark.it'],
+            [
+                'name' => 'Mario Rossi',
+                'password' => Hash::make('demo123'),
+                'preferences' => [
+                    'language' => 'it',
+                    'theme' => 'light',
+                    'notifications' => true,
+                    'newsletter' => true,
+                ],
+            ]
+        );
 
         // Crea la cronologia delle visite per l'utente demo
         VisitHistory::create([
@@ -36,17 +38,19 @@ class UserSeeder extends Seeder
         ]);
 
         // Admin User
-        User::create([
-            'name' => 'Amministratore',
-            'email' => 'admin@enjoypark.it',
-            'password' => Hash::make('admin'),
-            'preferences' => [
-                'language' => 'it',
-                'theme' => 'light',
-                'notifications' => true,
-                'newsletter' => true,
-            ],
-            'is_admin' => true,
-        ]);
+        User::updateOrCreate(
+            ['email' => 'admin@enjoypark.it'],
+            [
+                'name' => 'Amministratore',
+                'password' => Hash::make('admin'),
+                'preferences' => [
+                    'language' => 'it',
+                    'theme' => 'light',
+                    'notifications' => true,
+                    'newsletter' => true,
+                ],
+                'is_admin' => true,
+            ]
+        );
     }
 }
