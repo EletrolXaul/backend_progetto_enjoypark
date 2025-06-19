@@ -141,7 +141,10 @@ class AttractionSeeder extends Seeder
         ];
 
         foreach ($attractions as $data) {
-            Attraction::create($data);
+            Attraction::updateOrCreate(
+                ['name' => $data['name']], // Condizione di ricerca
+                $data // Dati da inserire/aggiornare
+            );
         }
     }
 }
