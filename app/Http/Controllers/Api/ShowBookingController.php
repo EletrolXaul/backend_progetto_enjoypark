@@ -35,47 +35,37 @@ class ShowBookingController extends Controller
 
         try {
             return DB::transaction(function () use ($userId, $showId, $timeSlot, $seatsBooked, $bookingDate) {
-                // Verifica se l'utente ha già prenotato questo spettacolo oggi
-                $existingBooking = ShowBooking::where('user_id', $userId)
-                    ->where('show_id', $showId)
-                    ->where('booking_date', $bookingDate)
-                    ->where('status', 'confirmed')
-                    ->first();
+                // Usa updateOrCreate per gestire automaticamente i duplicati
+                $booking = ShowBooking::updateOrCreate(
+                    [
+                        'user_id' => $userId,
+                        'show_id' => $showId,
+                        'booking_date' => $bookingDate,
+                    ],
+                    [
+                        'time_slot' => $timeSlot,
+                        'seats_booked' => $seatsBooked,
+                        'status' => 'confirmed'
+                    ]
+                );
 
-                if ($existingBooking) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Hai già prenotato questo spettacolo per oggi'
-                    ], 409);
+                // Se è una nuova prenotazione, aggiorna i posti
+                if ($booking->wasRecentlyCreated) {
+                    $show = Show::findOrFail($showId);
+                    if ($show->available_seats < $seatsBooked) {
+                        return response()->json([
+                            'success' => false,
+                            'message' => 'Posti non disponibili'
+                        ], 409);
+                    }
+                    $show->decrement('available_seats', $seatsBooked);
                 }
-
-                // Verifica disponibilità posti
-                $show = Show::findOrFail($showId);
-                if ($show->available_seats < $seatsBooked) {
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Posti non disponibili'
-                    ], 409);
-                }
-
-                // Crea la prenotazione
-                $booking = ShowBooking::create([
-                    'user_id' => $userId,
-                    'show_id' => $showId,
-                    'booking_date' => $bookingDate,
-                    'time_slot' => $timeSlot,
-                    'seats_booked' => $seatsBooked,
-                    'status' => 'confirmed'
-                ]);
-
-                // Aggiorna i posti disponibili
-                $show->decrement('available_seats', $seatsBooked);
 
                 return response()->json([
                     'success' => true,
-                    'message' => 'Prenotazione confermata',
+                    'message' => $booking->wasRecentlyCreated ? 'Prenotazione confermata' : 'Prenotazione già esistente',
                     'booking' => $booking->load('show'),
-                    'available_seats' => $show->fresh()->available_seats
+                    'available_seats' => Show::find($showId)->available_seats
                 ], 201);
             });
         } catch (\Exception $e) {
