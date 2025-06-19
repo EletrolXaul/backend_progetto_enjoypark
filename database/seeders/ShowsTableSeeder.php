@@ -3,13 +3,13 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\DB;
+use App\Models\Show;
 
 class ShowsTableSeeder extends Seeder
 {
     public function run(): void
     {
-        DB::table('shows')->insert([
+        $shows = [
             [
                 'slug' => 'pirate-show',
                 'name' => 'Spettacolo dei Pirati',
@@ -112,6 +112,13 @@ class ShowsTableSeeder extends Seeder
                 'location_y' => 70,
                 'image' => '/placeholder.svg?height=200&width=300',
             ],
-        ]);
+        ];
+
+        foreach ($shows as $data) {
+            Show::updateOrCreate(
+                ['name' => $data['name']], // Trova per nome
+                $data // Aggiorna o crea con questi dati
+            );
+        }
     }
 }
